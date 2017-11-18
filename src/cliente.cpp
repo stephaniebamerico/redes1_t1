@@ -4,7 +4,7 @@ int main(int argc, char const *argv[]) {
     char *buffer;
     int socket;
 
-    if(!(buffer = (char *) malloc(sizeof(char)*10))) {
+    if(!(buffer = (char *) malloc(sizeof(char)*TAM_MIN_MSG))) {
         fprintf(stderr, "Erro ao alocar buffer.\n");
         return 1;
     }
@@ -14,10 +14,10 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
-    memset(buffer, 0, 10);
-    strcpy(buffer, "tudo bem?\n");
+    memset(buffer, 0, TAM_MIN_MSG);
+    strcpy(buffer, "FUNCIONOU PORRA\n");
 
-    if(send(socket, buffer, strlen(buffer), 0) < 0) {
+    if(send(socket, buffer, TAM_MIN_MSG, 0) < 0) {
         fprintf(stderr, "Erro ao enviar mensagem.\n");
         return 1;
     }
