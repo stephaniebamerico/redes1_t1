@@ -15,7 +15,7 @@ int main(int argc, char const *argv[]) {
 
     buffer = "tudo bem?";
 
-    if(send(socket, buffer, 10, 0) < 0) {
+    if(send(socket, buffer, sizeof(buffer), 0) < 0) {
         fprintf(stderr, "Erro ao enviar mensagem.\n");
         return 1;
     }

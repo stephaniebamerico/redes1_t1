@@ -13,12 +13,13 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
-    if(recv(socket, msg, 10, 0) < 0) {
-        fprintf(stderr, "Erro ao receber mensagem.\n");
-        return 1;
+    while (1) {
+        if(recv(socket, msg, sizeof(char)*10, 0) < 0) {
+            fprintf(stderr, "Erro ao receber mensagem.\n");
+        }
+        
+        printf("%s\n", msg);
     }
-
-    printf("%s\n", msg);
 
     return 0;
 }
