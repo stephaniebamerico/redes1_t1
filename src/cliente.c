@@ -1,10 +1,5 @@
 #include "raw_socket.h"
 
-#include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-
 int main(int argc, char const *argv[]) {
     char *buffer;
     int socket;
@@ -19,8 +14,7 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
-    int t = sizeof(buffer);
-    memset(buffer, 0, t);
+    memset(buffer, 0, 10);
     strcpy(buffer, "tudo bem?\n");
 
     if(send(socket, buffer, strlen(buffer), 0) < 0) {
