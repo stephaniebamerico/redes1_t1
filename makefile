@@ -20,8 +20,8 @@ mkdir_bin:
 
 #---------------------------------------------------------------
 
-cliente: mkdir_bin $(INCLUDE)/raw_socket.h $(SRC)/cliente.c $(SRC)/raw_socket.c
-	$(CC) $(CFLAGS) -I$(INCLUDE) -o $(BIN)/cliente $(SRC)/cliente.c $(SRC)/raw_socket.c
+cliente: mkdir_bin $(INCLUDE)/raw_socket.h $(SRC)/cliente.cpp $(SRC)/raw_socket.cpp
+	$(CC) $(CFLAGS) -I$(INCLUDE) -o $(BIN)/cliente $(SRC)/cliente.cpp $(SRC)/raw_socket.cpp
 
-servidor: mkdir_bin $(INCLUDE)/raw_socket.h $(SRC)/servidor.c $(SRC)/raw_socket.c
-	$(CC) $(CFLAGS) -I$(INCLUDE) -o $(BIN)/servidor $(SRC)/servidor.c $(SRC)/raw_socket.c
+servidor: mkdir_bin $(INCLUDE)/raw_socket.h $(SRC)/servidor.cpp $(SRC)/raw_socket.cpp
+	$(CC) $(CFLAGS) -I$(INCLUDE) -o $(BIN)/servidor $(SRC)/servidor.cpp $(SRC)/raw_socket.cpp
