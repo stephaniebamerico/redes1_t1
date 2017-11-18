@@ -5,7 +5,7 @@
 #include <sys/socket.h>
 
 int main(int argc, char const *argv[]) {
-    char *msg = (char*) malloc(sizeof(char)*10);
+    char *msg = (char *) malloc(sizeof(char)*10);
     int socket;
 
     if((socket = openRawSocket("enp7s0")) < 0) {
@@ -13,12 +13,14 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
+    printf("Aguardando mensagens.\n");
+
     while (1) {
-        if(recv(socket, msg, sizeof(char)*10, 0) < 0) {
+        if(recv(socket, msg, 10, 0) < 0) {
             fprintf(stderr, "Erro ao receber mensagem.\n");
         }
         
-        printf("%s\n", msg);
+        printf("\nMensagem recebida: %s\n", msg);
     }
 
     return 0;
