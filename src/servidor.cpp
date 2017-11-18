@@ -6,20 +6,20 @@ int main(int argc, char const *argv[]) {
     int socket;
 
     if((socket = openRawSocket((char *) "enp7s0")) < 0) {
-        fprintf(stderr, "Erro ao abrir Raw Socket.\n");
+        cerr << "Erro ao abrir Raw Socket." << endl;
         return 1;
     }
 
-    printf("Aguardando mensagens.\n");
+    cout << "Aguardando mensagens." << endl;
 
     while (1) {
         memset(msg, 0, TAM_MSG);
 
         if(recv(socket, msg, TAM_MSG, 0) < 0) {
-            fprintf(stderr, "Erro ao receber mensagem.\n");
+            cerr << "Erro ao receber mensagem." << endl;
         }
         
-        printf("\nMensagem recebida: %s\n", msg);
+        cout << endl << "Mensagem recebida: " << msg << endl;
     }
 
     return 0;
