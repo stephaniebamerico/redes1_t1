@@ -19,9 +19,11 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
-    strcpy(buffer, "tudo bem?");
+    int t = sizeof(buffer);
+    memset(buffer, 0, t);
+    strcpy(buffer, "tudo bem?\n");
 
-    if(send(socket, buffer, 10, 0) < 0) {
+    if(send(socket, buffer, strlen(buffer), 0) < 0) {
         fprintf(stderr, "Erro ao enviar mensagem.\n");
         return 1;
     }

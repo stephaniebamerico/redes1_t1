@@ -16,6 +16,9 @@ int main(int argc, char const *argv[]) {
     printf("Aguardando mensagens.\n");
 
     while (1) {
+        int t = sizeof(msg);
+        memset(msg, 0, t);
+
         if(recv(socket, msg, 10, 0) < 0) {
             fprintf(stderr, "Erro ao receber mensagem.\n");
         }
