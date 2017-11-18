@@ -1,6 +1,7 @@
 #include "raw_socket.h"
 
 #include <stdio.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 
@@ -18,7 +19,7 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
-    buffer = "tudo bem?";
+    strcpy(buffer, "tudo bem?");
 
     if(send(socket, buffer, 10, 0) < 0) {
         fprintf(stderr, "Erro ao enviar mensagem.\n");
