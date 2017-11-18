@@ -2,7 +2,7 @@
 #include "mensagem.h"
 
 int main(int argc, char const *argv[]) {
-    char *msg = (char *) malloc(sizeof(char)*TAM_MIN_MSG);
+    char *msg = (char *) malloc(sizeof(char)*TAM_MSG);
     int socket;
 
     if((socket = openRawSocket((char *) "enp7s0")) < 0) {
@@ -13,9 +13,9 @@ int main(int argc, char const *argv[]) {
     printf("Aguardando mensagens.\n");
 
     while (1) {
-        memset(msg, 0, TAM_MIN_MSG);
+        memset(msg, 0, TAM_MSG);
 
-        if(recv(socket, msg, TAM_MIN_MSG, 0) < 0) {
+        if(recv(socket, msg, TAM_MSG, 0) < 0) {
             fprintf(stderr, "Erro ao receber mensagem.\n");
         }
         

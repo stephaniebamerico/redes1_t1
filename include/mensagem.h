@@ -1,5 +1,5 @@
 
-#define TAM_MIN_MSG 64
+#define TAM_MSG 64
 
 typedef struct {
     char inicio;
