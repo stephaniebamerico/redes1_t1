@@ -5,7 +5,7 @@
 #include <sys/socket.h>
 
 int main(int argc, char const *argv[]) {
-    char *buffer = (char*) malloc(sizeof(char)*10);
+    char *msg = (char*) malloc(sizeof(char)*10);
     int socket;
 
     if((socket = openRawSocket("enp7s0")) < 0) {
@@ -13,12 +13,12 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
-    buffer = "tudo bem?";
-
-    if(send(socket, buffer, 10, 0) < 0) {
-        fprintf(stderr, "Erro ao enviar mensagem.\n");
+    if(recv(socket, msg, 10, 0) < 0) {
+        fprintf(stderr, "Erro ao receber mensagem.\n");
         return 1;
     }
+
+    printf("%s\n", msg);
 
     return 0;
 }
