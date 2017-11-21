@@ -3,9 +3,9 @@
 
 int main(int argc, char const *argv[]) {
     char *msg = (char *) malloc(sizeof(char)*TAM_MSG);
-    int socket;
+    int socket = openRawSocket((char *) "enp7s0");
 
-    if((socket = openRawSocket((char *) "enp7s0")) < 0) {
+    if(socket < 0) {
         cerr << "Erro ao abrir Raw Socket." << endl;
         return 1;
     }
