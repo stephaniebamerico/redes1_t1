@@ -52,7 +52,7 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
     char *m = (char *) malloc (sizeof(char) * TAM_MSG);
     m[0] = 0;
 
-    if(poll(&ufds, 1, 500) > 0) {
+    if(poll(&ufds, 1, 1000) > 0) {
         if(recv(socket, m, TAM_MSG, 0) < 0) {
             cerr << "Erro ao receber mensagem do socket." << endl;
             exit(-1);
@@ -85,7 +85,7 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
 
     // Tenta enviar mensagem
     int tentativas=0;
-    while(resposta->tipo != ACK) {
+    while(resposta->tipo != ACK && tentativas < 2) {
         if(send(socket, m, TAM_MSG, 0) < 0) {
             cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
             exit(-1);
