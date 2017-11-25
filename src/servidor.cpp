@@ -21,11 +21,13 @@ int main(int argc, char const *argv[]) {
         
         if(msg[0] == 0x007E) {
             mensagem_t *msg_recebida = cstr_to_msg(msg, msg_recebida);
+            
+            cout << endl << "Mensagem recebida: " << endl;
+            imprime_mensagem(*msg_recebida);
+            
             envia_confirmacao(socket, ACK);
             mensagem_t *msg = monta_mensagem(OK, 0, "");
             envia_mensagem(socket, msg);
-            //cout << endl << "Mensagem recebida: " << endl;
-            //imprimeMensagem(*msg_recebida);
         }
     }
 

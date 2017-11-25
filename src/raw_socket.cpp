@@ -55,6 +55,7 @@ void recebe_mensagem(int socket, mensagem_t *msg) {
     free(m);
     
     msg = cstr_to_msg(m, msg);
+    imprime_mensagem(*msg);
 }
 
 bool envia_mensagem(int socket, mensagem_t *msg) {

@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <mensagem.h>
 
-#define TIMEOUT 1000
+#define TIMEOUT 10
 
 using namespace std;
 
