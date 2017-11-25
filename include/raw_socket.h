@@ -1,3 +1,6 @@
+#ifndef __RAW_SOCKET__
+#define __RAW_SOCKET__
+
 #include <arpa/inet.h>
 #include <linux/if_packet.h>
 #include <linux/if.h>
@@ -13,3 +16,5 @@
 using namespace std;
 
 int openRawSocket(char *device);
+
+#endif

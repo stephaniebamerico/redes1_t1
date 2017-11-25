@@ -19,7 +19,9 @@ int main(int argc, char const *argv[]) {
             cerr << "Erro ao receber mensagem." << endl;
         }
         
-        cout << endl << "Mensagem recebida: " << msg << endl;
+        cout << endl << "Mensagem recebida: " << endl;
+        mensagem_t *msg_recebida = cstr_to_msg(msg);
+        imprimeMensagem(*msg_recebida);
     }
 
     return 0;

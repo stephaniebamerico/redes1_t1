@@ -55,6 +55,8 @@ int main() {
             cout << "Operacao invalida" << endl;
         }
 
+        // Teste para envio da mensagem
+        cout << endl << "Iniciando envio da mensagem de teste:" << endl;
         mensagem_t msg;
         msg.inicio = 0x007E;
         msg.tamanho = 10;
@@ -63,18 +65,13 @@ int main() {
         msg.dados = (char *) malloc(sizeof(char) * args.size());
         strcpy(msg.dados, args.c_str());
         msg.paridade = 1;
+        
+        imprimeMensagem(msg);
 
-        /*if(operacao.size() > TAM_MSG) {
-            cerr << "Mensagem excede o tamanho maximo." << endl;
-            return 1;
-        }*/
-
-        /*if(send(socket, msg_to_cstr(msg), TAM_MSG, 0) < 0) {
+        if(send(socket, msg_to_cstr(msg), TAM_MSG, 0) < 0) {
             cerr << "Erro ao enviar mensagem." << endl;
             return 1;
-        }*/
-
-        //char *tmp = msg_to_cstr(msg);
+        }
 
         cout << endl << "Mensagem enviada com sucesso." << endl;
     }
