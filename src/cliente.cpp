@@ -69,12 +69,12 @@ int main() {
             return 1;
         }*/
 
-        if(send(socket, msg_to_cstr(msg), TAM_MSG, 0) < 0) {
+        /*if(send(socket, msg_to_cstr(msg), TAM_MSG, 0) < 0) {
             cerr << "Erro ao enviar mensagem." << endl;
             return 1;
-        }
+        }*/
 
-        char *tmp = msg_to_cstr(msg);
+        //char *tmp = msg_to_cstr(msg);
 
         cout << endl << "Mensagem enviada com sucesso." << endl;
     }
