@@ -54,10 +54,11 @@ void recebe_mensagem(int socket, mensagem_t *msg) {
         printf("tentativas: %d\n", tentativas);
         usleep(10);
     }
-    free(m);
     
     msg = cstr_to_msg(m, msg);
     imprime_mensagem(*msg);
+
+    free(m);
 }
 
 bool envia_mensagem(int socket, mensagem_t *msg) {

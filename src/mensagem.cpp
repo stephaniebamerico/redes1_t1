@@ -105,6 +105,8 @@ bool cd_remoto(int socket, string args) {
         free(msg);
         msg = (mensagem_t *) malloc(sizeof(mensagem_t));
 
+        cout<<"enviou cd"<<endl<<endl;
+
         recebe_mensagem(socket, msg);
         envia_confirmacao(socket, ACK);
         
