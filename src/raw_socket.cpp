@@ -1,4 +1,5 @@
 #include "raw_socket.h"
+#include "mensagem.h"
 
 int openRawSocket(char *device) {
   int soquete;
@@ -40,4 +41,70 @@ int openRawSocket(char *device) {
   }
 
   return soquete;
+}
+
+void recebe_mensagem(int socket, mensagem_t *msg) {
+    char *m = (char *) malloc (sizeof(char) * TAM_MSG);
+    m[0] = 0;
+    while(m[0] != 0x007E) {
+        if(recv(socket, msg, TAM_MSG, 0) < 0) {
+            cerr << "Erro ao receber mensagem do socket." << endl;
+            exit(-1);
+        }
+    }
+    free(m);
+    
+    msg = cstr_to_msg(m, msg);
+}
+
+bool envia_mensagem(int socket, mensagem_t *msg) {
+    char *r = (char *) malloc (sizeof(char) * TAM_MSG);
+    char *m = (char *) malloc (sizeof(char) * (msg->tamanho + 4)); 
+    mensagem_t *resposta = (mensagem_t *) malloc(sizeof(mensagem_t));
+    if(!m || !r || !resposta) {
+        cerr << "[envia_mensagem] Erro ao alocar variavel." << endl;
+        return false;
+    }
+
+    m = msg_to_cstr(msg, m);
+    resposta->tipo = NACK;
+
+    // Tenta enviar mensagem
+    int tentativas;
+    for(tentativas = 0; resposta->tipo == NACK && tentativas <= TIMEOUT; ++tentativas) {
+        if(send(socket, m, TAM_MSG, 0) < 0) {
+            cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
+            exit(-1);
+        }
+
+        recebe_mensagem(socket, resposta);
+        usleep(50);
+    }
+
+    free(m);
+    free(r);
+    free(resposta);
+
+    // Timeout
+    if(tentativas > TIMEOUT) {
+        cerr << "[envia_mensagem] Erro ao enviar mensagem: TIMEOUT." << endl;
+        return false;
+    }
+
+    // ACK
+    return true;
+}
+
+void envia_confirmacao(int socket, int tipo) {
+    mensagem_t *msg = monta_mensagem(tipo, 0, ""); 
+    char *m = (char *) malloc (sizeof(char) * (msg->tamanho + 4));
+    m = msg_to_cstr(msg, m);
+    
+    if(send(socket, m, TAM_MSG, 0) < 0) {
+        cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
+        exit(-1);
+    }
+
+    free(m);
+    free(msg);
 }

@@ -19,10 +19,14 @@ int main(int argc, char const *argv[]) {
             cerr << "Erro ao receber mensagem." << endl;
         }
         
-        cout << endl << "Mensagem recebida: " << endl;
-        mensagem_t *msg_recebida = cstr_to_msg(msg);
-        if(msg_recebida->inicio == 0x007E)
-            imprimeMensagem(*msg_recebida);
+        if(msg[0] == 0x007E) {
+            mensagem_t *msg_recebida = cstr_to_msg(msg, msg_recebida);
+            envia_confirmacao(socket, ACK);
+            mensagem_t *msg = monta_mensagem(OK, 0, "");
+            envia_mensagem(socket, msg);
+            //cout << endl << "Mensagem recebida: " << endl;
+            //imprimeMensagem(*msg_recebida);
+        }
     }
 
     return 0;

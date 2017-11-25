@@ -12,9 +12,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
+#include <unistd.h>
+#include <mensagem.h>
+
+#define TIMEOUT 1000
 
 using namespace std;
 
 int openRawSocket(char *device);
+
+void recebe_mensagem(int socket, mensagem_t *msg);
+
+bool envia_mensagem(int socket, mensagem_t *msg);
+
+void envia_confirmacao(int socket, int tipo);
 
 #endif
