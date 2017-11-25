@@ -54,7 +54,7 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
     char *m = (char *) malloc (sizeof(char) * TAM_MSG);
     m[0] = 0;
 
-    if(poll(&ufds, 1, 1000) > 0) {
+    if(poll(&ufds, 1, 10000) > 0) {
         if(recv(socket, m, TAM_MSG, 0) < 0) {
             cerr << "Erro ao receber mensagem do socket." << endl;
             exit(-1);
@@ -68,6 +68,8 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
             return true;
         }
     }
+    else
+        cout << endl << "TIMEOUT" << time(NULL) << endl;
 
     free(m);
     return false;
