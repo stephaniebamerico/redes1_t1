@@ -58,11 +58,13 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
             exit(-1);
         }
 
-        msg = cstr_to_msg(m, msg);
-        imprime_mensagem(*msg);
+        if(m[0] == 0x007E) {
+            msg = cstr_to_msg(m, msg);
+            imprime_mensagem(*msg);
 
-        free(m);
-        return true;
+            free(m);
+            return true;
+        }
     }
 
     free(m);
