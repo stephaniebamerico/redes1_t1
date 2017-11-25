@@ -3,7 +3,7 @@
 
 int main(int argc, char const *argv[]) {
     char *msg = (char *) malloc(sizeof(char)*TAM_MSG);
-    int socket = openRawSocket((char *) "enp7s0");
+    int socket = openRawSocket((char *) argv[1]);
 
     if(socket < 0) {
         cerr << "Erro ao abrir Raw Socket." << endl;
@@ -28,7 +28,6 @@ int main(int argc, char const *argv[]) {
             
             envia_confirmacao(socket, ACK);
 
-            cout << "Enviou ACK" << endl;
             mensagem_t *msg = monta_mensagem(OK, 0, "");
             
             cout << endl << "Mensagem montada: " << endl;

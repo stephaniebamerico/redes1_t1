@@ -3,8 +3,8 @@
 
 void imprimeMenu();
 
-int main() {
-    int socket = openRawSocket((char *) "enp7s0");
+int main(int argc, char const *argv[]) {
+    int socket = openRawSocket((char *) argv[1]);
 
     if(socket < 0) {
         cerr << "Erro ao abrir Raw Socket." << endl;
