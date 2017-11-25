@@ -44,23 +44,27 @@ int openRawSocket(char *device) {
 }
 
 bool recebe_mensagem(int socket, mensagem_t *msg) {
+    struct pollfd ufds; // usado para timeout em recv
+    ufds.fd = socket;
+    ufds.events = POLLIN;
+
+
     char *m = (char *) malloc (sizeof(char) * TAM_MSG);
     m[0] = 0;
-    int tentativas;
-    for(tentativas = 0; tentativas < TIMEOUT && m[0] != 0x007E; ++tentativas) {
+
+    if(poll(&ufds, 1, 500) > 0) {
         if(recv(socket, m, TAM_MSG, 0) < 0) {
             cerr << "Erro ao receber mensagem do socket." << endl;
             exit(-1);
         }
-        printf("tentativas: %d\n", tentativas);
-        usleep(100);
-    }
 
-    if(tentativas < TIMEOUT) {
         msg = cstr_to_msg(m, msg);
         imprime_mensagem(*msg);
+
+        free(m);
         return true;
     }
+
     free(m);
     return false;
 }
@@ -78,30 +82,21 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
     resposta->tipo = NACK;
 
     // Tenta enviar mensagem
-    int tentativas;
-    for(tentativas = 0; resposta->tipo == NACK && tentativas <= TIMEOUT; ++tentativas) {
+    int tentativas=0;
+    while(resposta->tipo != ACK) {
         if(send(socket, m, TAM_MSG, 0) < 0) {
             cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
             exit(-1);
         }
 
-        cout << "Tentou enviar cd " << tentativas << " vezes" << endl;
+        cout << "Tentou enviar cd " << tentativas++ << " vezes" << endl;
 
         recebe_mensagem(socket, resposta);
     }
 
-    if(resposta->tipo == ACK)
-        cout << "recebeu ACK" << endl;
-
     free(m);
     free(r);
     free(resposta);
-
-    // Timeout
-    if(tentativas > TIMEOUT) {
-        cout << "[envia_mensagem] Erro ao enviar mensagem: TIMEOUT." << endl;
-        return false;
-    }
     
     // ACK
     return true;

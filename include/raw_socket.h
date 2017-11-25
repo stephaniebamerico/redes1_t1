@@ -14,6 +14,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <mensagem.h>
+#include <poll.h>
 
 #define TIMEOUT 20
 
