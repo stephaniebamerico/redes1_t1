@@ -20,7 +20,7 @@
 
 using namespace std;
 
-struct pollfd ufds; // usado para timeout em recv
+void inicia_socket(int socket);
 
 int openRawSocket(char *device);
 

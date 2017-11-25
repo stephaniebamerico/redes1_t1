@@ -11,8 +11,7 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
-    ufds.fd = socket;
-    ufds.events = POLLIN;
+    inicia_socket(socket);
 
     /* Socket aberto com sucesso, iniciar cliente: */
 

@@ -1,6 +1,13 @@
 #include "raw_socket.h"
 #include "mensagem.h"
 
+struct pollfd ufds; // usado para timeout em recv
+
+void inicia_socket(int socket) {
+    ufds.fd = socket;
+    ufds.events = POLLIN;
+}
+
 int openRawSocket(char *device) {
   int soquete;
   struct ifreq ir;
