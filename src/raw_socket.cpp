@@ -43,22 +43,26 @@ int openRawSocket(char *device) {
   return soquete;
 }
 
-void recebe_mensagem(int socket, mensagem_t *msg) {
+bool recebe_mensagem(int socket, mensagem_t *msg) {
     char *m = (char *) malloc (sizeof(char) * TAM_MSG);
     m[0] = 0;
-    for(int tentativas = 0; tentativas < 20 && m[0] != 0x007E; ++tentativas) {
+    int tentativas;
+    for(tentativas = 0; tentativas < TIMEOUT && m[0] != 0x007E; ++tentativas) {
         if(recv(socket, m, TAM_MSG, 0) < 0) {
             cerr << "Erro ao receber mensagem do socket." << endl;
             exit(-1);
         }
         printf("tentativas: %d\n", tentativas);
-        usleep(10);
+        usleep(100);
     }
-    
-    msg = cstr_to_msg(m, msg);
-    imprime_mensagem(*msg);
 
+    if(tentativas < TIMEOUT) {
+        msg = cstr_to_msg(m, msg);
+        imprime_mensagem(*msg);
+        return true;
+    }
     free(m);
+    return false;
 }
 
 bool envia_mensagem(int socket, mensagem_t *msg) {
@@ -95,7 +99,7 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
 
     // Timeout
     if(tentativas > TIMEOUT) {
-        cerr << "[envia_mensagem] Erro ao enviar mensagem: TIMEOUT." << endl;
+        cout << "[envia_mensagem] Erro ao enviar mensagem: TIMEOUT." << endl;
         return false;
     }
     

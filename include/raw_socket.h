@@ -21,7 +21,7 @@ using namespace std;
 
 int openRawSocket(char *device);
 
-void recebe_mensagem(int socket, mensagem_t *msg);
+bool recebe_mensagem(int socket, mensagem_t *msg);
 
 bool envia_mensagem(int socket, mensagem_t *msg);
 
