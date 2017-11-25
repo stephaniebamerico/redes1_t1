@@ -44,11 +44,6 @@ int openRawSocket(char *device) {
 }
 
 bool recebe_mensagem(int socket, mensagem_t *msg) {
-    struct pollfd ufds; // usado para timeout em recv
-    ufds.fd = socket;
-    ufds.events = POLLIN;
-
-
     char *m = (char *) malloc (sizeof(char) * TAM_MSG);
     m[0] = 0;
 

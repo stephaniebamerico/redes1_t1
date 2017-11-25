@@ -10,6 +10,9 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
+    ufds.fd = socket;
+    ufds.events = POLLIN;
+
     cout << "Aguardando mensagens." << endl;
     mensagem_t *msg_recebida = (mensagem_t *) malloc(sizeof(mensagem_t));
     while (1) {

@@ -20,6 +20,8 @@
 
 using namespace std;
 
+struct pollfd ufds; // usado para timeout em recv
+
 int openRawSocket(char *device);
 
 bool recebe_mensagem(int socket, mensagem_t *msg);
