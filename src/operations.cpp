@@ -10,6 +10,7 @@
 #include <grp.h>
 #include <iostream>
 #include <string>
+#include <time.h>
 
 #include "mensagem.h"
 
@@ -26,20 +27,14 @@
 #define F NACK
 
 
-void operations (mensagem_t msg){
-    if (msg.tipo == CD)
-        changeDir(mensagem.dados);
-    else if (msg.tipo == LS)
-        list(mensagem.dados);
-
-    
-}
 
 int changeDir (char *dir)
 {
+    //muda para o diretório dir
     int err = chdir (dir);
     if (err)
     {
+        //retorna o código de erro (se houver)
         switch (errno) {
             case EACCES:
                 return 2;
@@ -55,12 +50,13 @@ int changeDir (char *dir)
                 return 3;
         }
     }
-        return 0;
+    //retorna 0 se deu certo
+    return 0;
 }
 
 int* testOptions (char *options)
 {
-     //opt 1: -l, op2: la
+    //opt 1: -l, op2: -a
     int* opt = (int*) malloc (sizeof(int)*2);
     opt[0]=0;
     opt[1]=0;
@@ -68,25 +64,33 @@ int* testOptions (char *options)
     char *token;
     /* get the first token */
     token = strtok(str, s);
+    //código de erro é 0
+    errno = 0;
 
     /* walk through other tokens */
     while( token != NULL ) {
+        //se é opção -l, opt[0] é 1
         if (strcmp (token, "-l") == 0)
             opt[0]=1;
+        //se é opção -a, opt[0] é 1
         else if (strcmp (token, "-a") == 0)
             opt[1]=1;
         else { 
+            //argumento inválido, altera variável errno e renorta com ponteiro nulo
             errno = EINVAL;
             return NULL;
         }
 
-
+        //corta próxima parte da string 
         token = strtok(NULL, s);
     }
+    //retorna opt (com 0,0 se não tem argumentos ou 1 na posição do argumento que tiver)
+    return opt;
 }
 
 string list(int a, int l)
 {
+    //código de erro é 0
     errno = 0;
     string list ;
     if (l)
@@ -102,10 +106,14 @@ string list(int a, int l)
             stat(".",&fileStat); 
             while((myfile=readdir(dir))!=NULL)
             {
+                //se tem opção -a, imprime tudo. se não, só imprime os que não tem "." antes do nome
                 if (a || (myfile->d_name[0] != '.')) {
+                    //pega informações sobe o arquivo
                     stat(myfile->d_name,&fileStat);  
-                    list = list + ( (S_ISDIR(fileStat.st_mode)) ? "d" : "-");
-                    list = list + ( (fileStat.st_mode & S_IRUSR) ? "r" : "-");
+                    //confere de é diretório
+                    list = list +( (S_ISDIR(fileStat.st_mode)) ? "d" : "-");
+                    //confere rwx usuário, grupo e outros
+                    list = list +( (fileStat.st_mode & S_IRUSR) ? "r" : "-");
                     list = list +( (fileStat.st_mode & S_IWUSR) ? "w" : "-");
                     list = list +( (fileStat.st_mode & S_IXUSR) ? "x" : "-");
                     list = list +( (fileStat.st_mode & S_IRGRP) ? "r" : "-");
@@ -115,20 +123,21 @@ string list(int a, int l)
                     list = list +( (fileStat.st_mode & S_IWOTH) ? "w" : "-");
                     list = list +( (fileStat.st_mode & S_IXOTH) ? "x" : "-"); 
                     list = list +(" ");
-
+                    //quantidade de links para o arquivo/ diretório
                     list = list + to_string( fileStat.st_nlink);
                     list = list + " ";
 
                     pw=getpwuid(fileStat.st_uid);
                     list = list +(pw->pw_name);
                     list = list + " ";
+
                     gp=getgrgid(fileStat.st_gid);
                     list = list +(gp->gr_name);
                     list = list + " ";
-
+                    //tamanho do arquivo
                     list = list + to_string(fileStat.st_size);
                     list = list + " ";
-
+                    //data da criação do arquivo
                     c=ctime(&fileStat.st_mtime);
                     for(i=4;i<=15;i++)
                     list = list + (c[i]);
@@ -149,8 +158,10 @@ string list(int a, int l)
         if ((dir = opendir (".")) != NULL) {
         /* print all the files and directories within directory */
             while ((ent = readdir (dir)) != NULL) {
+                //se tem opção -a, imprime tudo. se não, só imprime os que não tem "." antes do nome
                 if (a || ent->d_name[0] != '.')
                 {
+                    //nome do arquivo
                     list = list + (ent->d_name);
                     list = list + " ";
                 }
