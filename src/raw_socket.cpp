@@ -46,14 +46,16 @@ int openRawSocket(char *device) {
 void recebe_mensagem(int socket, mensagem_t *msg) {
     char *m = (char *) malloc (sizeof(char) * TAM_MSG);
     m[0] = 0;
-    while(m[0] != 0x007E) {
+    for(int tentativas = 0; tentativas < 5 && m[0] != 0x007E; ++tentativas) {
         if(recv(socket, m, TAM_MSG, 0) < 0) {
             cerr << "Erro ao receber mensagem do socket." << endl;
             exit(-1);
         }
+        usleep(10);
     }
     free(m);
-    cout << "recebeu msg" << endl;
+    
+    cout << "saindo msg" << endl;
     
     msg = cstr_to_msg(m, msg);
     imprime_mensagem(*msg);
@@ -82,7 +84,6 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
         cout << "Tentou enviar cd " << tentativas << " vezes" << endl;
 
         recebe_mensagem(socket, resposta);
-        usleep(50);
     }
 
     if(resposta->tipo == ACK)
