@@ -53,6 +53,7 @@ void recebe_mensagem(int socket, mensagem_t *msg) {
         }
     }
     free(m);
+    cout << "recebeu msg" << endl;
     
     msg = cstr_to_msg(m, msg);
     imprime_mensagem(*msg);
@@ -67,7 +68,6 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
         return false;
     }
 
-    m = msg_to_cstr(msg, m);
     resposta->tipo = NACK;
 
     // Tenta enviar mensagem
@@ -82,6 +82,9 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
         usleep(50);
     }
 
+    if(resposta->tipo == ACK)
+        cout << "recebeu ACK" << endl;
+
     free(m);
     free(r);
     free(resposta);
@@ -91,7 +94,7 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
         cerr << "[envia_mensagem] Erro ao enviar mensagem: TIMEOUT." << endl;
         return false;
     }
-
+    
     // ACK
     return true;
 }

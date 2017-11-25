@@ -106,10 +106,13 @@ bool cd_remoto(int socket, string args) {
         recebe_mensagem(socket, msg);
         envia_confirmacao(socket, ACK);
         
-        if(msg->tipo == OK)
+        if(msg->tipo == OK) {
+            cout << "Recebi OK" << endl;
             return true;
-        else if(msg->tipo == ERRO)
+        }
+        else if(msg->tipo == ERRO) {
             cout << "Erro ao executar comando cd " << args << endl;
+        }
     }
 
     // Erro no envio da mensagem ou ERRO como resposta

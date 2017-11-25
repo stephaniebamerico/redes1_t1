@@ -20,8 +20,9 @@ int main(int argc, char const *argv[]) {
         }
         
         if(msg[0] == 0x007E) {
-            mensagem_t *msg_recebida = cstr_to_msg(msg, msg_recebida);
-            
+            mensagem_t *msg_recebida = (mensagem_t *) malloc(sizeof(mensagem_t));
+            msg_recebida = cstr_to_msg(msg, msg_recebida);
+
             cout << endl << "Mensagem recebida: " << endl;
             imprime_mensagem(*msg_recebida);
             
