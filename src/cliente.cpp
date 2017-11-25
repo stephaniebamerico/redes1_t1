@@ -37,8 +37,11 @@ int main() {
             cout << "Operacao cd com argumentos: " << args << endl;
         }
         else if(comando == "cdr") {
-            if(args.size() > 0 && args.size() < 248)
+            cout << "comecando crd" << endl;
+            if(args.size() > 0 && args.size() < 248) {
+                cout << "entrou no if dos tamanhos" << endl;
                 cd_remoto(socket, args);
+            }
         }
         else if(comando == "ls") {
             cout << "Operacao ls com argumentos: " << args << endl;

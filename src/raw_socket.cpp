@@ -47,7 +47,7 @@ void recebe_mensagem(int socket, mensagem_t *msg) {
     char *m = (char *) malloc (sizeof(char) * TAM_MSG);
     m[0] = 0;
     while(m[0] != 0x007E) {
-        if(recv(socket, msg, TAM_MSG, 0) < 0) {
+        if(recv(socket, m, TAM_MSG, 0) < 0) {
             cerr << "Erro ao receber mensagem do socket." << endl;
             exit(-1);
         }
@@ -68,6 +68,7 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
         return false;
     }
 
+    m = msg_to_cstr(msg, m);
     resposta->tipo = NACK;
 
     // Tenta enviar mensagem
