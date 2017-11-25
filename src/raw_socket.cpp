@@ -62,6 +62,7 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
 
         if(m[0] == 0x007E) {
             msg = cstr_to_msg(m, msg);
+            cout << "[recebe_mensagem] recebeu: " << endl;
             imprime_mensagem(*msg);
 
             free(m);

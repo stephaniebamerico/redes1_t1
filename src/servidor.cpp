@@ -19,8 +19,6 @@ int main(int argc, char const *argv[]) {
         
         if(recebe_mensagem(socket, msg_recebida)) {
             msg_recebida = cstr_to_msg(msg, msg_recebida);
-            cout << endl << "Mensagem recebida: " << endl;
-            imprime_mensagem(*msg_recebida);
                 
             envia_confirmacao(socket, ACK);
 
