@@ -21,7 +21,8 @@ int main(int argc, char const *argv[]) {
         
         cout << endl << "Mensagem recebida: " << endl;
         mensagem_t *msg_recebida = cstr_to_msg(msg);
-        imprimeMensagem(*msg_recebida);
+        if(msg_recebida->inicio == 0x007E)
+            imprimeMensagem(*msg_recebida);
     }
 
     return 0;
