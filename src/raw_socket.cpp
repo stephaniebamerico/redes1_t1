@@ -78,6 +78,8 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
             exit(-1);
         }
 
+        cout << "Tentou enviar cd " << tentativas << " vezes" << endl;
+
         recebe_mensagem(socket, resposta);
         usleep(50);
     }
@@ -108,6 +110,8 @@ void envia_confirmacao(int socket, int tipo) {
         cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
         exit(-1);
     }
+
+    cout << "Enviou ACK" << endl;
 
     free(m);
     free(msg);

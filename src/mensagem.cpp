@@ -95,6 +95,8 @@ void imprime_mensagem(mensagem_t msg) {
 bool cd_remoto(int socket, string args) {
     // Cria mensagem
     mensagem_t *msg = monta_mensagem(6, 0, args);
+    cout << "Mensagem montada: " << endl;
+    imprime_mensagem(*msg);
 
     // Envia ao servidor
     if(envia_mensagem(socket, msg)) {

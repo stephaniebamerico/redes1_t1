@@ -27,8 +27,15 @@ int main(int argc, char const *argv[]) {
             imprime_mensagem(*msg_recebida);
             
             envia_confirmacao(socket, ACK);
+
+            cout << "Enviou ACK" << endl;
             mensagem_t *msg = monta_mensagem(OK, 0, "");
+            
+            cout << endl << "Mensagem montada: " << endl;
+            imprime_mensagem(*msg);
             envia_mensagem(socket, msg);
+
+            cout << "Enviou mensagem montada" << endl;
         }
     }
 
