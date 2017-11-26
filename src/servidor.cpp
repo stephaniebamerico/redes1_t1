@@ -61,13 +61,24 @@ int main(int argc, char const *argv[]) {
                 
                 mensagem_t *msg_resposta;
                 if (errno == 0)
-                    msg_resposta = monta_mensagem(OK, 0, "");
-                else
                 {
-                    if (errno == EACCES)
+                    string lsSaida = list(lsArgs[1],lsArgs[0]);
+                    if (errno == 0)
+                    {
+                        char * ls;
+                        aloca_str (&ls, lsSaida.size());
+                        strcpy(ls, lsSaida.c_str());
+                        msg_resposta = monta_mensagem(OK, 0, ls);
+                    }
+                    else if (errno == EACCES)
                         msg_resposta = monta_mensagem(ERRO, 0, "2");
                     else 
                         msg_resposta = monta_mensagem(ERRO, 0, "1");
+                    
+                }
+                else
+                {
+                    
                 }
                  envia_mensagem(socket, msg_resposta);
 
