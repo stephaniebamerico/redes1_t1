@@ -27,9 +27,9 @@ void aloca_str(char **str, int tam) {
 
 void cstr_tam_seq_tipo_dados(mensagem_t msg, char *cstr, int pos_inicial) {
     cstr[pos_inicial] = msg.tamanho; //000TTTTT
-    printf("cstr[1]: %d msg->tamanho: %d\n", cstr[pos_inicial], msg.tamanho);
-    cstr[pos_inicial] = (cstr[pos_inicial] << 3) | (msg.sequencia >> 3); //TTTTTSSS
-    printf("cstr[1]: %d msg->sequencia: %d\n", cstr[pos_inicial], msg.sequencia);
+    //printf("cstr[1]: %d msg->tamanho: %d\n", cstr[pos_inicial], msg.tamanho);
+    cstr[pos_inicial] = (cstr[pos_inicial] << 3) | ((msg.sequencia >> 3) & 0x0007); //TTTTTSSS
+    //printf("cstr[1]: %d msg->sequencia: %d\n", cstr[pos_inicial], msg.sequencia);
     cstr[pos_inicial+1] = (msg.sequencia << 3); //00SSS000
     cstr[pos_inicial+1] = (cstr[pos_inicial+1] << 2) | msg.tipo; //SSSTTTTT
     
@@ -52,12 +52,12 @@ char* msg_to_cstr(mensagem_t *msg, char* cstr) {
 
 mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg) { 
     msg->inicio = cstr[0];
-    msg->tamanho = (cstr[1] >> 3); //000TTTTT
-    printf("cstr[1]: %d msg->tam: %d\n", cstr[1], msg->tamanho);
-    msg->sequencia = ((cstr[1] << 3) & 0x0038) | (cstr[2] >> 5); //00SSSSSS
-    printf("cstr[2]: %d msg->tam: %d\n", cstr[2], msg->sequencia);
+    msg->tamanho = (cstr[1] & 0x001F); //000TTTTT
+    msg->sequencia = ((cstr[1] << 3) & 0x0038) | ((cstr[2] >> 5) & 0x0007); //00SSSSSS
     msg->tipo = (cstr[2] & 0x001F); //000TTTTT
     msg->paridade = cstr[3+(msg->tamanho)];
+
+    //printf("cstr[1] %u cstr[2] %u tam %u seq %u tipo %u\n", cstr[1], cstr[2], msg->tamanho, msg->sequencia, msg->tipo);
     
     if(msg->tamanho > 0) {
         aloca_str(&(msg->dados), msg->tamanho);
