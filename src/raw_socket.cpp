@@ -90,7 +90,7 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
 
     // Tenta enviar mensagem
     int tentativas=0;
-    while(resposta->tipo != ACK && tentativas < 2) {
+    while(resposta->tipo != ACK) {
         if(send(socket, m, TAM_MSG, 0) < 0) {
             cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
             exit(-1);
