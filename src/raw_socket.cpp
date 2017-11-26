@@ -247,9 +247,12 @@ void envia_confirmacao(int socket, int seq, int tipo) {
     aloca_str(&m, msg->tamanho+4);
     m = msg_to_cstr(msg, m);
 
+    if(m)
+        printf("m: %s\n", m);
     imprime_mensagem(*msg);
-    
-    if(send(socket, m, TAM_MSG, 0) < 0) {
+    int t = send(socket, m, TAM_MSG, 0);
+    printf("t: %d s:%d\n", t, socket);
+    if(t < 0) {
         cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
         exit(-1);
     }
