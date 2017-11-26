@@ -37,28 +37,18 @@ int main(int argc, char const *argv[]) {
         args = (comando_pfim+1 < (int) operacao.size()) ? operacao.substr(comando_pfim+1, operacao.size()) : "";
         
         /* Executa a operacao, se listada */
-
 /*==================================================================================================*/
         if(comando == "cd") {
             cout << "Operacao cd com argumentos: " << args << endl;
             char* cdArgs = (char*) malloc(args.size());
             strcpy(cdArgs, args.c_str());
             changeDir(cdArgs);
-            printf("aa: %d %d %d %d\n", errno, EACCES, ENOENT, ENOTDIR);
             if(errno == 0) 
                 system ("pwd");
             else
-                //trata_erros(CD_LOCAL, errno);
-                if(errno == EACCES)
-                    cout << "Permissão negada" << endl;
-                else if(errno == ENOENT)
-                    cout << "Arquivo ou diretório não encontrado"<< endl;
-                else if(errno == ENOTDIR)
-                    cout << "Arquivo não é um diretório"<< endl;
-            
+                trata_erros(CD_LOCAL, (char) errno);
         }
 /*==================================================================================================*/
-
         else if(comando == "cdr") {
             cout << "comecando crd" << endl;
             if(args.size() > 0 && args.size() < 248) {
@@ -66,7 +56,6 @@ int main(int argc, char const *argv[]) {
             }
         }
 /*==================================================================================================*/
-
         else if(comando == "ls") {
             cout << "Operacao ls com argumentos: " << args << endl;
             char* lsArguments = (char*) malloc(args.size());
@@ -81,7 +70,6 @@ int main(int argc, char const *argv[]) {
 
         }
 /*==================================================================================================*/
-
         else if(comando == "lsr") {
             cout << "Operacao lsr com argumentos: " << args << endl;
         }

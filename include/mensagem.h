@@ -49,7 +49,7 @@ char calcula_paridade(mensagem_t msg);
 
 void imprime_mensagem(mensagem_t msg);
 
-void trata_erros(int tipo, int parametro);
+void trata_erros(int tipo, char parametro);
 
 void cd_remoto(int socket, string args);
 

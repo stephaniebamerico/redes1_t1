@@ -107,10 +107,10 @@ void imprime_mensagem(mensagem_t msg) {
     printf("par: %d\n", (int) msg.paridade);
 }
 
-void trata_erros(int tipo, int parametro) {
+void trata_erros(int tipo, char parametro) {
     switch (tipo) {
         case CD:
-            if(parametro == (int) '1')
+            if(parametro == '1')
                 cout << "Arquivo ou diretório não encontrado" << endl;
             else
                 cout << "Permissão negada" << endl;
@@ -124,23 +124,23 @@ void trata_erros(int tipo, int parametro) {
                 cout << "Arquivo não é um diretório"<< endl;
         break;
         case LS:
-            if(parametro == (int) '1')
+            if(parametro == '1')
                 cout << "Permissão negada" << endl;
             else
                 cout << "Opção inválida" << endl;
         break;
         case GET:
-            if(parametro == (int) '1')
+            if(parametro == '1')
                 cout << "Arquivo ou diretório não encontrado" << endl;
-            else if(parametro == (int) '2')
+            else if(parametro == '2')
                 cout << "Permissão negada" << endl;
             else
                 cout << "Sem espaço em disco" << endl;
         break;
         case PUT:
-            if(parametro == (int) '1')
+            if(parametro == '1')
                 cout << "Arquivo ou diretório não encontrado" << endl;
-            else if(parametro == (int) '2')
+            else if(parametro == '2')
                 cout << "Permissão negada" << endl;
             else
                 cout << "Sem espaço em disco" << endl;
@@ -154,10 +154,6 @@ void trata_erros(int tipo, int parametro) {
 void cd_remoto(int socket, string args) {
     // Cria mensagem
     mensagem_t *msg = monta_mensagem(6, 0, args);
-    
-    //DEBUG
-    cout << "Mensagem montada: " << endl;
-    imprime_mensagem(*msg);
 
     // Envia ao servidor
     envia_mensagem(socket, msg);
@@ -176,10 +172,6 @@ void cd_remoto(int socket, string args) {
         
     if(msg_ok->tipo == ERRO)
         cout << "Erro ao executar comando: cd " << args << endl;
-
-    //DEBUG
-    if(msg_ok->tipo == OK)
-        cout << "Recebi OK" << endl;
 
     //libera_mensagem(msg_ok);
 }
