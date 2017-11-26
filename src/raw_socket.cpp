@@ -160,7 +160,7 @@ void envia_confirmacao(int socket, int seq, int tipo) {
         exit(-1);
     }
 
-    printf("ACK enviado\n");
+    printf("ACK %d enviado\n", seq);
 
     //free(m);
     //free(msg);
