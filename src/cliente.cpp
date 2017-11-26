@@ -91,13 +91,32 @@ int main(int argc, char const *argv[]) {
 /*==================================================================================================*/
         else {
             cout << "Opção inválida" << endl;
-            int qtd = 4;
+
+
+            int qtd = 6;
             mensagem_t **msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*qtd);
-            for (int i = 0; i < qtd; ++i) {
-                msg[i] = monta_mensagem(20, i, args);
-                cout << "Mensagem " << i << ":" << endl;
-                imprime_mensagem(*(msg[i]));
-            }
+            msg[5] = monta_mensagem(20, 0, "");
+            cout << "Mensagem:" << endl;
+            imprime_mensagem(*(msg[5]));
+
+
+
+            msg[0] = monta_mensagem(TAMANHO, 0, "4");
+            cout << "Mensagem 0:" << endl;
+            imprime_mensagem(*(msg[0]));
+            msg[1] = monta_mensagem(IMPRIMA, 0, "");
+            cout << "Mensagem 1:" << endl;
+            imprime_mensagem(*(msg[1]));
+            msg[2] = monta_mensagem(IMPRIMA, 1, "");
+            cout << "Mensagem 2:" << endl;
+            imprime_mensagem(*(msg[2]));
+            msg[3] = monta_mensagem(IMPRIMA, 2, "");
+            cout << "Mensagem 3:" << endl;
+            imprime_mensagem(*(msg[3]));
+            msg[4] = monta_mensagem(FIM, 3, "");
+            cout << "Mensagem 4:" << endl;
+            imprime_mensagem(*(msg[4]));
+            
             envia_mensagem(socket, msg, qtd);
         }
     }

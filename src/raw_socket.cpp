@@ -82,7 +82,8 @@ void recebe_conteudo(int socket, mensagem_t **msg) {
     int inicio = 0, seq, i;
     while(inicio < tam) {
         if(recebe_mensagem(socket, mensagem_recebida)
-            && mensagem_recebida->tipo == IMPRIMA) {
+            && (mensagem_recebida->tipo == IMPRIMA
+                || mensagem_recebida->tipo == FIM)) {
             seq = mensagem_recebida->sequencia;
             if(seq >= inicio%TAM_SEQUENCIA && seq <= (inicio+2)%TAM_SEQUENCIA) { 
                 printf("recebeu mensagem na sequencia esperada\n");
