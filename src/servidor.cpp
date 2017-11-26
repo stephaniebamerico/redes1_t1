@@ -28,6 +28,7 @@ int main(int argc, char const *argv[]) {
             envia_confirmacao(socket, ACK);
             if (msg_recebida->tipo == CD)
             {
+                errno = 0;
                 chdir (msg_recebida->dados);
                 system("pwd");
                 mensagem_t *msg_resposta;
