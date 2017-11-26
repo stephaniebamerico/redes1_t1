@@ -246,6 +246,8 @@ void envia_confirmacao(int socket, int seq, int tipo) {
     char *m = NULL;
     aloca_str(&m, msg->tamanho+4);
     m = msg_to_cstr(msg, m);
+
+    imprime_mensagem(*msg);
     
     if(send(socket, m, TAM_MSG, 0) < 0) {
         cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
