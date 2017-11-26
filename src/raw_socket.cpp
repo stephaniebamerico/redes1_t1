@@ -64,18 +64,19 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
         // Confere se chegou uma mensagem ou se é só lixo
         if(m[0] == 0x007E) {
             msg = cstr_to_msg(m, msg);
-            free(m);
+            //free(m);
             return true;
         }
     }
 
-    free(m);
+    //free(m);
     return false;
 }
 
 void envia_mensagem(int socket, mensagem_t *msg) {
     char *r = NULL, *m = NULL;
     mensagem_t *resposta = NULL;
+
     aloca_str(&r, TAM_MSG);
     aloca_str(&m, msg->tamanho+4); 
     aloca_mensagem(&resposta);
@@ -84,7 +85,7 @@ void envia_mensagem(int socket, mensagem_t *msg) {
     resposta->tipo = NACK;
 
     // Tenta enviar mensagem
-    time_t ultimo_envio = time(NULL)+TIMEOUT*10; // para sempre enviar na primeira vez
+    time_t ultimo_envio = time(NULL)+TIMEOUT; // para sempre enviar na primeira vez
     while(resposta->tipo != ACK) {
         if(time(NULL)-ultimo_envio > TIMEOUT) { // se ja deu timeout
             if(send(socket, m, TAM_MSG, 0) < 0) {
@@ -101,9 +102,9 @@ void envia_mensagem(int socket, mensagem_t *msg) {
     cout << endl << "Mensagem enviada: " << endl;
     imprime_mensagem(*resposta);
 
-    free(m);
-    free(r);
-    free(resposta);
+    //free(m);
+    //free(r);
+    //free(resposta);
 }
 
 void envia_confirmacao(int socket, int tipo) {
@@ -117,6 +118,6 @@ void envia_confirmacao(int socket, int tipo) {
         exit(-1);
     }
 
-    free(m);
-    free(msg);
+    //free(m);
+    //free(msg);
 }
