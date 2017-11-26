@@ -98,7 +98,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 }
                 enviada[i] = 1;
                 ultimo_envio = time(NULL);
-                printf("inicio: %d i: %d\n", inicio, i);
+                printf("inicio: %d i: %d seq: %d\n", inicio, i, msg[(inicio+i)%TAM_SEQUENCIA]->sequencia);
             }
         }
 
