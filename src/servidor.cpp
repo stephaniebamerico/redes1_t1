@@ -20,11 +20,6 @@ int main(int argc, char const *argv[]) {
             //DEBUG
             cout << endl << "Mensagem recebida: " << endl;
             imprime_mensagem(*msg_recebida);
-
-            if((msg_recebida->sequencia+1)%3 == 0) {
-                printf("****************mandando ACK de %d \n", msg_recebida->sequencia);
-                envia_confirmacao(socket, msg_recebida->sequencia, ACK);
-            }
 /*==================================================================================================*/
             if (msg_recebida->tipo == CD) {
                 errno = 0;
@@ -87,6 +82,10 @@ int main(int argc, char const *argv[]) {
                 aloca_mensagem(&msg_recebida);
             }
             else {
+                if(msg_recebida->tipo == 20) {
+                    mensagem_t *conteudo;
+                    recebe_conteudo(socket, &conteudo);
+                }
                 /*mensagem_t *msg_ok = monta_mensagem(OK, 0, "");
                 
                 envia_mensagem(socket, &msg_ok, 1);

@@ -11,9 +11,27 @@ void aloca_mensagem(mensagem_t **msg) {
 }
 
 void libera_mensagem(mensagem_t *msg) {
-    if(msg->dados) 
-        free(msg->dados);
-    free(msg);
+    if(msg) {
+        if(msg->dados) 
+            free(msg->dados);
+        free(msg);
+    }
+}
+
+void copia_mensagem(mensagem_t *m1, mensagem_t **m2) {
+    if(!m1) {
+        cerr << "[copia_mensagem] Parâmetro nulo." << endl;
+        exit(-1);
+    }
+    aloca_mensagem(m2);
+
+    (*m2)->inicio = m1->inicio;
+    (*m2)->tamanho = m1->tamanho;
+    (*m2)->sequencia = m1->sequencia;
+    (*m2)->tipo = m1->tipo;
+    (*m2)->dados = m1->dados;
+    (*m2)->paridade = m1->paridade;
+    m1->dados = NULL;
 }
 
 void aloca_str(char **str, int tam) {

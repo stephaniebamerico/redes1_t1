@@ -37,6 +37,8 @@ void aloca_mensagem(mensagem_t **msg);
 
 void libera_mensagem(mensagem_t *msg);
 
+void copia_mensagem(mensagem_t *m1, mensagem_t **m2);
+
 void aloca_str(char **str, int tam);
 
 void cstr_tam_seq_tipo_dados(mensagem_t msg, char *cstr, int pos_inicial);
