@@ -17,26 +17,20 @@ int main(int argc, char const *argv[]) {
     aloca_mensagem(&msg_recebida);
     while (1) {        
         if(recebe_mensagem(socket, msg_recebida)) {
-
             //DEBUG
             cout << endl << "Mensagem recebida: " << endl;
             imprime_mensagem(*msg_recebida);
 
-
-
-
             envia_confirmacao(socket, ACK);
 /*==================================================================================================*/
-            if (msg_recebida->tipo == CD)
-            {
+            if (msg_recebida->tipo == CD) {
                 errno = 0;
                 chdir (msg_recebida->dados);
                 system("pwd");
                 mensagem_t *msg_resposta;
                 if (errno == 0)
                     msg_resposta = monta_mensagem(OK, 0, "");
-                else
-                {
+                else {
                     if (errno == EACCES)
                         msg_resposta = monta_mensagem(ERRO, 0, "2");
                     else 
@@ -53,8 +47,7 @@ int main(int argc, char const *argv[]) {
                 aloca_mensagem(&msg_recebida);
             }
 /*==================================================================================================*/
-            if (msg_recebida->tipo == LS)
-            {
+            else if (msg_recebida->tipo == LS) {
                 errno = 0;
 
                 lsArgs = testOptions(msg_recebida->dados);
@@ -90,11 +83,7 @@ int main(int argc, char const *argv[]) {
                 //libera_mensagem(msg_recebida);
                 aloca_mensagem(&msg_recebida);
             }
-
-
-
-            else
-            {
+            else {
                 mensagem_t *msg_ok = monta_mensagem(OK, 0, "");
                 
                 envia_mensagem(socket, msg_ok);
