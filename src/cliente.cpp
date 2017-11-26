@@ -37,6 +37,8 @@ int main(int argc, char const *argv[]) {
         args = (comando_pfim+1 < (int) operacao.size()) ? operacao.substr(comando_pfim+1, operacao.size()) : "";
         
         /* Executa a operacao, se listada */
+
+/*==================================================================================================*/
         if(comando == "cd") {
             cout << "Operacao cd com argumentos: " << args << endl;
             changeDir(args);
@@ -64,8 +66,7 @@ int main(int argc, char const *argv[]) {
             }
             
         }
-
-
+/*==================================================================================================*/
 
         else if(comando == "cdr") {
             cout << "comecando crd" << endl;
@@ -73,8 +74,7 @@ int main(int argc, char const *argv[]) {
                 cd_remoto(socket, args);
             }
         }
-
-
+/*==================================================================================================*/
 
         else if(comando == "ls") {
             cout << "Operacao ls com argumentos: " << args << endl;
@@ -87,18 +87,20 @@ int main(int argc, char const *argv[]) {
                 cout << "Erro de acesso!" << endl;
 
         }
-
-
+/*==================================================================================================*/
 
         else if(comando == "lsr") {
             cout << "Operacao lsr com argumentos: " << args << endl;
         }
+/*==================================================================================================*/
         else if(comando == "get") {
             cout << "Operacao get com argumentos: " << args << endl;
         }
+/*==================================================================================================*/
         else if(comando == "put") {
             cout << "Operacao put com argumentos: " << args << endl;
         }
+/*==================================================================================================*/
         else {
             cout << "Operacao invalida" << endl;
         }
