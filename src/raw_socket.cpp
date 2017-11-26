@@ -114,16 +114,18 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
             if(n == inicio%TAM_SEQUENCIA) { 
                 // janela desliza 1
                 enviada[0] = enviada[1]; enviada[1] = enviada[2]; enviada[2] = 0;
+                inicio = n+1;
             }
             else if(n == (inicio+1)%TAM_SEQUENCIA) { 
                 // janela desliza 2
                 enviada[0] = enviada[2]; enviada[1] = 0; enviada[2] = 0;
+                inicio = n+1;
             }
             else if(n == (inicio+2)%TAM_SEQUENCIA) { 
                 // janela desliza 3
                 enviada[0] = 0; enviada[1] = 0; enviada[2] = 0;
+                inicio = n+1;
             }
-            inicio = n+1;
             printf("ACK %d\n", n);
         }
         else if(resposta->tipo == NACK) {
@@ -131,16 +133,18 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
             if(n == inicio%TAM_SEQUENCIA) { 
                 // reenvia janela[0]
                 enviada[0] = 0;
+                inicio = n;
             }
             else if(n == (inicio+1)%TAM_SEQUENCIA) { 
                 // reenviae janela[1] e janela desliza 1
                 enviada[0] = enviada[1]; enviada[1] = enviada[2]; enviada[2] = 0;
+                inicio = n;
             }
             else if(n == (inicio+2)%TAM_SEQUENCIA) {
                 // reenviae janela[2] e janela desliza 2
                 enviada[0] = enviada[2]; enviada[1] = 0; enviada[2] = 0;
+                inicio = n;
             }
-            inicio = n;
             printf("NACK %d\n", n);
         }
     }
