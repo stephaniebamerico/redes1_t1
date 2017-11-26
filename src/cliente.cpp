@@ -39,34 +39,42 @@ int main(int argc, char const *argv[]) {
         /* Executa a operacao, se listada */
 /*==================================================================================================*/
         if(comando == "cd") {
-            cout << "Operacao cd com argumentos: " << args << endl;
-            char* cdArgs = (char*) malloc(args.size());
-            strcpy(cdArgs, args.c_str());
-            changeDir(cdArgs);
-            if(errno == 0) 
-                system ("pwd");
+            if(args.size() > 0 && args.size() < 31) {
+                char* cdArgs = NULL;
+                aloca_str(&cdArgs, args.size());
+                strcpy(cdArgs, args.c_str());
+
+                changeDir(cdArgs);
+                if(errno == 0) 
+                    system ("pwd");
+                else
+                    trata_erros(CD_LOCAL, (char) errno);
+            }
             else
-                trata_erros(CD_LOCAL, (char) errno);
+                cout << "Endereço com tamanho inválido" << endl;
         }
 /*==================================================================================================*/
         else if(comando == "cdr") {
             if(args.size() > 0 && args.size() < 31) {
                 cd_remoto(socket, args);
             }
+            else
+                cout << "Endereço com tamanho inválido" << endl;
         }
 /*==================================================================================================*/
         else if(comando == "ls") {
-            cout << "Operacao ls com argumentos: " << args << endl;
-            char* lsArguments = (char*) malloc(args.size());
+            char* lsArguments = NULL;
+            aloca_str(&lsArguments, args.size());
             strcpy(lsArguments, args.c_str());
+            
             lsArgs = testOptions(lsArguments);
-            if (errno == 0)
+            if (errno == 0) {
                 cout << list(lsArgs[1], lsArgs[0]);
+                if (errno)
+                    cout << "Permissão negada" << endl;
+            }
             else 
-                cout << "Argumentos inválidos! " << endl;
-            if (errno)
-                cout << "Erro de acesso!" << endl;
-
+                cout << "Opção inválida" << endl;
         }
 /*==================================================================================================*/
         else if(comando == "lsr") {
@@ -82,7 +90,7 @@ int main(int argc, char const *argv[]) {
         }
 /*==================================================================================================*/
         else {
-            cout << "Operacao invalida" << endl;
+            cout << "Opção inválida" << endl;
         }
     }
 

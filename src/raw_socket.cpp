@@ -85,9 +85,9 @@ void envia_mensagem(int socket, mensagem_t *msg) {
     resposta->tipo = NACK;
 
     // Tenta enviar mensagem
-    time_t ultimo_envio = time(NULL)+TIMEOUT; // para sempre enviar na primeira vez
+    time_t ultimo_envio = time(NULL); // para sempre enviar na primeira vez
     while(resposta->tipo != ACK) {
-        if(time(NULL)-ultimo_envio > TIMEOUT) { // se ja deu timeout
+        if(time(NULL)-ultimo_envio > TIMEOUT || resposta->tipo == NACK) { // se ja deu timeout
             if(send(socket, m, TAM_MSG, 0) < 0) {
                 cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
                 exit(-1);
