@@ -27,7 +27,7 @@ int openRawSocket(char *device);
 
 bool recebe_mensagem(int socket, mensagem_t *msg);
 
-bool envia_mensagem(int socket, mensagem_t *msg);
+void envia_mensagem(int socket, mensagem_t *msg);
 
 void envia_confirmacao(int socket, int tipo);
 

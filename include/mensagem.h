@@ -22,12 +22,18 @@ using namespace std;
 
 typedef struct {
     char inicio;
-    int tamanho : 5;
-    int sequencia : 6;
-    int tipo : 5;
+    unsigned int tamanho : 5;
+    unsigned int sequencia : 6;
+    unsigned int tipo : 5;
     char *dados;
     char paridade;
 } mensagem_t;
+
+void aloca_mensagem(mensagem_t *msg);
+
+void libera_mensagem(mensagem_t *msg);
+
+void aloca_str(char *str, int tam);
 
 void cstr_tam_seq_tipo_dados(mensagem_t msg, char *cstr, int pos_inicial);
 
@@ -41,6 +47,6 @@ char calcula_paridade(mensagem_t msg);
 
 void imprime_mensagem(mensagem_t msg);
 
-bool cd_remoto(int socket, string args);
+void cd_remoto(int socket, string args);
 
 #endif

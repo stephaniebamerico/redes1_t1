@@ -51,80 +51,71 @@ int openRawSocket(char *device) {
 }
 
 bool recebe_mensagem(int socket, mensagem_t *msg) {
-    char *m = (char *) malloc (sizeof(char) * TAM_MSG);
+    char *m = NULL;
+    aloca_str(m, TAM_MSG);
     m[0] = 0;
 
+    // Confere se tem algo no socket para ser lido
     if(poll(&ufds, 1, WAIT) > 0) {
         if(recv(socket, m, TAM_MSG, 0) < 0) {
             cerr << "Erro ao receber mensagem do socket." << endl;
             exit(-1);
         }
-
+        // Confere se chegou uma mensagem ou se é só lixo
         if(m[0] == 0x007E) {
             msg = cstr_to_msg(m, msg);
-            cout << "[recebe_mensagem] Recebeu uma mensagem valida. " << endl;
-            //imprime_mensagem(*msg);
-
             free(m);
             return true;
         }
     }
-    
+
     free(m);
     return false;
 }
 
-bool envia_mensagem(int socket, mensagem_t *msg) {
-    char *r = (char *) malloc (sizeof(char) * TAM_MSG);
-    char *m = (char *) malloc (sizeof(char) * (msg->tamanho + 4)); 
-    mensagem_t *resposta = (mensagem_t *) malloc(sizeof(mensagem_t));
-    if(!m || !r || !resposta) {
-        cerr << "[envia_mensagem] Erro ao alocar variavel." << endl;
-        return false;
-    }
+void envia_mensagem(int socket, mensagem_t *msg) {
+    char *r = NULL, *m = NULL;
+    mensagem_t *resposta = NULL;
+    aloca_str(r, TAM_MSG);
+    aloca_str(m, msg->tamanho+4); 
+    aloca_mensagem(resposta);
 
     m = msg_to_cstr(msg, m);
     resposta->tipo = NACK;
 
     // Tenta enviar mensagem
-    int tentativas=0;
-    time_t ultimo_envio = time(NULL);
+    time_t ultimo_envio = time(NULL)+TIMEOUT*10; // para sempre enviar na primeira vez
     while(resposta->tipo != ACK) {
-        cout << "tempo: " << time(NULL)-ultimo_envio << endl; 
-        if(time(NULL)-ultimo_envio > TIMEOUT){
+        if(time(NULL)-ultimo_envio > TIMEOUT) { // se ja deu timeout
             if(send(socket, m, TAM_MSG, 0) < 0) {
                 cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
                 exit(-1);
             }
-
-            cout << "Tentou enviar cd " << ++tentativas << " vezes" << endl;
             ultimo_envio = time(NULL);
         }
 
         recebe_mensagem(socket, resposta);
     }
 
+    //DEBUG
+    cout << endl << "Mensagem enviada: " << endl;
     imprime_mensagem(*resposta);
 
     free(m);
     free(r);
     free(resposta);
-    
-    // ACK
-    return true;
 }
 
 void envia_confirmacao(int socket, int tipo) {
     mensagem_t *msg = monta_mensagem(tipo, 0, ""); 
-    char *m = (char *) malloc (sizeof(char) * (msg->tamanho + 4));
+    char *m = NULL;
+    aloca_str(m, msg->tamanho+4);
     m = msg_to_cstr(msg, m);
     
     if(send(socket, m, TAM_MSG, 0) < 0) {
         cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
         exit(-1);
     }
-
-    cout << "Enviou ACK" << endl;
 
     free(m);
     free(msg);

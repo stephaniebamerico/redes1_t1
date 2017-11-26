@@ -13,10 +13,13 @@ int main(int argc, char const *argv[]) {
     inicia_socket(socket);
 
     cout << "Aguardando mensagens." << endl;
-    mensagem_t *msg_recebida = (mensagem_t *) malloc(sizeof(mensagem_t));
+    mensagem_t *msg_recebida;
     while (1) {        
         if(recebe_mensagem(socket, msg_recebida)) {
+            aloca_mensagem(msg_recebida);
             msg_recebida = cstr_to_msg(msg, msg_recebida);
+
+            //DEBUG
             cout << endl << "Mensagem recebida: " << endl;
             imprime_mensagem(*msg_recebida);
 
@@ -26,7 +29,12 @@ int main(int argc, char const *argv[]) {
                 
             envia_mensagem(socket, msg_ok);
 
-            cout << "Enviou mensagem montada" << endl;
+            //DEBUG
+            cout << endl << "Mensagem enviada: " << endl;
+            imprime_mensagem(*msg_ok);
+            
+            libera_mensagem(msg_ok);
+            libera_mensagem(msg_recebida);
         }
     }
 
