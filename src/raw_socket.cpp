@@ -69,9 +69,7 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
             return true;
         }
     }
-    else
-        cout << endl << "TIMEOUT" << time(NULL) << endl;
-
+    
     free(m);
     return false;
 }
