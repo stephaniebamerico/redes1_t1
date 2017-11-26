@@ -78,7 +78,7 @@ void recebe_conteudo(int socket, mensagem_t **msg) {
     recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
 
     // Começa a receber todo conteúdo
-    //time_t ultimo_envio = time(NULL);
+    time_t ultimo_envio = time(NULL);
     int inicio = 0, seq, i;
     while(inicio < tam) {
         if(recebe_mensagem(socket, mensagem_recebida)
@@ -105,7 +105,7 @@ void recebe_conteudo(int socket, mensagem_t **msg) {
                     inicio += 3;
                     recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
                 }
-                //ultimo_envio = time(NULL);
+                ultimo_envio = time(NULL);
             }
             else {
                 printf("recebeu mensagem na sequencia nao esperada\n");
