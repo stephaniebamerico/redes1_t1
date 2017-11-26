@@ -11,7 +11,7 @@ int main(int argc, char const *argv[]) {
     }
 
     inicia_socket(socket);
-
+    int *lsArgs = (int*)malloc (3*sizeof(int));
     cout << "Aguardando mensagens." << endl;
     mensagem_t *msg_recebida = NULL;
     aloca_mensagem(&msg_recebida);
@@ -26,6 +26,7 @@ int main(int argc, char const *argv[]) {
 
 
             envia_confirmacao(socket, ACK);
+/*==================================================================================================*/
             if (msg_recebida->tipo == CD)
             {
                 errno = 0;
@@ -51,6 +52,35 @@ int main(int argc, char const *argv[]) {
                 //libera_mensagem(msg_recebida);
                 aloca_mensagem(&msg_recebida);
             }
+/*==================================================================================================*/
+            if (msg_recebida->tipo == LS)
+            {
+                errno = 0;
+
+                lsArgs = testOptions(msg_recebida->dados);
+                
+                mensagem_t *msg_resposta;
+                if (errno == 0)
+                    msg_resposta = monta_mensagem(OK, 0, "");
+                else
+                {
+                    if (errno == EACCES)
+                        msg_resposta = monta_mensagem(ERRO, 0, "2");
+                    else 
+                        msg_resposta = monta_mensagem(ERRO, 0, "1");
+                }
+                 envia_mensagem(socket, msg_resposta);
+
+                //DEBUG
+                cout << endl << "Mensagem enviada: " << endl;
+                imprime_mensagem(*msg_resposta);
+                
+                //libera_mensagem(msg_ok);
+                //libera_mensagem(msg_recebida);
+                aloca_mensagem(&msg_recebida);
+            }
+
+
 
             else
             {

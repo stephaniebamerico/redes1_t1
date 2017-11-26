@@ -24,9 +24,9 @@
 
 
 
-void changeDir (string dir);
+void changeDir (char * dir);
 
-int* testOptions (string options);
+int* testOptions (char * options);
 
 string list(int a, int l);
 

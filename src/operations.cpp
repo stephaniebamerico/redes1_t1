@@ -3,20 +3,27 @@
 
 using namespace std;
 
-void changeDir (string dir)
+void changeDir (char * dir)
 {
-    if (dir.size() == 0) dir = ".";
+    /*if (strlen(dir) == 0) {
+        dir = (char *) malloc (2);
+        dir[0] = ".";
+        dir[1]='\0';
+
+    }*/
+
+    
     struct stat fileStat;
-    stat(dir.c_str(),&fileStat);
+    stat(dir,&fileStat);
     errno = 0;
     
     //muda para o diretório dir
-    if ((fileStat.st_mode & S_IRGRP) ) chdir (dir.c_str());
+    if ((fileStat.st_mode & S_IRGRP) ) chdir (dir);
     else errno = EACCES;
   
 }
 
-int* testOptions (string options)
+int* testOptions (char * options)
 {
     //opt 1: -l, op2: -a
     int* opt = (int*) malloc (sizeof(int)*2);
@@ -24,11 +31,8 @@ int* testOptions (string options)
     opt[1]=0;
     char space[2] = " ";
     char *token;
-    char *str ;
-    aloca_str(&str, options.size());
-    strcpy(str,options.c_str());
     /* get the first token */
-    token = strtok(str, space);
+    token = strtok(options, space);
     //código de erro é 0
     errno = 0;
 

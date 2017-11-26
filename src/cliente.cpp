@@ -41,7 +41,9 @@ int main(int argc, char const *argv[]) {
 /*==================================================================================================*/
         if(comando == "cd") {
             cout << "Operacao cd com argumentos: " << args << endl;
-            changeDir(args);
+            char* cdArgs = (char*) malloc(args.size());
+            strcpy(cdArgs, args.c_str());
+            changeDir(cdArgs);
              switch (errno) {
                 case 0:
                     system ("pwd");
@@ -78,7 +80,9 @@ int main(int argc, char const *argv[]) {
 
         else if(comando == "ls") {
             cout << "Operacao ls com argumentos: " << args << endl;
-            lsArgs = testOptions(args);
+            char* lsArguments = (char*) malloc(args.size());
+            strcpy(lsArguments, args.c_str());
+            lsArgs = testOptions(lsArguments);
             if (errno == 0)
                 cout << list(lsArgs[1], lsArgs[0]);
             else 
