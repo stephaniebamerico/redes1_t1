@@ -119,6 +119,7 @@ void recebe_conteudo(int socket, mensagem_t **msg) {
             // timeout para receber a janela
             for (i = 0; i <= 2 && recebida[i]; ++i);
             if(i > 0) {
+                printf("tinha recebido algo\n");
                 --i;
                 envia_confirmacao(socket, (inicio+i)%TAM_SEQUENCIA, ACK);
                 if(i == 0) {
