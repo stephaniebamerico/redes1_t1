@@ -63,7 +63,7 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
         if(m[0] == 0x007E) {
             msg = cstr_to_msg(m, msg);
             cout << "[recebe_mensagem] recebeu: " << endl;
-            imprime_mensagem(*msg);
+            //imprime_mensagem(*msg);
 
             free(m);
             return true;
@@ -89,17 +89,22 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
     resposta->tipo = NACK;
 
     // Tenta enviar mensagem
-    int tentativas=0;
+    int tentativas=0, ultimo_envio = time(NULL);
     while(resposta->tipo != ACK) {
-        if(send(socket, m, TAM_MSG, 0) < 0) {
-            cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
-            exit(-1);
-        }
+        if(ultimo_envio-time(NULL) > 1000){
+            if(send(socket, m, TAM_MSG, 0) < 0) {
+                cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
+                exit(-1);
+            }
 
-        cout << "Tentou enviar cd " << tentativas++ << " vezes" << endl;
+            cout << "Tentou enviar cd " << tentativas++ << " vezes" << endl;
+            ultimo_envio = time(NULL);
+        }
 
         recebe_mensagem(socket, resposta);
     }
+
+    imprime_mensagem(*msg);
 
     free(m);
     free(r);
