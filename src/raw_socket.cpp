@@ -91,14 +91,14 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
     while(inicio < tam) {
         for (int i = 0; i < 3 && i < tam-inicio; ++i) {
             if(!enviada[i]) {
-                m = msg_to_cstr(msg[(inicio+i)%TAM_SEQUENCIA], m);
+                m = msg_to_cstr(msg[inicio+i], m);
                 if(send(socket, m, TAM_MSG, 0) < 0) {
                     cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
                     exit(-1);
                 }
                 enviada[i] = 1;
                 ultimo_envio = time(NULL);
-                printf("inicio: %d i: %d seq: %d\n", inicio, i, msg[(inicio+i)%TAM_SEQUENCIA]->sequencia);
+                printf("inicio: %d i: %d seq: %d\n", inicio, i, msg[inicio+i]->sequencia);
             }
         }
 
@@ -119,7 +119,8 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 // janela desliza 2
                 enviada[0] = enviada[2]; enviada[1] = 0; enviada[2] = 0;
             }
-            else { // janela desliza 3
+            else if(n == (inicio+2)%TAM_SEQUENCIA) { 
+                // janela desliza 3
                 enviada[0] = 0; enviada[1] = 0; enviada[2] = 0;
             }
             inicio = n+1;
@@ -135,7 +136,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 // reenviae janela[1] e janela desliza 1
                 enviada[0] = enviada[1]; enviada[1] = enviada[2]; enviada[2] = 0;
             }
-            else {
+            else if(n == (inicio+2)%TAM_SEQUENCIA) {
                 // reenviae janela[2] e janela desliza 2
                 enviada[0] = enviada[2]; enviada[1] = 0; enviada[2] = 0;
             }
