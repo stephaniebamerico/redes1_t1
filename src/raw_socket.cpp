@@ -150,7 +150,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
 }
 
 void envia_confirmacao(int socket, int seq, int tipo) {
-    mensagem_t *msg = monta_mensagem(tipo, seq, ""); 
+    mensagem_t *msg = monta_mensagem(tipo, 0, to_string(seq)); 
     char *m = NULL;
     aloca_str(&m, msg->tamanho+4);
     m = msg_to_cstr(msg, m);
