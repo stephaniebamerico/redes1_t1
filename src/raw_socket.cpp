@@ -73,29 +73,71 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
     return false;
 }
 
-void envia_mensagem(int socket, mensagem_t *msg) {
+void envia_mensagem(int socket, mensagem_t **msg, int tam) {
     char *r = NULL, *m = NULL;
     mensagem_t *resposta = NULL;
+    bool enviada[3];
 
     aloca_str(&r, TAM_MSG);
-    aloca_str(&m, msg->tamanho+4); 
+    aloca_str(&m, (*msg)->tamanho+4); 
     aloca_mensagem(&resposta);
 
-    m = msg_to_cstr(msg, m);
-    resposta->tipo = NACK;
+    resposta->tipo = FIM; // só para não dar problema até ler a primeira resposta
+    enviada[0] = 0; enviada[1] = 0; enviada[2] = 0;
 
     // Tenta enviar mensagem
     time_t ultimo_envio = time(NULL); // para sempre enviar na primeira vez
-    while(resposta->tipo != ACK) {
-        if(time(NULL)-ultimo_envio > TIMEOUT || resposta->tipo == NACK) { // se ja deu timeout
-            if(send(socket, m, TAM_MSG, 0) < 0) {
-                cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
-                exit(-1);
+    int inicio = 0, n = 0;
+    while(inicio < tam) {
+        for (int i = 0; i < tam-inicio; ++i) {
+            if(!enviada[i]) {
+                m = msg_to_cstr(msg[(inicio+i)%TAM_SEQUENCIA], m);
+                if(send(socket, m, TAM_MSG, 0) < 0) {
+                    cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
+                    exit(-1);
+                }
+                enviada[i] = 1;
+                ultimo_envio = time(NULL);
             }
-            ultimo_envio = time(NULL);
         }
 
         recebe_mensagem(socket, resposta);
+
+        if(time(NULL)-ultimo_envio > TIMEOUT) { 
+            // se ja deu timeout
+            enviada[0] = 0; enviada[1] = 0; enviada[2] = 0;
+        }
+        else if(resposta->tipo == ACK) {
+            n = (resposta->dados)[0]-'0';
+            if(n == inicio%TAM_SEQUENCIA) { 
+                // janela desliza 1
+                enviada[0] = enviada[1]; enviada[1] = enviada[2]; enviada[2] = 0;
+            }
+            else if(n == (inicio+1)%TAM_SEQUENCIA) { 
+                // janela desliza 2
+                enviada[0] = enviada[2]; enviada[1] = 0; enviada[2] = 0;
+            }
+            else { // janela desliza 3
+                enviada[0] = 0; enviada[1] = 0; enviada[2] = 0;
+            }
+            inicio = n+1;
+        }
+        else if(resposta->tipo == NACK) {
+            n = (resposta->dados)[0]-'0';
+            if(n == inicio%TAM_SEQUENCIA) { 
+                // reenvia janela[0]
+                enviada[0] = 0;
+            }
+            else if(n == (inicio+1)%TAM_SEQUENCIA) { 
+                // reenviae janela[1] e janela desliza 1
+                enviada[0] = enviada[1]; enviada[1] = enviada[2]; enviada[2] = 0;
+            }
+            else {
+                // reenviae janela[2] e janela desliza 2
+                enviada[0] = enviada[2]; enviada[1] = 0; enviada[2] = 0;
+            }
+            inicio = n;
+        }
     }
 
     //free(m);

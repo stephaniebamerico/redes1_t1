@@ -36,7 +36,7 @@ int main(int argc, char const *argv[]) {
                     else 
                         msg_resposta = monta_mensagem(ERRO, 0, "1");
                 }
-                 envia_mensagem(socket, msg_resposta);
+                 envia_mensagem(socket, &msg_resposta, 1);
 
                 //DEBUG
                 cout << endl << "Mensagem enviada: " << endl;
@@ -73,7 +73,7 @@ int main(int argc, char const *argv[]) {
                 {
                     
                 }
-                 envia_mensagem(socket, msg_resposta);
+                envia_mensagem(socket, &msg_resposta, 1);
 
                 //DEBUG
                 cout << endl << "Mensagem enviada: " << endl;
@@ -86,7 +86,7 @@ int main(int argc, char const *argv[]) {
             else {
                 mensagem_t *msg_ok = monta_mensagem(OK, 0, "");
                 
-                envia_mensagem(socket, msg_ok);
+                envia_mensagem(socket, &msg_ok, 1);
 
                 //DEBUG
                 cout << endl << "Mensagem enviada: " << endl;

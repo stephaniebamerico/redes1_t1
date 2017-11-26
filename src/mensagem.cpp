@@ -156,7 +156,7 @@ void cd_remoto(int socket, string args) {
     mensagem_t *msg = monta_mensagem(6, 0, args);
 
     // Envia ao servidor
-    envia_mensagem(socket, msg);
+    envia_mensagem(socket, &msg, 1);
     //libera_mensagem(msg);
     
     mensagem_t *msg_ok = NULL;
