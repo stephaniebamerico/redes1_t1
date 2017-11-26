@@ -96,27 +96,20 @@ int main(int argc, char const *argv[]) {
             int qtd = 6;
             mensagem_t **msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*qtd);
             msg[5] = monta_mensagem(20, 0, "");
-            cout << "Mensagem:" << endl;
+            cout << "Mensagem 20:" << endl;
             imprime_mensagem(*(msg[5]));
             envia_mensagem(socket, &(msg[5]), 1);
 
             msg[4] = monta_mensagem(TAMANHO, 0, "4");
-            cout << "Mensagem 0:" << endl;
+            cout << "Mensagem TAM:" << endl;
             imprime_mensagem(*(msg[4]));
             envia_mensagem(socket, &(msg[4]), 1);
 
-            msg[0] = monta_mensagem(IMPRIMA, 0, "");
-            cout << "Mensagem 1:" << endl;
-            imprime_mensagem(*(msg[0]));
-            msg[1] = monta_mensagem(IMPRIMA, 1, "");
-            cout << "Mensagem 2:" << endl;
-            imprime_mensagem(*(msg[1]));
-            msg[2] = monta_mensagem(IMPRIMA, 2, "");
-            cout << "Mensagem 3:" << endl;
-            imprime_mensagem(*(msg[2]));
-            msg[3] = monta_mensagem(FIM, 3, "");
-            cout << "Mensagem 4:" << endl;
-            imprime_mensagem(*(msg[3]));
+            for (int i = 0; i < 35; ++i) {
+                msg[i] = monta_mensagem(IMPRIMA, i%TAM_SEQUENCIA, "");
+                cout << "Mensagem " << i << ":" << endl;
+                imprime_mensagem(*(msg[i]));
+            }
             
             envia_mensagem(socket, msg, 4);
         }
