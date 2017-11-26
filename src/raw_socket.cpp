@@ -81,7 +81,7 @@ void recebe_conteudo(int socket, mensagem_t **msg) {
     //time_t ultimo_envio = time(NULL);
     int inicio = 0, seq, i;
     while(inicio < tam) {
-        if(recebe_mensagem(socket, mensagem_recebida) 
+        if(recebe_mensagem(socket, mensagem_recebida)
             && mensagem_recebida->tipo == IMPRIMA) {
             seq = mensagem_recebida->sequencia;
             if(seq >= inicio%TAM_SEQUENCIA && seq <= (inicio+2)%TAM_SEQUENCIA) { 
@@ -89,6 +89,8 @@ void recebe_conteudo(int socket, mensagem_t **msg) {
                 for (i = 0; i <= 2 && seq != (inicio+i)%TAM_SEQUENCIA; ++i);
                 recebida[i] = 1;
                 copia_mensagem(mensagem_recebida, &(msg[inicio+i]));
+
+                printf("recebeu mensagem: %d\n", seq);
 
                 //TODO: conferir paridade e enviar NACK
                 

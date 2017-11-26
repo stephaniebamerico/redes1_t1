@@ -16,8 +16,8 @@
 #include <mensagem.h>
 #include <poll.h>
 
-#define TIMEOUT 0.5
-#define WAIT 100
+#define TIMEOUT 2
+#define WAIT 50
 
 using namespace std;
 
