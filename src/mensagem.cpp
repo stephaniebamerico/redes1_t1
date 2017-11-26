@@ -154,10 +154,6 @@ void trata_erros(int tipo, char parametro) {
 void cd_remoto(int socket, string args) {
     // Cria mensagem
     mensagem_t *msg = monta_mensagem(6, 0, args);
-    
-    //DEBUG
-    cout << "Mensagem montada: " << endl;
-    imprime_mensagem(*msg);
 
     // Envia ao servidor
     envia_mensagem(socket, msg);
@@ -176,10 +172,6 @@ void cd_remoto(int socket, string args) {
         
     if(msg_ok->tipo == ERRO)
         cout << "Erro ao executar comando: cd " << args << endl;
-
-    //DEBUG
-    if(msg_ok->tipo == OK)
-        cout << "Recebi OK" << endl;
 
     //libera_mensagem(msg_ok);
 }

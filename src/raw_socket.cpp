@@ -56,7 +56,6 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
     m[0] = 0;
 
     // Confere se tem algo no socket para ser lido
-    int tentativas = 0;
     if(poll(&ufds, 1, WAIT) > 0) {
         if(recv(socket, m, TAM_MSG, 0) < 0) {
             cerr << "Erro ao receber mensagem do socket." << endl;
@@ -68,7 +67,6 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
             //free(m);
             return true;
         }
-        cout << "tentativas: " << tentativas << endl;
     }
 
     //free(m);
@@ -99,10 +97,6 @@ void envia_mensagem(int socket, mensagem_t *msg) {
 
         recebe_mensagem(socket, resposta);
     }
-
-    //DEBUG
-    cout << endl << "Mensagem enviada: " << endl;
-    imprime_mensagem(*resposta);
 
     //free(m);
     //free(r);
