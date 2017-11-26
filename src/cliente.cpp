@@ -93,7 +93,7 @@ int main(int argc, char const *argv[]) {
             cout << "Opção inválida" << endl;
 
 
-            int qtd = 35;
+            int qtd = 135;
             mensagem_t **msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*(qtd+2));
             msg[5] = monta_mensagem(20, 0, "");
             cout << "Mensagem 20:" << endl;
