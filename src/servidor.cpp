@@ -21,7 +21,10 @@ int main(int argc, char const *argv[]) {
             cout << endl << "Mensagem recebida: " << endl;
             imprime_mensagem(*msg_recebida);
 
-            envia_confirmacao(socket, ACK);
+            if(msg_recebida->sequencia == 2)
+                envia_confirmacao(socket, 2, ACK);
+            else if(msg_recebida->sequencia == 3)
+                envia_confirmacao(socket, 3, ACK);
 /*==================================================================================================*/
             if (msg_recebida->tipo == CD) {
                 errno = 0;

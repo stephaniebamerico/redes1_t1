@@ -29,6 +29,6 @@ bool recebe_mensagem(int socket, mensagem_t *msg);
 
 void envia_mensagem(int socket, mensagem_t **msg, int tam);
 
-void envia_confirmacao(int socket, int tipo);
+void envia_confirmacao(int socket, int seq, int tipo);
 
 #endif

@@ -89,8 +89,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
     time_t ultimo_envio = time(NULL); // para sempre enviar na primeira vez
     int inicio = 0, n = 0;
     while(inicio < tam) {
-
-        for (int i = 0; i < tam-inicio; ++i) {
+        for (int i = 0; i < 3 && i < tam-inicio; ++i) {
             if(!enviada[i]) {
                 m = msg_to_cstr(msg[(inicio+i)%TAM_SEQUENCIA], m);
                 if(send(socket, m, TAM_MSG, 0) < 0) {
@@ -99,7 +98,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 }
                 enviada[i] = 1;
                 ultimo_envio = time(NULL);
-                cout << "inicio: " << inicio << endl;
+                printf("inicio: %d i: %d\n", inicio, i);
             }
         }
 
@@ -108,6 +107,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
         if(time(NULL)-ultimo_envio > TIMEOUT) { 
             // se ja deu timeout
             enviada[0] = 0; enviada[1] = 0; enviada[2] = 0;
+            printf("TIMEOUT\n");
         }
         else if(resposta->tipo == ACK) {
             n = (resposta->dados)[0]-'0';
@@ -123,6 +123,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 enviada[0] = 0; enviada[1] = 0; enviada[2] = 0;
             }
             inicio = n+1;
+            printf("ACK %d\n", n);
         }
         else if(resposta->tipo == NACK) {
             n = (resposta->dados)[0]-'0';
@@ -139,6 +140,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 enviada[0] = enviada[2]; enviada[1] = 0; enviada[2] = 0;
             }
             inicio = n;
+            printf("NACK %d\n", n);
         }
     }
 
@@ -147,8 +149,8 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
     //free(resposta);
 }
 
-void envia_confirmacao(int socket, int tipo) {
-    mensagem_t *msg = monta_mensagem(tipo, 0, ""); 
+void envia_confirmacao(int socket, int seq, int tipo) {
+    mensagem_t *msg = monta_mensagem(tipo, seq, ""); 
     char *m = NULL;
     aloca_str(&m, msg->tamanho+4);
     m = msg_to_cstr(msg, m);

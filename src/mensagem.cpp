@@ -168,7 +168,7 @@ void cd_remoto(int socket, string args) {
         recebe_mensagem(socket, msg_ok);
 
     // Envia ACK para resposta da requisicao
-    envia_confirmacao(socket, ACK);
+    envia_confirmacao(socket, msg_ok->sequencia, ACK);
         
     if(msg_ok->tipo == ERRO)
         cout << "Erro ao executar comando: cd " << args << endl;
