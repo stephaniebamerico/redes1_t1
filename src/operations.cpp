@@ -1,57 +1,14 @@
-#include <errno.h>
-#include <string.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <stdlib.h>
-#include <dirent.h>
-#include <pwd.h>
-#include <grp.h>
-#include <iostream>
-#include <string>
-#include <time.h>
 
-#include "mensagem.h"
+#include <operations.h>
 
-#define 0 ACK
-#define 2 TAMANHO
-#define 3 OK
-#define 6 CD
-#define 7 LS
-#define 8 GET
-#define 9 PUT
-#define A FIM
-#define C MOSTRANATELA
-#define E ERRO
-#define F NACK
+using namespace std;
 
-
-
-int changeDir (char *dir)
+void changeDir (string dir)
 {
+    errno = 0;
     //muda para o diretório dir
-    int err = chdir (dir);
-    if (err)
-    {
-        //retorna o código de erro (se houver)
-        switch (errno) {
-            case EACCES:
-                return 2;
-
-            case ENOENT:
-                return 1;
-                break;
-
-            case ENOTDIR:
-                return 1;
-
-            default: 
-                return 3;
-        }
-    }
-    //retorna 0 se deu certo
-    return 0;
+    chdir (dir.c_str());
+  
 }
 
 int* testOptions (char *options)
@@ -60,10 +17,10 @@ int* testOptions (char *options)
     int* opt = (int*) malloc (sizeof(int)*2);
     opt[0]=0;
     opt[1]=0;
-    char spaca[2] = " ";
+    char space[2] = " ";
     char *token;
     /* get the first token */
-    token = strtok(str, s);
+    token = strtok(options, space);
     //código de erro é 0
     errno = 0;
 
@@ -82,7 +39,7 @@ int* testOptions (char *options)
         }
 
         //corta próxima parte da string 
-        token = strtok(NULL, s);
+        token = strtok(NULL, space);
     }
     //retorna opt (com 0,0 se não tem argumentos ou 1 na posição do argumento que tiver)
     return opt;
@@ -102,7 +59,7 @@ string list(int a, int l)
         int i;
         struct dirent *myfile;
         struct stat fileStat;
-        if (dir=opendir(".")!= NULL){
+        if ((dir=opendir(".")) != NULL){
             stat(".",&fileStat); 
             while((myfile=readdir(dir))!=NULL)
             {
@@ -124,6 +81,7 @@ string list(int a, int l)
                     list = list +( (fileStat.st_mode & S_IXOTH) ? "x" : "-"); 
                     list = list +(" ");
                     //quantidade de links para o arquivo/ diretório
+                   
                     list = list + to_string( fileStat.st_nlink);
                     list = list + " ";
 
@@ -176,5 +134,17 @@ string list(int a, int l)
     }
     return list;
 }
+
+
+/*
+get (nome: maximo de 31 caracteres)
+- nome do arquivo dentro da area de dados
+- Primeiro manda o tamanho do arquivo em bytes
+- Erro:
+- Sem espaço em disco
+Ao terminar de mandar envia A
+Responde A mandando nack ou ack
+Sobrescreve arquivos com mesmo nome
+*/
 
 

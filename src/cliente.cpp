@@ -1,5 +1,6 @@
 #include "raw_socket.h"
 #include "mensagem.h"
+#include "operations.h"
 
 void imprimeMenu();
 
@@ -20,6 +21,7 @@ int main(int argc, char const *argv[]) {
     
     imprimeMenu();
 
+    int *lsArgs = (int*)malloc (3*sizeof(int));
     while(1) {
         cout << endl << "Entre com a operacao desejada: ";
         getline(cin, operacao);
@@ -37,6 +39,30 @@ int main(int argc, char const *argv[]) {
         /* Executa a operacao, se listada */
         if(comando == "cd") {
             cout << "Operacao cd com argumentos: " << args << endl;
+            changeDir(args);
+             switch (errno) {
+                case 0:
+                    system ("pwd");
+                    break;
+
+                case EACCES:
+                    cout << "Erro de Acesso!" << endl;
+                    break;
+
+                case ENOENT:
+                    cout << "Erro! Não existe esse diretório."<< endl;
+                    break;
+
+                case ENOTDIR:
+                    cout << "Erro! Este não é um diretório."<< endl;
+                    break;
+                    
+
+                default: 
+                    cout << "Erro!"<< endl;
+                    break;
+            }
+            
         }
         else if(comando == "cdr") {
             cout << "comecando crd" << endl;
@@ -46,6 +72,7 @@ int main(int argc, char const *argv[]) {
         }
         else if(comando == "ls") {
             cout << "Operacao ls com argumentos: " << args << endl;
+            
         }
         else if(comando == "lsr") {
             cout << "Operacao lsr com argumentos: " << args << endl;

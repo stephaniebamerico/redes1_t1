@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <stdio.h>
+#include <errno.h>
 
 using namespace std;
 
