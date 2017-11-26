@@ -92,12 +92,12 @@ int main(int argc, char const *argv[]) {
         else {
             cout << "Opção inválida" << endl;
             mensagem_t **msg = (mensagem_t **) malloc(sizeof(mensagem_t *));
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 20; ++i) {
                 msg[i] = monta_mensagem(20, i, args);
                 cout << "Mensagem " << i << ":" << endl;
                 imprime_mensagem(*(msg[i]));
             }
-            envia_mensagem(socket, msg, 4);
+            envia_mensagem(socket, msg, 20);
         }
     }
 
