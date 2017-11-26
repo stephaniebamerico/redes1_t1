@@ -26,7 +26,7 @@
 
 void changeDir (string dir);
 
-int* testOptions (char *options);
+int* testOptions (string options);
 
 string list(int a, int l);
 

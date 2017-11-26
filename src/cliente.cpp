@@ -64,16 +64,32 @@ int main(int argc, char const *argv[]) {
             }
             
         }
+
+
+
         else if(comando == "cdr") {
             cout << "comecando crd" << endl;
             if(args.size() > 0 && args.size() < 248) {
                 cd_remoto(socket, args);
             }
         }
+
+
+
         else if(comando == "ls") {
             cout << "Operacao ls com argumentos: " << args << endl;
-            
+            lsArgs = testOptions(args);
+            if (errno == 0)
+                cout << list(lsArgs[1], lsArgs[0]);
+            else 
+                cout << "Argumentos inválidos! " << endl;
+            if (errno)
+                cout << "Erro de acesso!" << endl;
+
         }
+
+
+
         else if(comando == "lsr") {
             cout << "Operacao lsr com argumentos: " << args << endl;
         }

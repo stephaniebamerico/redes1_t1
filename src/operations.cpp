@@ -5,13 +5,18 @@ using namespace std;
 
 void changeDir (string dir)
 {
+    if (dir.size() == 0) dir = ".";
+    struct stat fileStat;
+    stat(dir.c_str(),&fileStat);
     errno = 0;
+    
     //muda para o diretório dir
-    chdir (dir.c_str());
+    if ((fileStat.st_mode & S_IRGRP) ) chdir (dir.c_str());
+    else errno = EACCES;
   
 }
 
-int* testOptions (char *options)
+int* testOptions (string options)
 {
     //opt 1: -l, op2: -a
     int* opt = (int*) malloc (sizeof(int)*2);
@@ -19,8 +24,11 @@ int* testOptions (char *options)
     opt[1]=0;
     char space[2] = " ";
     char *token;
+    char *str ;
+    aloca_str(&str, options.size());
+    strcpy(str,options.c_str());
     /* get the first token */
-    token = strtok(options, space);
+    token = strtok(str, space);
     //código de erro é 0
     errno = 0;
 
