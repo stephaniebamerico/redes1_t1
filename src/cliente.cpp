@@ -98,26 +98,27 @@ int main(int argc, char const *argv[]) {
             msg[5] = monta_mensagem(20, 0, "");
             cout << "Mensagem:" << endl;
             imprime_mensagem(*(msg[5]));
+            envia_mensagem(socket, &(msg[5]), 1);
 
-
-
-            msg[0] = monta_mensagem(TAMANHO, 0, "4");
+            msg[4] = monta_mensagem(TAMANHO, 0, "4");
             cout << "Mensagem 0:" << endl;
-            imprime_mensagem(*(msg[0]));
-            msg[1] = monta_mensagem(IMPRIMA, 0, "");
+            imprime_mensagem(*(msg[4]));
+            envia_mensagem(socket, &(msg[4]), 1);
+
+            msg[0] = monta_mensagem(IMPRIMA, 0, "");
             cout << "Mensagem 1:" << endl;
             imprime_mensagem(*(msg[1]));
-            msg[2] = monta_mensagem(IMPRIMA, 1, "");
+            msg[1] = monta_mensagem(IMPRIMA, 1, "");
             cout << "Mensagem 2:" << endl;
             imprime_mensagem(*(msg[2]));
-            msg[3] = monta_mensagem(IMPRIMA, 2, "");
+            msg[2] = monta_mensagem(IMPRIMA, 2, "");
             cout << "Mensagem 3:" << endl;
             imprime_mensagem(*(msg[3]));
-            msg[4] = monta_mensagem(FIM, 3, "");
+            msg[3] = monta_mensagem(FIM, 3, "");
             cout << "Mensagem 4:" << endl;
             imprime_mensagem(*(msg[4]));
             
-            envia_mensagem(socket, msg, qtd);
+            envia_mensagem(socket, msg, 4);
         }
     }
 
