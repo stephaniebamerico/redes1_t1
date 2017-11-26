@@ -17,12 +17,7 @@
 #include <time.h>
 #include <string.h>
 
-
 #include "mensagem.h"
-
-
-
-
 
 void changeDir (char * dir);
 

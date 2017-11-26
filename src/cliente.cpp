@@ -44,28 +44,17 @@ int main(int argc, char const *argv[]) {
             char* cdArgs = (char*) malloc(args.size());
             strcpy(cdArgs, args.c_str());
             changeDir(cdArgs);
-             switch (errno) {
-                case 0:
-                    system ("pwd");
-                    break;
-
-                case EACCES:
-                    cout << "Erro de Acesso!" << endl;
-                    break;
-
-                case ENOENT:
-                    cout << "Erro! Não existe esse diretório."<< endl;
-                    break;
-
-                case ENOTDIR:
-                    cout << "Erro! Este não é um diretório."<< endl;
-                    break;
-                    
-
-                default: 
-                    cout << "Erro!"<< endl;
-                    break;
-            }
+            printf("aa: %d %d %d %d\n", errno, EACCES, ENOENT, ENOTDIR);
+            if(errno == 0) 
+                system ("pwd");
+            else
+                //trata_erros(CD_LOCAL, errno);
+                if(errno == EACCES)
+                    cout << "Permissão negada" << endl;
+                else if(errno == ENOENT)
+                    cout << "Arquivo ou diretório não encontrado"<< endl;
+                else if(errno == ENOTDIR)
+                    cout << "Arquivo não é um diretório"<< endl;
             
         }
 /*==================================================================================================*/
@@ -122,13 +111,13 @@ void imprimeMenu() {
     cout << "* cdr [endereco remoto]" << endl;
     cout << "\tAltera diretorio corrente do servidor para [endereco remoto]." << endl << endl;
     
-    cout << "* ls [opcao] [endereco local]" << endl;
-    cout << "\tLista conteudo do diretorio [enredeco local] do cliente (diretorio corrente por padrao)." << endl;
+    cout << "* ls [opcao]" << endl;
+    cout << "\tLista conteudo do diretorio corrente do cliente." << endl;
     cout << "\t-a: nao ignora arquivos ocultos" << endl;
     cout << "\t-l: usa formato de listagem longa" << endl << endl;
 
-    cout << "* lsr [opcao] [endereco remoto]" << endl;
-    cout << "\tLista conteudo do diretorio [enredeco remoto] do servidor (diretorio corrente por padrao)." << endl;
+    cout << "* lsr [opcao]" << endl;
+    cout << "\tLista conteudo do diretorio corrente do servidor." << endl;
     cout << "\t-a: nao ignora arquivos ocultos" << endl;
     cout << "\t-l: usa formato de listagem longa" << endl << endl;
 

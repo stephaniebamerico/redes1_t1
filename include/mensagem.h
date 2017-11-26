@@ -3,6 +3,7 @@
 
 #define TAM_MSG 64
 #define ACK 0
+#define CD_LOCAL 1
 #define TAMANHO 2
 #define OK 3
 #define CD 6
@@ -47,6 +48,8 @@ mensagem_t* monta_mensagem(int tipo, int sequencia, string args);
 char calcula_paridade(mensagem_t msg);
 
 void imprime_mensagem(mensagem_t msg);
+
+void trata_erros(int tipo, int parametro);
 
 void cd_remoto(int socket, string args);
 

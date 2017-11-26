@@ -107,32 +107,40 @@ void imprime_mensagem(mensagem_t msg) {
     printf("par: %d\n", (int) msg.paridade);
 }
 
-void trata_erros(int tipo, mensagem_t msg) {
+void trata_erros(int tipo, int parametro) {
     switch (tipo) {
         case CD:
-            if((msg->dados)[0] == '1')
+            if(parametro == (int) '1')
                 cout << "Arquivo ou diretório não encontrado" << endl;
             else
                 cout << "Permissão negada" << endl;
         break;
+        case CD_LOCAL:
+            if(errno == EACCES)
+                cout << "Permissão negada" << endl;
+            else if(errno == ENOENT)
+                cout << "Arquivo ou diretório não encontrado"<< endl;
+            else if(errno == ENOTDIR)
+                cout << "Arquivo não é um diretório"<< endl;
+        break;
         case LS:
-            if((msg->dados)[0] == '1')
+            if(parametro == (int) '1')
                 cout << "Permissão negada" << endl;
             else
                 cout << "Opção inválida" << endl;
         break;
         case GET:
-            if((msg->dados)[0] == '1')
+            if(parametro == (int) '1')
                 cout << "Arquivo ou diretório não encontrado" << endl;
-            else if((msg->dados)[1] == '2')
+            else if(parametro == (int) '2')
                 cout << "Permissão negada" << endl;
             else
                 cout << "Sem espaço em disco" << endl;
         break;
         case PUT:
-            if((msg->dados)[0] == '1')
+            if(parametro == (int) '1')
                 cout << "Arquivo ou diretório não encontrado" << endl;
-            else if((msg->dados)[1] == '2')
+            else if(parametro == (int) '2')
                 cout << "Permissão negada" << endl;
             else
                 cout << "Sem espaço em disco" << endl;
