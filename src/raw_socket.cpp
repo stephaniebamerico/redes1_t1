@@ -85,6 +85,7 @@ void recebe_conteudo(int socket, mensagem_t **msg) {
             && mensagem_recebida->tipo == IMPRIMA) {
             seq = mensagem_recebida->sequencia;
             if(seq >= inicio%TAM_SEQUENCIA && seq <= (inicio+2)%TAM_SEQUENCIA) { 
+                printf("recebeu mensagem na sequencia esperada\n");
                 // recebeu mensagem dentro da janela esperada
                 for (i = 0; i <= 2 && seq != (inicio+i)%TAM_SEQUENCIA; ++i);
                 recebida[i] = 1;
@@ -95,6 +96,7 @@ void recebe_conteudo(int socket, mensagem_t **msg) {
                 //TODO: conferir paridade e enviar NACK
                 
                 if(recebida[0] && recebida[1] && recebida[2]) {
+                    printf("envia ACK de tudo\n");
                     // recebeu a janela toda
                     envia_confirmacao(socket, (inicio+2)%TAM_SEQUENCIA, ACK);
                     
@@ -105,12 +107,14 @@ void recebe_conteudo(int socket, mensagem_t **msg) {
                 //ultimo_envio = time(NULL);
             }
             else {
+                printf("recebeu mensagem na sequencia nao esperada\n");
                 // timeout para ACK: reseta janela
                 inicio = seq;
                 recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
             }
         }
         else { //if(2*(time(NULL)-ultimo_envio) > TIMEOUT) {
+            printf("timeout\n");
             // timeout para receber a janela
             for (i = 0; i <= 2 && recebida[i]; ++i);
             if(i > 0) {
