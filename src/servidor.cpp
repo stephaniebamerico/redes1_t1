@@ -2,7 +2,6 @@
 #include "mensagem.h"
 
 int main(int argc, char const *argv[]) {
-    char *msg = (char *) malloc(sizeof(char)*TAM_MSG);
     int socket = openRawSocket((char *) argv[1]);
 
     if(socket < 0) {
@@ -13,10 +12,13 @@ int main(int argc, char const *argv[]) {
     inicia_socket(socket);
 
     cout << "Aguardando mensagens." << endl;
-    mensagem_t *msg_recebida;
+    char *msg = NULL;
+    mensagem_t *msg_recebida = NULL;
+    aloca_mensagem(msg_recebida);
+    aloca_str(msg, TAM_MSG);
+    aloca_str(msg_recebida->dados, TAM_MSG);
     while (1) {        
         if(recebe_mensagem(socket, msg_recebida)) {
-            aloca_mensagem(msg_recebida);
             msg_recebida = cstr_to_msg(msg, msg_recebida);
 
             //DEBUG
@@ -35,6 +37,7 @@ int main(int argc, char const *argv[]) {
             
             libera_mensagem(msg_ok);
             libera_mensagem(msg_recebida);
+            aloca_mensagem(msg_recebida);
         }
     }
 
