@@ -29,6 +29,7 @@ int main(int argc, char const *argv[]) {
             if (msg_recebida->tipo == CD)
             {
                 chdir (msg_recebida->dados);
+                system("pwd");
                 mensagem_t *msg_resposta;
                 if (errno == 0)
                     msg_resposta = monta_mensagem(OK, 0, "");
