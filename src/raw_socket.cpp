@@ -115,7 +115,7 @@ void recebe_conteudo(int socket, mensagem_t **msg) {
             }
         }
         else { //if(2*(time(NULL)-ultimo_envio) > TIMEOUT) {
-            printf("timeout\n");
+            printf("timeout %d %d %d\n", recebida[0], recebida[1], recebida[2]);
             // timeout para receber a janela
             for (i = 0; i <= 2 && recebida[i]; ++i);
             if(i > 0) {
