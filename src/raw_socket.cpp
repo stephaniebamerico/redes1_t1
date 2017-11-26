@@ -89,6 +89,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
     time_t ultimo_envio = time(NULL); // para sempre enviar na primeira vez
     int inicio = 0, n = 0;
     while(inicio < tam) {
+
         for (int i = 0; i < tam-inicio; ++i) {
             if(!enviada[i]) {
                 m = msg_to_cstr(msg[(inicio+i)%TAM_SEQUENCIA], m);
@@ -98,6 +99,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 }
                 enviada[i] = 1;
                 ultimo_envio = time(NULL);
+                cout << "inicio: " << inicio << endl;
             }
         }
 
@@ -155,6 +157,8 @@ void envia_confirmacao(int socket, int tipo) {
         cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
         exit(-1);
     }
+
+    printf("ACK enviado\n");
 
     //free(m);
     //free(msg);

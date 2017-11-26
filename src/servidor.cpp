@@ -84,7 +84,7 @@ int main(int argc, char const *argv[]) {
                 aloca_mensagem(&msg_recebida);
             }
             else {
-                mensagem_t *msg_ok = monta_mensagem(OK, 0, "");
+                /*mensagem_t *msg_ok = monta_mensagem(OK, 0, "");
                 
                 envia_mensagem(socket, &msg_ok, 1);
 
@@ -94,7 +94,7 @@ int main(int argc, char const *argv[]) {
                 
                 //libera_mensagem(msg_ok);
                 //libera_mensagem(msg_recebida);
-                aloca_mensagem(&msg_recebida);
+                aloca_mensagem(&msg_recebida);*/
             }
         }
     }
