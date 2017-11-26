@@ -41,7 +41,6 @@ int main(int argc, char const *argv[]) {
         else if(comando == "cdr") {
             cout << "comecando crd" << endl;
             if(args.size() > 0 && args.size() < 248) {
-                cout << "entrou no if dos tamanhos" << endl;
                 cd_remoto(socket, args);
             }
         }
