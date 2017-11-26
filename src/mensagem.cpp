@@ -105,8 +105,6 @@ bool cd_remoto(int socket, string args) {
         free(msg);
         msg = (mensagem_t *) malloc(sizeof(mensagem_t));
 
-        cout<<"enviou cd"<<endl<<endl;
-
         while(msg->tipo != OK) {
             recebe_mensagem(socket, msg);
         }

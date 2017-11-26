@@ -54,7 +54,7 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
     char *m = (char *) malloc (sizeof(char) * TAM_MSG);
     m[0] = 0;
 
-    if(poll(&ufds, 1, 10000) > 0) {
+    if(poll(&ufds, 1, WAIT) > 0) {
         if(recv(socket, m, TAM_MSG, 0) < 0) {
             cerr << "Erro ao receber mensagem do socket." << endl;
             exit(-1);
@@ -62,7 +62,7 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
 
         if(m[0] == 0x007E) {
             msg = cstr_to_msg(m, msg);
-            cout << "[recebe_mensagem] recebeu: " << endl;
+            cout << "[recebe_mensagem] Recebeu uma mensagem valida. " << endl;
             //imprime_mensagem(*msg);
 
             free(m);
@@ -106,7 +106,7 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
         recebe_mensagem(socket, resposta);
     }
 
-    imprime_mensagem(*msg);
+    imprime_mensagem(*resposta);
 
     free(m);
     free(r);
