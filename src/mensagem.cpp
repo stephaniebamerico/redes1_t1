@@ -94,7 +94,7 @@ char calcula_paridade(mensagem_t msg) {
         paridade = paridade | m[i];
     }
 
-    free(m);
+    //free(m);
     return paridade;
 }
 
@@ -107,6 +107,42 @@ void imprime_mensagem(mensagem_t msg) {
     printf("par: %d\n", (int) msg.paridade);
 }
 
+void trata_erros(int tipo, mensagem_t msg) {
+    switch (tipo) {
+        case CD:
+            if((msg->dados)[0] == '1')
+                cout << "Arquivo ou diretório não encontrado" << endl;
+            else
+                cout << "Permissão negada" << endl;
+        break;
+        case LS:
+            if((msg->dados)[0] == '1')
+                cout << "Permissão negada" << endl;
+            else
+                cout << "Opção inválida" << endl;
+        break;
+        case GET:
+            if((msg->dados)[0] == '1')
+                cout << "Arquivo ou diretório não encontrado" << endl;
+            else if((msg->dados)[1] == '2')
+                cout << "Permissão negada" << endl;
+            else
+                cout << "Sem espaço em disco" << endl;
+        break;
+        case PUT:
+            if((msg->dados)[0] == '1')
+                cout << "Arquivo ou diretório não encontrado" << endl;
+            else if((msg->dados)[1] == '2')
+                cout << "Permissão negada" << endl;
+            else
+                cout << "Sem espaço em disco" << endl;
+        break;
+        default: 
+            cout << "Erro"<< endl;
+        break;
+    }
+}
+
 void cd_remoto(int socket, string args) {
     // Cria mensagem
     mensagem_t *msg = monta_mensagem(6, 0, args);
@@ -117,7 +153,7 @@ void cd_remoto(int socket, string args) {
 
     // Envia ao servidor
     envia_mensagem(socket, msg);
-    libera_mensagem(msg);
+    //libera_mensagem(msg);
     
     mensagem_t *msg_ok = NULL;
     aloca_mensagem(&msg_ok);
