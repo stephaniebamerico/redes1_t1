@@ -189,7 +189,7 @@ void libera_vetor_de_mensagens (mensagem_t **msgs, int tam)
 
 void copiaString (char * dest, char * src,int tam)
 {
-    for (int i = 0; i < tam; ++i)
+    for (int i = 0; i < tam-1; ++i)
         dest[i] = src[i];
 }
 
@@ -238,15 +238,29 @@ void monta_msgs_com_arq (int socket, string name)
     struct stat fileStat;    
     stat(nome,&fileStat); 
     int tam = fileStat.st_size;
-    int posicoes = tam/31;
-    int resto = tam%31;
+    int posicoes = tam/30;
+    int resto = tam%30;
     string buf;
-    char * buffer = aloca_str(posicoes*31);
+    char * buffer;
+    aloca_str(&buffer, posicoes*30);
+    char* bufferResto;
+    if (resto)
+        aloca_str(&bufferResto, resto+2);
 
     FILE *fp;
     fp = fopen (nome, "r");
+    if (!fp)
+    {
+        printf("erro!\n");
+        return;
+    }
 
-    fread(buffer, 31, posicoes, fp);
+    fread(buffer, 30, posicoes, fp);
+    
+    fread(bufferResto, resto, 1, fp);
+    fclose(fp);
+    
+
 
     mensagens = (mensagem_t **) malloc((posicoes)*sizeof(mensagem_t**));
      /*for (int i = 0; i < posicoes; ++i)
@@ -261,32 +275,48 @@ void monta_msgs_com_arq (int socket, string name)
         aloca_mensagem(&mensagens[posicoes]);
         aloca_str(&((mensagens[posicoes]))->dados, resto);
     }*/
-
-    int posZero = 0;
+    char *aux;
+    aloca_str(&aux, 32);
     for (int i = 0; i < posicoes; ++i)
     {
-        read(filedesc,buffer,31);
-        buffer[31]='\0';
-        buf = (string)(buffer);
-        mensagens[i] = monta_mensagem_2(31,GET, i%64, buffer);
+        copiaString (aux, buffer+i*30,31);
+        mensagens[i] = monta_mensagem_2(31,GET, i%64, aux);
     }
     if (resto)
     {
-        read(filedesc,buffer,resto);
-        buffer[resto] = '\0';
-        buf= (string)(buffer);
-        mensagens[posicoes] = monta_mensagem_2(resto,GET, posicoes%64, buffer);
+        //copiaString (aux, bufferResto, resto);
+        mensagens[posicoes] = monta_mensagem_2(resto,GET, posicoes%64, bufferResto);
 
     }
+    char* saida;
+    aloca_str(&saida, posicoes*30+resto);
+
     for (int i = 0; i < posicoes; ++i)
     {
-        printMsgData(mensagens[i]->tamanho,mensagens[i]->dados);
+        copiaString(saida+i*30, mensagens[i]->dados, mensagens[i]->tamanho);
+        //printMsgData(mensagens[i]->tamanho-1,mensagens[i]->dados);
+        //printMsgData(mensagens[i]->tamanho, saida+i*30);
     }
     if (resto)
     {
-        cout <<mensagens[posicoes]->dados;
+        copiaString(saida+posicoes*30,mensagens[posicoes]->dados,resto);
 
     }
+    for (int i = 0; i < posicoes*30+ resto; ++i)
+    {
+        printf("%c",saida[i] );
+    }
+
+    fp = fopen("saida2", "w");
+    if (!fp)
+    {
+        printf("erro!\n");
+        return;
+    }
+
+    fwrite(saida, 1, 30*(posicoes)+ resto,fp);
+    fclose(fp);
+
     cout << endl << endl;
     //libera_vetor_de_mensagens(mensagens, tam);
 
