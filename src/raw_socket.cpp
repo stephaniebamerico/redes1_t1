@@ -89,15 +89,17 @@ bool envia_mensagem(int socket, mensagem_t *msg) {
     resposta->tipo = NACK;
 
     // Tenta enviar mensagem
-    int tentativas=0, ultimo_envio = time(NULL);
+    int tentativas=0;
+    time_t ultimo_envio = time(NULL);
     while(resposta->tipo != ACK) {
-        if(ultimo_envio-time(NULL) > 1000){
+        cout << "tempo: " << time(NULL)-ultimo_envio << endl; 
+        if(time(NULL)-ultimo_envio > TIMEOUT){
             if(send(socket, m, TAM_MSG, 0) < 0) {
                 cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
                 exit(-1);
             }
 
-            cout << "Tentou enviar cd " << tentativas++ << " vezes" << endl;
+            cout << "Tentou enviar cd " << ++tentativas << " vezes" << endl;
             ultimo_envio = time(NULL);
         }
 

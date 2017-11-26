@@ -16,7 +16,7 @@
 #include <mensagem.h>
 #include <poll.h>
 
-#define TIMEOUT 20
+#define TIMEOUT 10
 
 using namespace std;
 
