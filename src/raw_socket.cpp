@@ -102,7 +102,7 @@ void recebe_conteudo(int socket, mensagem_t **msg) {
                     envia_confirmacao(socket, (inicio+2)%TAM_SEQUENCIA, ACK);
                     
                     // janela desliza 3
-                    inicio += 2;
+                    inicio += 3;
                     recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
                 }
                 //ultimo_envio = time(NULL);
