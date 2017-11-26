@@ -93,8 +93,8 @@ int main(int argc, char const *argv[]) {
             cout << "Opção inválida" << endl;
 
 
-            int qtd = 6;
-            mensagem_t **msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*qtd);
+            int qtd = 35;
+            mensagem_t **msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*(qtd+2));
             msg[5] = monta_mensagem(20, 0, "");
             cout << "Mensagem 20:" << endl;
             imprime_mensagem(*(msg[5]));
@@ -105,13 +105,13 @@ int main(int argc, char const *argv[]) {
             imprime_mensagem(*(msg[4]));
             envia_mensagem(socket, &(msg[4]), 1);
 
-            for (int i = 0; i < 35; ++i) {
+            for (int i = 0; i < qtd; ++i) {
                 msg[i] = monta_mensagem(IMPRIMA, i%TAM_SEQUENCIA, "");
                 cout << "Mensagem " << i << ":" << endl;
                 imprime_mensagem(*(msg[i]));
             }
             
-            envia_mensagem(socket, msg, 4);
+            envia_mensagem(socket, msg, qtd);
         }
     }
 
