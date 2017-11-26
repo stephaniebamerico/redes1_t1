@@ -107,8 +107,8 @@ bool cd_remoto(int socket, string args) {
 
         cout<<"enviou cd"<<endl<<endl;
 
-        if(!recebe_mensagem(socket, msg)) {
-            cout << endl << "[cd_remoto] Erro ao receber msg." << args << endl;
+        while(msg->tipo != OK) {
+            recebe_mensagem(socket, msg);
         }
 
         envia_confirmacao(socket, ACK);
