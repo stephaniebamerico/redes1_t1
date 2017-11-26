@@ -116,11 +116,11 @@ void trata_erros(int tipo, char parametro) {
                 cout << "Permissão negada" << endl;
         break;
         case CD_LOCAL:
-            if(errno == EACCES)
+            if(parametro == EACCES)
                 cout << "Permissão negada" << endl;
-            else if(errno == ENOENT)
+            else if(parametro == ENOENT)
                 cout << "Arquivo ou diretório não encontrado"<< endl;
-            else if(errno == ENOTDIR)
+            else if(parametro == ENOTDIR)
                 cout << "Arquivo não é um diretório"<< endl;
         break;
         case LS:
@@ -154,6 +154,10 @@ void trata_erros(int tipo, char parametro) {
 void cd_remoto(int socket, string args) {
     // Cria mensagem
     mensagem_t *msg = monta_mensagem(6, 0, args);
+    
+    //DEBUG
+    cout << "Mensagem montada: " << endl;
+    imprime_mensagem(*msg);
 
     // Envia ao servidor
     envia_mensagem(socket, msg);
@@ -172,6 +176,10 @@ void cd_remoto(int socket, string args) {
         
     if(msg_ok->tipo == ERRO)
         cout << "Erro ao executar comando: cd " << args << endl;
+
+    //DEBUG
+    if(msg_ok->tipo == OK)
+        cout << "Recebi OK" << endl;
 
     //libera_mensagem(msg_ok);
 }

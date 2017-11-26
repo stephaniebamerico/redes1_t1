@@ -98,6 +98,10 @@ void envia_mensagem(int socket, mensagem_t *msg) {
         recebe_mensagem(socket, resposta);
     }
 
+    //DEBUG
+    cout << endl << "Mensagem enviada: " << endl;
+    imprime_mensagem(*resposta);
+
     //free(m);
     //free(r);
     //free(resposta);
