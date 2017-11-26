@@ -1,5 +1,6 @@
-
-#include <operations.h>
+#include "raw_socket.h"
+#include "operations.h"
+#include <fcntl.h>
 
 using namespace std;
 
@@ -157,6 +158,155 @@ get (nome: maximo de 31 caracteres)
 Ao terminar de mandar envia A
 Responde A mandando nack ou ack
 Sobrescreve arquivos com mesmo nome
+Copia o arquivo [endereco remoto] do servidor para o cliente.
+
 */
 
 
+//  tam/32
+
+
+void libera_vetor_de_mensagens (mensagem_t **msgs, int tam)
+{
+    int pos = tam/32;
+    int resto = tam%32;
+    for (int i = 0; i < pos; ++i)
+    {
+        
+        free(msgs[i]->dados);
+        free(msgs[i]);
+    }
+    if (resto > 0) 
+    {
+        free(msgs[pos]);
+        free(msgs[pos]->dados);
+        
+    }
+    free (msgs);
+
+}
+
+
+void copiaString (char * dest, char * src,int tam)
+{
+    for (int i = 0; i < tam; ++i)
+        dest[i] = src[i];
+}
+
+mensagem_t* monta_mensagem_2(int tam, int tipo, int sequencia, char* args) {
+    mensagem_t *msg = NULL;
+    aloca_mensagem(&msg);
+
+    msg->inicio = 0x007E;
+    msg->tamanho = tam;
+    msg->sequencia = sequencia;
+    msg->tipo = tipo;
+    if(msg->tamanho > 0) {
+        aloca_str(&(msg->dados), msg->tamanho);
+        copiaString(msg->dados, args,tam);
+    }
+    msg->paridade = calcula_paridade(*msg);
+
+    return msg;
+}
+
+void printMsgData(int tam, char * str)
+{
+    for (int i = 0; i < tam; ++i)
+    {
+        printf("%c",str[i] );
+    }
+}
+
+
+void monta_msgs_com_arq (int socket, string name)
+{
+    setvbuf(stdout, NULL, _IOLBF,0);
+    mensagem_t **mensagens = NULL;
+    char* nome;
+    aloca_str(&nome, name.size());
+    strcpy (nome, name.c_str());
+
+    /*int filedesc = open(nome, O_RDONLY);
+    char *buffer;
+    aloca_str(&buffer, 40);
+    if(filedesc < 0)
+    {
+        printf ("Erro ao abrir o arquivo!\n");
+        return;
+    }*/
+    struct stat fileStat;    
+    stat(nome,&fileStat); 
+    int tam = fileStat.st_size;
+    int posicoes = tam/31;
+    int resto = tam%31;
+    string buf;
+    char * buffer = aloca_str(posicoes*31);
+
+    FILE *fp;
+    fp = fopen (nome, "r");
+
+    fread(buffer, 31, posicoes, fp);
+
+    mensagens = (mensagem_t **) malloc((posicoes)*sizeof(mensagem_t**));
+     /*for (int i = 0; i < posicoes; ++i)
+    {
+        aloca_mensagem(&mensagens[i]);
+        aloca_str(&((mensagens[i]))->dados, 32);
+
+    }
+    if (resto > 0) 
+    {
+
+        aloca_mensagem(&mensagens[posicoes]);
+        aloca_str(&((mensagens[posicoes]))->dados, resto);
+    }*/
+
+    int posZero = 0;
+    for (int i = 0; i < posicoes; ++i)
+    {
+        read(filedesc,buffer,31);
+        buffer[31]='\0';
+        buf = (string)(buffer);
+        mensagens[i] = monta_mensagem_2(31,GET, i%64, buffer);
+    }
+    if (resto)
+    {
+        read(filedesc,buffer,resto);
+        buffer[resto] = '\0';
+        buf= (string)(buffer);
+        mensagens[posicoes] = monta_mensagem_2(resto,GET, posicoes%64, buffer);
+
+    }
+    for (int i = 0; i < posicoes; ++i)
+    {
+        printMsgData(mensagens[i]->tamanho,mensagens[i]->dados);
+    }
+    if (resto)
+    {
+        cout <<mensagens[posicoes]->dados;
+
+    }
+    cout << endl << endl;
+    //libera_vetor_de_mensagens(mensagens, tam);
+
+}
+
+
+
+/*
+
+
+
+
+ put (nome do arquivo)
+- nome do arquivo no pedido
+- Erros:
+- Sem permissão
+- Se receber ok manda o descritor (2) com
+- tamanho do arquivo
+- Erros:
+- Espaço insuficiente
+Ao terminar manda A, resposta ack ou nack
+
+*/

@@ -25,6 +25,8 @@ int* testOptions (char * options);
 
 string list(int a, int l);
 
+void monta_msgs_com_arq (int socket, string name);
+
 #endif
 
 /*
