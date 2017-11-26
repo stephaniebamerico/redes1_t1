@@ -1,0 +1,25 @@
+#ifndef __MENSAGEM__
+#define __MENSAGEM__
+
+#define TAM_MSG 64
+#define TAM_SEQUENCIA 32
+
+#define ACK 0
+#define CD_LOCAL 1
+#define TAMANHO 2
+#define OK 3
+#define CD 6
+#define LS 7
+#define GET 8
+#define PUT 9
+#define FIM 0x000A
+#define IMPRIMA 0x000C
+#define ERRO 0x000E
+#define NACK 0x000F
+
+#include <stdlib.h>
+#include <iostream>
+#include <stdio.h>
+#include <errno.h>
+
+using namespace std;

@@ -1,5 +1,6 @@
-
-#include <operations.h>
+#include "raw_socket.h"
+#include "operations.h"
+#include <fcntl.h>
 
 using namespace std;
 
@@ -157,6 +158,185 @@ get (nome: maximo de 31 caracteres)
 Ao terminar de mandar envia A
 Responde A mandando nack ou ack
 Sobrescreve arquivos com mesmo nome
+Copia o arquivo [endereco remoto] do servidor para o cliente.
+
 */
 
 
+//  tam/32
+
+
+void libera_vetor_de_mensagens (mensagem_t **msgs, int tam)
+{
+    int pos = tam/32;
+    int resto = tam%32;
+    for (int i = 0; i < pos; ++i)
+    {
+        
+        free(msgs[i]->dados);
+        free(msgs[i]);
+    }
+    if (resto > 0) 
+    {
+        free(msgs[pos]);
+        free(msgs[pos]->dados);
+        
+    }
+    free (msgs);
+
+}
+
+
+void copiaString (char * dest, char * src,int tam)
+{
+    for (int i = 0; i < tam-1; ++i)
+        dest[i] = src[i];
+}
+
+mensagem_t* monta_mensagem_2(int tam, int tipo, int sequencia, char* args) {
+    mensagem_t *msg = NULL;
+    aloca_mensagem(&msg);
+
+    msg->inicio = 0x007E;
+    msg->tamanho = tam;
+    msg->sequencia = sequencia;
+    msg->tipo = tipo;
+    if(msg->tamanho > 0) {
+        aloca_str(&(msg->dados), msg->tamanho);
+        copiaString(msg->dados, args,tam);
+    }
+    msg->paridade = calcula_paridade(*msg);
+
+    return msg;
+}
+
+void printMsgData(int tam, char * str)
+{
+    for (int i = 0; i < tam; ++i)
+    {
+        printf("%c",str[i] );
+    }
+}
+
+
+void monta_msgs_com_arq (int socket, string name)
+{
+    setvbuf(stdout, NULL, _IOLBF,0);
+    mensagem_t **mensagens = NULL;
+    char* nome;
+    aloca_str(&nome, name.size());
+    strcpy (nome, name.c_str());
+
+    /*int filedesc = open(nome, O_RDONLY);
+    char *buffer;
+    aloca_str(&buffer, 40);
+    if(filedesc < 0)
+    {
+        printf ("Erro ao abrir o arquivo!\n");
+        return;
+    }*/
+    struct stat fileStat;    
+    stat(nome,&fileStat); 
+    int tam = fileStat.st_size;
+    int posicoes = tam/30;
+    int resto = tam%30;
+    string buf;
+    char * buffer;
+    aloca_str(&buffer, posicoes*30);
+    char* bufferResto;
+    if (resto)
+        aloca_str(&bufferResto, resto+2);
+
+    FILE *fp;
+    fp = fopen (nome, "r");
+    if (!fp)
+    {
+        printf("erro!\n");
+        return;
+    }
+
+    fread(buffer, 30, posicoes, fp);
+    
+    fread(bufferResto, resto, 1, fp);
+    fclose(fp);
+    
+
+
+    mensagens = (mensagem_t **) malloc((posicoes)*sizeof(mensagem_t**));
+     /*for (int i = 0; i < posicoes; ++i)
+    {
+        aloca_mensagem(&mensagens[i]);
+        aloca_str(&((mensagens[i]))->dados, 32);
+
+    }
+    if (resto > 0) 
+    {
+
+        aloca_mensagem(&mensagens[posicoes]);
+        aloca_str(&((mensagens[posicoes]))->dados, resto);
+    }*/
+    char *aux;
+    aloca_str(&aux, 32);
+    for (int i = 0; i < posicoes; ++i)
+    {
+        copiaString (aux, buffer+i*30,31);
+        mensagens[i] = monta_mensagem_2(31,GET, i%64, aux);
+    }
+    if (resto)
+    {
+        //copiaString (aux, bufferResto, resto);
+        mensagens[posicoes] = monta_mensagem_2(resto,GET, posicoes%64, bufferResto);
+
+    }
+    char* saida;
+    aloca_str(&saida, posicoes*30+resto);
+
+    for (int i = 0; i < posicoes; ++i)
+    {
+        copiaString(saida+i*30, mensagens[i]->dados, mensagens[i]->tamanho);
+        //printMsgData(mensagens[i]->tamanho-1,mensagens[i]->dados);
+        //printMsgData(mensagens[i]->tamanho, saida+i*30);
+    }
+    if (resto)
+    {
+        copiaString(saida+posicoes*30,mensagens[posicoes]->dados,resto);
+
+    }
+    for (int i = 0; i < posicoes*30+ resto; ++i)
+    {
+        printf("%c",saida[i] );
+    }
+
+    fp = fopen("saida2", "w");
+    if (!fp)
+    {
+        printf("erro!\n");
+        return;
+    }
+
+    fwrite(saida, 1, 30*(posicoes)+ resto,fp);
+    fclose(fp);
+
+    cout << endl << endl;
+    //libera_vetor_de_mensagens(mensagens, tam);
+
+}
+
+
+
+/*
+
+
+
+
+ put (nome do arquivo)
+- nome do arquivo no pedido
+- Erros:
+- Sem permissão
+- Se receber ok manda o descritor (2) com
+- tamanho do arquivo
+- Erros:
+- Espaço insuficiente
+Ao terminar manda A, resposta ack ou nack
+
+*/
