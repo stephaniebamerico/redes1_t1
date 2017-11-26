@@ -14,9 +14,8 @@ int main(int argc, char const *argv[]) {
     cout << "Aguardando mensagens." << endl;
     char *msg = NULL;
     mensagem_t *msg_recebida = NULL;
-    aloca_mensagem(msg_recebida);
-    aloca_str(msg, TAM_MSG);
-    aloca_str(msg_recebida->dados, TAM_MSG);
+    aloca_mensagem(&msg_recebida);
+    aloca_str(&msg, TAM_MSG);
     while (1) {        
         if(recebe_mensagem(socket, msg_recebida)) {
             msg_recebida = cstr_to_msg(msg, msg_recebida);
@@ -37,7 +36,7 @@ int main(int argc, char const *argv[]) {
             
             libera_mensagem(msg_ok);
             libera_mensagem(msg_recebida);
-            aloca_mensagem(msg_recebida);
+            aloca_mensagem(&msg_recebida);
         }
     }
 

@@ -51,8 +51,8 @@ int openRawSocket(char *device) {
 }
 
 bool recebe_mensagem(int socket, mensagem_t *msg) {
-    char *m = NULL;
-    aloca_str(m, TAM_MSG);
+    char *m = NULL;//(char *) malloc(TAM_MSG); //NULL;
+    aloca_str(&m, TAM_MSG);
     m[0] = 0;
 
     // Confere se tem algo no socket para ser lido
@@ -76,9 +76,9 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
 void envia_mensagem(int socket, mensagem_t *msg) {
     char *r = NULL, *m = NULL;
     mensagem_t *resposta = NULL;
-    aloca_str(r, TAM_MSG);
-    aloca_str(m, msg->tamanho+4); 
-    aloca_mensagem(resposta);
+    aloca_str(&r, TAM_MSG);
+    aloca_str(&m, msg->tamanho+4); 
+    aloca_mensagem(&resposta);
 
     m = msg_to_cstr(msg, m);
     resposta->tipo = NACK;
@@ -109,7 +109,7 @@ void envia_mensagem(int socket, mensagem_t *msg) {
 void envia_confirmacao(int socket, int tipo) {
     mensagem_t *msg = monta_mensagem(tipo, 0, ""); 
     char *m = NULL;
-    aloca_str(m, msg->tamanho+4);
+    aloca_str(&m, msg->tamanho+4);
     m = msg_to_cstr(msg, m);
     
     if(send(socket, m, TAM_MSG, 0) < 0) {

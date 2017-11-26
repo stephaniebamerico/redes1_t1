@@ -29,11 +29,11 @@ typedef struct {
     char paridade;
 } mensagem_t;
 
-void aloca_mensagem(mensagem_t *msg);
+void aloca_mensagem(mensagem_t **msg);
 
 void libera_mensagem(mensagem_t *msg);
 
-void aloca_str(char *str, int tam);
+void aloca_str(char **str, int tam);
 
 void cstr_tam_seq_tipo_dados(mensagem_t msg, char *cstr, int pos_inicial);
 
