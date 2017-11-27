@@ -106,6 +106,8 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                         inicio += 3;
                         recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
                     }
+
+                    printf("Recebido: %d / %d\n", inicio+i, tam);
                 }
                 else {
                     envia_confirmacao(socket, seq, NACK);
@@ -216,6 +218,8 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
 
                 enviada[i] = 1;
                 ultimo_envio = time(NULL);
+
+                printf("Enviado: %d / %d\n", inicio+i, tam);
             }
         }
 
@@ -292,6 +296,6 @@ void envia_confirmacao(int socket, int seq, int tipo) {
         cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
         exit(-1);
     }
-    string op = (tipo == ACK) ? "ACK" : "NACK";
-    cout << op << " " << seq << endl;
+    //string op = (tipo == ACK) ? "ACK" : "NACK";
+    //cout << op << " " << seq << endl;
 }
