@@ -50,7 +50,7 @@ void cstr_tam_seq_tipo_dados(mensagem_t msg, char *cstr, int pos_inicial) {
     printf("cstr[1]: %d msg->sequencia: %d\n", cstr[pos_inicial], msg.sequencia);
     cstr[pos_inicial+1] = (msg.sequencia << 3); //00SSS000
     cstr[pos_inicial+1] = (cstr[pos_inicial+1] << 2) | msg.tipo; //SSSTTTTT
-    
+    printf("cstr[2]: %d msg->tipo: %d msg->sequencia: %d\n", cstr[pos_inicial+1], msg.sequencia, msg.sequencia);
     if(msg.tamanho > 0) {
         char c;
         for (int i = 0; i < msg.tamanho; ++i) {
