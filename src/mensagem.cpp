@@ -63,7 +63,11 @@ char* msg_to_cstr(mensagem_t *msg, char* cstr) {
     cstr[3+msg->tamanho] = msg->paridade;
 
     printf("##### msg_to_cstr:\n");
-    printf("##### cstr: %s\n", cstr);
+    printf("##### cstr: ");
+    for (int i = 0; i <= msg->tamanho+3; ++i) {
+        printf("%c", cstr[i]);
+    }
+    printf("\n");
     printf("##### msg:\n");
     imprime_mensagem(*msg);
     printf("##### fim msg_to_cstr\n");
@@ -90,7 +94,11 @@ mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg) {
     }
 
     printf("##### cstr_to_msg:\n");
-    printf("##### cstr: %s\n", cstr);
+    printf("##### cstr: ");
+    for (int i = 0; i < msg->tamanho+3; ++i) {
+        printf("%c", cstr[i]);
+    }
+    printf("\n");
     printf("##### msg:\n");
     imprime_mensagem(*msg);
     printf("##### fim cstr_to_msg\n");
