@@ -75,7 +75,7 @@ mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg) {
     msg->tipo = (cstr[2] & 0x001F); //000TTTTT
     msg->paridade = cstr[3+(msg->tamanho)];
 
-    printf("cstr[1] %u cstr[2] %u tam %u seq %u tipo %u\n", cstr[1], cstr[2], msg->tamanho, msg->sequencia, msg->tipo);
+    //printf("cstr[1] %u cstr[2] %u tam %u seq %u tipo %u\n", cstr[1], cstr[2], msg->tamanho, msg->sequencia, msg->tipo);
     
     if(msg->tamanho > 0) {
         aloca_str(&(msg->dados), msg->tamanho);
@@ -175,11 +175,13 @@ void trata_erros(int tipo, char parametro) {
 
 void cd_remoto(int socket, string args) {
     // Cria mensagem
-    mensagem_t *msg = monta_mensagem(6, 0, args);
+    mensagem_t *msg = monta_mensagem(CD, 0, args);
 
     // Envia ao servidor
     envia_mensagem(socket, &msg, 1);
     //libera_mensagem(msg);
+
+    imprime_mensagem(*msg);
 
     mensagem_t *msg_ok = NULL;
     aloca_mensagem(&msg_ok);
