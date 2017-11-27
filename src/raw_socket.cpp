@@ -236,19 +236,24 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
             if(n == inicio%TAM_SEQUENCIA) { 
                 // reenvia janela[0]
                 enviada[0] = 0;
+                
+                printf("Recebeu NACK %d\n", n);
             }
             else if(n == (inicio+1)%TAM_SEQUENCIA) { 
                 // reenviae janela[1] e janela desliza 1
                 enviada[0] = enviada[1]; enviada[1] = enviada[2]; enviada[2] = 0;
                 inicio += 1;
+
+                printf("Recebeu NACK %d\n", n);
             }
             else if(n == (inicio+2)%TAM_SEQUENCIA) {
                 // reenviae janela[2] e janela desliza 2
                 enviada[0] = enviada[2]; enviada[1] = 0; enviada[2] = 0;
                 inicio += 2;
+
+                printf("Recebeu NACK %d\n", n);
             }
             resposta->tipo = TRATADO;
-            printf("Recebeu NACK %d\n", n);
 
             ++DEBUG;
             if(DEBUG > 5) {
