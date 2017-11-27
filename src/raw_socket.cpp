@@ -263,7 +263,7 @@ void envia_confirmacao(int socket, int seq, int tipo) {
     mensagem_t *msg = monta_mensagem(tipo, 0, c_seq); 
     
     char *m = NULL;
-    aloca_str(&m, msg->tamanho+4);
+    aloca_str(&m, TAM_MSG);//msg->tamanho+4);
     m = msg_to_cstr(msg, m);
 
     //imprime_mensagem(*msg);
