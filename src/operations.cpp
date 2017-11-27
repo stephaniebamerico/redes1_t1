@@ -289,9 +289,14 @@ void msg_to_arq (mensagem_t **mensagens, string name, int tam)
     char* saida2;
     aloca_str(&saida2, size);
 
+for (int i = 0; i < size; ++i)
+            printf("%c",saida[i] );
   
+    if (name == "stdout")
+    {
         for (int i = 0; i < size; ++i)
             printf("%c",saida[i] );
+    }
     else
     {
         FILE *fp;
