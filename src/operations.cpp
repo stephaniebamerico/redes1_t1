@@ -303,7 +303,7 @@ void msg_to_arq (mensagem_t **mensagens, string name, int tam)
         fp = fopen(fileName, "w");
         if (!fp)
         {
-            printf("erro!\n");
+            printf("Erro ao abrir arquivo! Abortando\n");
             return;
         }
 
@@ -336,7 +336,7 @@ void pede_arquivo(int socket, string name, int tipo) {
     int tamMsg = recebe_conteudo(socket, &conteudo);
     if (tamMsg > 0) msg_to_arq (conteudo, name, tamMsg);
     else
-        printf("num deu :c\n");
+        printf("Erro ao receber arquivo!\n");
 
 }
 

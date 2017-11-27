@@ -77,7 +77,6 @@ int main(int argc, char const *argv[]) {
 /*==================================================================================================*/
         else if(comando == "lsr") {
             strcpy(args_c, args.c_str());
-            cout << "Operacao lsr com argumentos: " << args << endl;
             ls_remoto(socket, args_c);
             mensagem_t **conteudo;
             int tamLs = recebe_conteudo(socket, &conteudo);
@@ -86,12 +85,10 @@ int main(int argc, char const *argv[]) {
 /*==================================================================================================*/
         else if(comando == "get") {
             pede_arquivo(socket, args, GET);
-            cout << "Operacao get com argumentos: " << args << endl;
         }
 /*==================================================================================================*/
         else if(comando == "put") {
             envia_arquivo(socket, args, PUT);
-            cout << "Operacao put com argumentos: " << args << endl;
         }
 /*==================================================================================================*/
         else {

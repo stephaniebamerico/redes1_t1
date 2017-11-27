@@ -24,8 +24,8 @@ int main(int argc, char const *argv[]) {
         
         if(recebe_mensagem(socket, msg_recebida)) {
             //DEBUG
-            cout << endl << "Mensagem recebida: " << endl;
-            imprime_mensagem(*msg_recebida);
+            /*cout << endl << "Mensagem recebida: " << endl;
+            imprime_mensagem(*msg_recebida);*/
 
             envia_confirmacao(socket, msg_recebida->sequencia, ACK);
 /*==================================================================================================*/
@@ -46,7 +46,7 @@ int main(int argc, char const *argv[]) {
                     }
                     else 
                     {
-                        cout << "CD: outro erro" << endl;
+                        cout << "CD: Arquivo Inexistente" << endl;
                         erro[0] = 2;
                         msg_resposta = monta_mensagem(ERRO, 0, erro);
                     }
@@ -72,14 +72,14 @@ int main(int argc, char const *argv[]) {
                     }
                     else if (errno == EACCES)
                     {
-                        cout << "erro de acesso" << endl;
+                        cout << "LS: Erro de acesso" << endl;
                         char erro[1]; erro[0] = 2;
                         msg_resposta = monta_mensagem(ERRO, 0, erro);
                         envia_mensagem(socket, &msg_resposta, 1);
                     }
                     else 
                     {
-                        cout << "outro erro" << endl;
+                        cout << "LS: Outro erro" << endl;
                         char erro[1]; erro[0] = 1;
                         msg_resposta = monta_mensagem(ERRO, 0, erro);
                         envia_mensagem(socket, &msg_resposta, 1);
@@ -87,7 +87,7 @@ int main(int argc, char const *argv[]) {
                 }
                 else
                 {
-                    cout << "ERRROUUUUUUU" << endl;
+                    cout << "LS:Erro" << endl;
                     char erro[1]; erro[0] = 1;
                     msg_resposta = monta_mensagem(ERRO, 0, erro);
                         envia_mensagem(socket, &msg_resposta, 1);
