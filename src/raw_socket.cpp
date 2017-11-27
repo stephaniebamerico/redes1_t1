@@ -133,7 +133,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
         }
     }
 
-    msg_to_arq (*msg, "stdout", tam);
+    
     return tam;
 }
 
