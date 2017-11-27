@@ -86,10 +86,10 @@ int main(int argc, char const *argv[]) {
                     }
                 }
                 else {
-                    cout << "LS:Erro" << endl;
+                    cout << "LS: Erro" << endl;
                     char erro[1]; erro[0] = 1;
                     msg_resposta = monta_mensagem(ERRO, 0, erro);
-                        envia_mensagem(socket, &msg_resposta, 1);
+                    envia_mensagem(socket, &msg_resposta, 1);
                 }
             }
 /*==================================================================================================*/
