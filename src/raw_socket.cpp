@@ -251,10 +251,9 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
             printf("Recebeu NACK %d\n", n);
 
             ++DEBUG;
-            if(DEBUG > 5) {
-                scanf("ja deu mais de 5: %d", &n);
+            /*if(DEBUG > 5) {
                 resposta->paridade = calcula_paridade(*resposta);
-            }
+            }*/
         }
     }
 

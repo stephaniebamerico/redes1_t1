@@ -118,13 +118,13 @@ int main(int argc, char const *argv[]) {
             envia_mensagem(socket, &(msg[4]), 1);
 
             for (int i = 0; i < qtd; ++i) {
-                strcpy(args_c, to_string(i+10).c_str());
+                strcpy(args_c, to_string(i).c_str());
                 msg[i] = monta_mensagem(IMPRIMA, i%TAM_SEQUENCIA, args_c);
                 cout << "Mensagem " << i << ":" << endl;
                 imprime_mensagem(*(msg[i]));
             }
 
-            msg[500]->paridade = 0;
+            msg[qtd-5]->paridade = msg[qtd-5]->paridade+10;
             
             envia_mensagem(socket, msg, qtd);
         }
