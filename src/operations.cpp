@@ -241,7 +241,7 @@ void char_to_msg (int socket, char* buffer, int tam)
     //vetor de mensagens
     mensagem_t **mensagens = NULL;
 
-    mensagens = (mensagem_t **) malloc((totalPos+1)*sizeof(mensagem_t**));
+    mensagens = (mensagem_t **) malloc((totalPos)*sizeof(mensagem_t**));
 
     char *aux;
     aloca_str(&aux, 32);
@@ -260,7 +260,7 @@ void char_to_msg (int socket, char* buffer, int tam)
     mensagem_t *msg;
 
     char *cstr = NULL;
-    string sstr = to_string(totalPos+1);
+    string sstr = to_string(totalPos);
     aloca_str(&cstr, sstr.size());
     strcpy(cstr, sstr.c_str());
     
@@ -268,9 +268,10 @@ void char_to_msg (int socket, char* buffer, int tam)
     cout << "Mensagem TAM:" << endl;
     imprime_mensagem(*msg);
     envia_mensagem(socket, &(msg), 1);
-    mensagens[totalPos]= monta_mensagem(FIM,totalPos%TAM_SEQUENCIA, NULL );
-    envia_mensagem(socket, mensagens, totalPos+1);
-
+    envia_mensagem(socket, mensagens, totalPos);
+    mensagem_t *msg_fim;
+    msg_fim = monta_mensagem(FIM,totalPos%TAM_SEQUENCIA, NULL );
+    envia_mensagem(socket, &msg_fim, 1);
 
 
 }
@@ -282,7 +283,7 @@ void msg_to_arq (mensagem_t **mensagens, string name, int tam)
     int size =0;
     char* saida;
     aloca_str(&saida, tam*31);
-    for (int i = 0; i < tam-1; ++i)
+    for (int i = 0; i < tam; ++i)
     {
         size+=mensagens[i]->tamanho;
         copiaString(saida+i*31, mensagens[i]->dados, mensagens[i]->tamanho);
@@ -290,8 +291,6 @@ void msg_to_arq (mensagem_t **mensagens, string name, int tam)
     char* saida2;
     aloca_str(&saida2, size);
 
-for (int i = 0; i < size; ++i)
-            printf("%c",saida[i] );
   
     if (name == "stdout")
     {
