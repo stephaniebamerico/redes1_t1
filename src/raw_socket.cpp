@@ -172,12 +172,6 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
     char *r = NULL, *m = NULL;
     mensagem_t *resposta = NULL;
     bool enviada[3];
-
-    /*msg[4] = monta_mensagem(TAMANHO, 0, args_c);
-    cout << "Mensagem TAM:" << endl;
-    imprime_mensagem(*(msg[4]));        
-    envia_mensagem(socket, &(msg[4]), 1);
-    */
     
     aloca_str(&r, TAM_MSG);
     aloca_str(&m, (*msg)->tamanho+4); 
