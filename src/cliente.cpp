@@ -81,7 +81,8 @@ int main(int argc, char const *argv[]) {
             cout << "Operacao lsr com argumentos: " << args << endl;
             ls_remoto(socket, args);
             mensagem_t **conteudo;
-            recebe_conteudo(socket, &conteudo);
+            int tamLs = recebe_conteudo(socket, &conteudo);
+            if (tamLs > 0) msg_to_arq (conteudo, "stdout", tamLs);
         }
 /*==================================================================================================*/
         else if(comando == "get") {

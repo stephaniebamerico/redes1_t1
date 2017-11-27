@@ -119,7 +119,7 @@ char calcula_paridade(mensagem_t msg) {
 
     char paridade = 0;
     for (int i = 0; i < msg.tamanho; ++i) {
-        paridade = paridade | m[i];
+        paridade = paridade xor m[i];
     }
 
     //free(m);
