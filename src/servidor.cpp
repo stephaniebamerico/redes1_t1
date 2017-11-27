@@ -22,9 +22,9 @@ int main(int argc, char const *argv[]) {
         printf("antes memset\n");
         printf("antes memset\n");
         printf("antes memset\n");
-        memset(msg_recebida, 0, sizeof(mensagem_t));
         if(msg_recebida->dados)
             memset(msg_recebida->dados, 0, msg_recebida->tamanho);
+        memset(msg_recebida, 0, sizeof(mensagem_t));
         printf("depois memset\n");
         if(recebe_mensagem(socket, msg_recebida)) {
             //DEBUG
