@@ -19,55 +19,37 @@ void changeDir (char * dir)
 
 int* testOptions (char * options)
 {
-    errno = 0;
+    printf("%s\n",options );
     //opt 1: -l, op2: -a
     int* opt = (int*) malloc (sizeof(int)*2);
     opt[0]=0;
     opt[1]=0;
+    char space[2] = " ";
+    char *token;
     /* get the first token */
-    if (strlen(options)==0)
-        return opt;
-    if (strlen(options)==2)
-    {
-        if (options[1]=='l')
+    token = strtok(options, space);
+    //código de erro é 0
+    errno = 0;
+
+    /* walk through other tokens */
+    while( token != NULL ) {
+        //se é opção -l, opt[0] é 1
+        if (strcmp (token, "-l") == 0)
             opt[0]=1;
-        else if (options[1]=='a')
+        //se é opção -a, opt[0] é 1
+        else if (strcmp (token, "-a") == 0)
             opt[1]=1;
-        else
-        {
-            errno = EINVAL;
-            return NULL;
-        }
-    }
-    else if (strlen(options)==5)
-    {
-        if (options[1]=='l' && options[4] == 'a')
-        {
-            opt[0]=1; 
-            opt[1]=1;
-        }
-        else if  (options[1]=='a' && options[4] == 'l')
-        {
-            opt[0]=1; 
-            opt[1]=1;
-        }
-        else
-        {
+        else { 
+            //argumento inválido, altera variável errno e renorta com ponteiro nulo
             errno = EINVAL;
             return NULL;
         }
 
-
+        //corta próxima parte da string 
+        token = strtok(NULL, space);
     }
-    else
-    {
-        errno = EINVAL;
-        return NULL;
-    }  
-    return opt;
-   
     //retorna opt (com 0,0 se não tem argumentos ou 1 na posição do argumento que tiver)
-    
+    return opt;
 }
 
 string list(int a, int l)
@@ -284,6 +266,8 @@ void char_to_msg (int socket, char* buffer, int tam)
     strcpy(cstr, sstr.c_str());
     
     msg = monta_mensagem(TAMANHO, 0, cstr);
+    cout << "Mensagem TAM:" << endl;
+    imprime_mensagem(*msg);
     envia_mensagem(socket, &(msg), 1);
     envia_mensagem(socket, mensagens, totalPos);
     mensagem_t *msg_fim;
