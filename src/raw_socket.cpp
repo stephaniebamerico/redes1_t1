@@ -183,7 +183,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
     while(inicio < tam) {
         for (int i = 0; i < 3 && i < tam-inicio; ++i) {
             if(!enviada[i]) {
-                m = msg_to_cstr(msg[(inicio+i)%TAM_SEQUENCIA], m);
+                m = msg_to_cstr(msg[inicio+i], m);
                 if(send(socket, m, TAM_MSG, 0) < 0) {
                     cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
                     exit(-1);
