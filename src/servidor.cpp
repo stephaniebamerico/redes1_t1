@@ -65,11 +65,13 @@ int main(int argc, char const *argv[]) {
                     }
                     else if (errno == EACCES)
                     {
+                        cout << "erro de acesso" << endl;
                         msg_resposta = monta_mensagem(ERRO, 0, "2");
                         envia_mensagem(socket, &msg_resposta, 1);
                     }
                     else 
                     {
+                        cout << "outro erro" << endl;
                         msg_resposta = monta_mensagem(ERRO, 0, "1");
                         envia_mensagem(socket, &msg_resposta, 1);
                     }
@@ -77,6 +79,7 @@ int main(int argc, char const *argv[]) {
                 }
                 else
                 {
+                    cout << "ERRROUUUUUUU" << endl;
                     msg_resposta = monta_mensagem(ERRO, 0, "1");
                         envia_mensagem(socket, &msg_resposta, 1);
                 }
