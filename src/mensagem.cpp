@@ -175,6 +175,7 @@ void trata_erros(int tipo, char parametro) {
 
 void cd_remoto(int socket, string args) {
     // Cria mensagem
+    cout << args << endl;
     mensagem_t *msg = monta_mensagem(6, 0, args);
 
     // Envia ao servidor
