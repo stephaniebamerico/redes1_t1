@@ -17,11 +17,11 @@ int main(int argc, char const *argv[]) {
     /* Socket aberto com sucesso, iniciar cliente: */
 
     string operacao, comando, args;
+    char *args_c = NULL;
+    aloca_str(&args_c, TAM_MSG);
     int comando_pfim;
     
     imprimeMenu();
-
-    int *lsArgs = (int*)malloc (3*sizeof(int));
     while(1) {
         cout << endl << "Entre com a operacao desejada: ";
         getline(cin, operacao);
@@ -40,11 +40,9 @@ int main(int argc, char const *argv[]) {
 /*==================================================================================================*/
         if(comando == "cd") {
             if(args.size() > 0 && args.size() < 31) {
-                char* cdArgs = NULL;
-                aloca_str(&cdArgs, args.size());
-                strcpy(cdArgs, args.c_str());
+                strcpy(args_c, args.c_str());
 
-                changeDir(cdArgs);
+                changeDir(args_c);
                 if(errno == 0) 
                     system ("pwd");
                 else
@@ -56,18 +54,18 @@ int main(int argc, char const *argv[]) {
 /*==================================================================================================*/
         else if(comando == "cdr") {
             if(args.size() > 0 && args.size() < 31) {
-                cd_remoto(socket, args);
+                strcpy(args_c, args.c_str());
+                cd_remoto(socket, args_c);
             }
             else
                 cout << "Endereço com tamanho inválido" << endl;
         }
 /*==================================================================================================*/
         else if(comando == "ls") {
-            char* lsArguments = NULL;
-            aloca_str(&lsArguments, args.size());
-            strcpy(lsArguments, args.c_str());
+            strcpy(args_c, args.c_str());
+            int *lsArgs = (int *) malloc (3*sizeof(int));
             
-            lsArgs = testOptions(lsArguments);
+            lsArgs = testOptions(args_c);
             if (errno == 0) {
                 cout << list(lsArgs[1], lsArgs[0]);
                 if (errno)
@@ -78,8 +76,9 @@ int main(int argc, char const *argv[]) {
         }
 /*==================================================================================================*/
         else if(comando == "lsr") {
+            strcpy(args_c, args.c_str());
             cout << "Operacao lsr com argumentos: " << args << endl;
-            ls_remoto(socket, args);
+            ls_remoto(socket, args_c);
             mensagem_t **conteudo;
             int tamLs = recebe_conteudo(socket, &conteudo);
             if (tamLs > 0) msg_to_arq (conteudo, "stdout", tamLs);
@@ -100,7 +99,9 @@ int main(int argc, char const *argv[]) {
 
             int qtd = 1035;
             mensagem_t **msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*(qtd+2));
-            msg[5] = monta_mensagem(20, 0, args);
+            
+            strcpy(args_c, args.c_str());
+            msg[5] = monta_mensagem(20, 0, args_c);
             
 
             cout << "Mensagem 20 (antes):" << endl;

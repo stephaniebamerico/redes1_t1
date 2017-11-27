@@ -48,7 +48,7 @@ char* msg_to_cstr(mensagem_t *msg, char* cstr);
 
 mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg);
 
-mensagem_t* monta_mensagem(int tipo, int sequencia, string args);
+mensagem_t* monta_mensagem(int tipo, int sequencia, char *args);
 
 char calcula_paridade(mensagem_t msg);
 
@@ -56,8 +56,8 @@ void imprime_mensagem(mensagem_t msg);
 
 void trata_erros(int tipo, char parametro);
 
-void cd_remoto(int socket, string args);
+void cd_remoto(int socket, char *args);
 
-void ls_remoto(int socket, string args);
+void ls_remoto(int socket, char *args);
 
 #endif

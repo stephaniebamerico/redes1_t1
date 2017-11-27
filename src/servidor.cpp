@@ -36,15 +36,18 @@ int main(int argc, char const *argv[]) {
                 if (errno == 0)
                     msg_resposta = monta_mensagem(OK, 0, NULL);
                 else {
+                    char erro[1];
                     if (errno == EACCES)
                     {
                         cout <<"CD: erro de acesso" << endl;
-                        msg_resposta = monta_mensagem(ERRO, 0, "2");
+                        erro[0] = 2;
+                        msg_resposta = monta_mensagem(ERRO, 0, erro);
                     }
                     else 
                     {
                         cout << "CD: outro erro" << endl;
-                        msg_resposta = monta_mensagem(ERRO, 0, "1");
+                        erro[0] = 2;
+                        msg_resposta = monta_mensagem(ERRO, 0, erro);
                     }
                 }
                  envia_mensagem(socket, &msg_resposta, 1);
@@ -77,13 +80,15 @@ int main(int argc, char const *argv[]) {
                     else if (errno == EACCES)
                     {
                         cout << "erro de acesso" << endl;
-                        msg_resposta = monta_mensagem(ERRO, 0, "2");
+                        char erro[1]; erro[0] = 2;
+                        msg_resposta = monta_mensagem(ERRO, 0, erro);
                         envia_mensagem(socket, &msg_resposta, 1);
                     }
                     else 
                     {
                         cout << "outro erro" << endl;
-                        msg_resposta = monta_mensagem(ERRO, 0, "1");
+                        char erro[1]; erro[0] = 1;
+                        msg_resposta = monta_mensagem(ERRO, 0, erro);
                         envia_mensagem(socket, &msg_resposta, 1);
                     }
                     
@@ -91,7 +96,8 @@ int main(int argc, char const *argv[]) {
                 else
                 {
                     cout << "ERRROUUUUUUU" << endl;
-                    msg_resposta = monta_mensagem(ERRO, 0, "1");
+                    char erro[1]; erro[0] = 1;
+                    msg_resposta = monta_mensagem(ERRO, 0, erro);
                         envia_mensagem(socket, &msg_resposta, 1);
                 }
 

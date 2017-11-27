@@ -95,18 +95,23 @@ mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg) {
     return msg;
 }
 
-mensagem_t* monta_mensagem(int tipo, int sequencia, string args) {
+mensagem_t* monta_mensagem(int tipo, int sequencia, char* args) {
     mensagem_t *msg = NULL;
     aloca_mensagem(&msg);
 
     msg->inicio = 0x007E;
-    msg->tamanho = args.size();
+    if(args)
+        msg->tamanho = strlen(args);
+    else
+        msg->tamanho = 0;
     msg->sequencia = sequencia;
     msg->tipo = tipo;
     if(msg->tamanho > 0) {
         aloca_str(&(msg->dados), msg->tamanho);
-        strcpy(msg->dados, args.c_str());
+        strcpy(msg->dados, args);
     }
+    else
+        msg->dados = NULL;
     msg->paridade = calcula_paridade(*msg);
 
     return msg;
@@ -179,7 +184,7 @@ void trata_erros(int tipo, char parametro) {
     }
 }
 
-void cd_remoto(int socket, string args) {
+void cd_remoto(int socket, char *args) {
     // Cria mensagem
     mensagem_t *msg = monta_mensagem(CD, 0, args);
 
@@ -206,7 +211,7 @@ void cd_remoto(int socket, string args) {
     //libera_mensagem(msg_ok);
 }
 
-void ls_remoto(int socket, string args) {
+void ls_remoto(int socket, char *args) {
     // Cria mensagem
     mensagem_t *msg = monta_mensagem(LS, 0, args);
 
