@@ -94,6 +94,10 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 recebida[i] = 1;
                 copia_mensagem(mensagem_recebida, &((*msg)[inicio+i]));
 
+                //DEBUG
+                cout << endl << "[recebe_conteudo] Mensagem recebida: " << endl;
+                imprime_mensagem(*mensagem_recebida);
+
                 //TODO: conferir paridade e enviar NACK
                 
                 if(recebida[0] && recebida[1] && recebida[2]) {
@@ -183,6 +187,11 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                     cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
                     exit(-1);
                 }
+
+                //DEBUG
+                cout << endl << "[envia_conteudo] Mensagem enviada: " << endl;
+                imprime_mensagem(*msg[inicio+i]);
+
                 enviada[i] = 1;
                 ultimo_envio = time(NULL);
             }

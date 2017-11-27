@@ -28,8 +28,6 @@ int main(int argc, char const *argv[]) {
 /*==================================================================================================*/
             if (msg_recebida->tipo == CD) {
                 errno = 0;
-                cout << "mensagem recebida" << endl;
-                imprime_mensagem(*msg_recebida);
                 changeDir (msg_recebida->dados);
                 system("pwd");
                 mensagem_t *msg_resposta;
@@ -51,10 +49,6 @@ int main(int argc, char const *argv[]) {
                     }
                 }
                  envia_mensagem(socket, &msg_resposta, 1);
-
-                //DEBUG
-                cout << endl << "Mensagem enviada: " << endl;
-                imprime_mensagem(*msg_resposta);
                 
                 //libera_mensagem(msg_ok);
                 //libera_mensagem(msg_recebida);
