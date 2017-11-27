@@ -51,7 +51,7 @@ int openRawSocket(char *device) {
   return soquete;
 }
 
-int recebe_conteudo(int socket, mensagem_t **msg) {
+int recebe_conteudo(int socket, mensagem_t ***msg) {
     mensagem_t *msg_tam = NULL;
     aloca_mensagem(&msg_tam);
     msg_tam->tipo = NACK;
@@ -71,7 +71,7 @@ int recebe_conteudo(int socket, mensagem_t **msg) {
     int tam = atoi(msg_tam->dados);
 
     // Aloca espaço para o conteúdo
-    msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*tam);
+    *msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*tam);
     mensagem_t *mensagem_recebida = NULL;
     aloca_mensagem(&mensagem_recebida);
     bool recebida[3];
@@ -92,7 +92,7 @@ int recebe_conteudo(int socket, mensagem_t **msg) {
                 // recebeu mensagem dentro da janela esperada
                 for (i = 0; i <= 2 && seq != (inicio+i)%TAM_SEQUENCIA; ++i);
                 recebida[i] = 1;
-                copia_mensagem(mensagem_recebida, &(msg[inicio+i]));
+                copia_mensagem(mensagem_recebida, &((*msg)[inicio+i]));
 
                 //TODO: conferir paridade e enviar NACK
                 
@@ -133,7 +133,7 @@ int recebe_conteudo(int socket, mensagem_t **msg) {
         }
     }
 
-    msg_to_arq (msg, "stdout", tam);
+    msg_to_arq (*msg, "stdout", tam);
     return tam;
 }
 

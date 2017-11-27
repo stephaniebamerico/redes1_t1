@@ -98,7 +98,7 @@ int main(int argc, char const *argv[]) {
             }
             else {
                 if(msg_recebida->tipo == 20) {
-                    mensagem_t *conteudo;
+                    mensagem_t **conteudo;
                     recebe_conteudo(socket, &conteudo);
                 }
                 /*mensagem_t *msg_ok = monta_mensagem(OK, 0, "");
