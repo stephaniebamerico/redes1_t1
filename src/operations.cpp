@@ -240,7 +240,7 @@ void char_to_msg (int socket, char* buffer, int tam)
     //vetor de mensagens
     mensagem_t **mensagens = NULL;
 
-    mensagens = (mensagem_t **) malloc((posicoes + (resto > 0 ? 1 : 0))*sizeof(mensagem_t**));
+    mensagens = (mensagem_t **) malloc((posicoes + (resto > 0 ? 1 : 0) +1)*sizeof(mensagem_t**));
 
     char *aux;
     aloca_str(&aux, 32);
@@ -253,8 +253,13 @@ void char_to_msg (int socket, char* buffer, int tam)
     {
         //copiaString (aux, bufferResto, resto);
         mensagens[posicoes] = monta_mensagem_2(resto+1,IMPRIMA, posicoes%TAM_SEQUENCIA, buffer+31*posicoes);
-
+        mensagens[(posicoes + (resto > 0 ? 1 : 0) +1)] = monta_mensagem(FIM, posicoes+1%TAM_SEQUENCIA, NULL);
     }
+    else
+    {
+        mensagens[(posicoes + (resto > 0 ? 1 : 0) +1)] = monta_mensagem(FIM, posicoes, NULL );
+    }
+    
     
     mensagem_t *msg;
 
@@ -268,7 +273,7 @@ void char_to_msg (int socket, char* buffer, int tam)
     imprime_mensagem(*msg);
     envia_mensagem(socket, &(msg), 1);
     
-    envia_mensagem(socket, mensagens, posicoes + (resto > 0 ? 1 : 0));
+    envia_mensagem(socket, mensagens, posicoes + (resto > 0 ? 1 : 0)+1);
 
 
 
