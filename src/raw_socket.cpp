@@ -244,7 +244,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 inicio += 3;
             }
             resposta->tipo = TRATADO;
-            printf("Recebeu ACK %d\n", n);
+            //printf("Recebeu ACK %d\n", n);
         }
         else if(resposta->tipo == NACK) {
             n = atoi(resposta->dados);
@@ -252,21 +252,21 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 // reenvia janela[0]
                 enviada[0] = 0;
                 
-                printf("Recebeu NACK %d\n", n);
+                //printf("Recebeu NACK %d\n", n);
             }
             else if(n == (inicio+1)%TAM_SEQUENCIA) { 
                 // reenviae janela[1] e janela desliza 1
                 enviada[0] = 0; enviada[1] = enviada[2]; enviada[2] = 0;
                 inicio += 1;
 
-                printf("Recebeu NACK %d\n", n);
+                //printf("Recebeu NACK %d\n", n);
             }
             else if(n == (inicio+2)%TAM_SEQUENCIA) {
                 // reenviae janela[2] e janela desliza 2
                 enviada[0] = 0; enviada[1] = 0; enviada[2] = 0;
                 inicio += 2;
 
-                printf("Recebeu NACK %d\n", n);
+                //printf("Recebeu NACK %d\n", n);
             }
             resposta->tipo = TRATADO;
             

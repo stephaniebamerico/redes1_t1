@@ -110,7 +110,7 @@ string list(int a, int l)
                     list = list + '\n';
                 }
             }
-            //closedir(dir);  
+            closedir(dir);  
         }
         else
             errno = EACCES;
@@ -131,7 +131,7 @@ string list(int a, int l)
                 }
             }
             list = list + '\n';
-            //closedir (dir);
+            closedir (dir);
         } else {
         /* could not open directory */
             errno = EACCES;
