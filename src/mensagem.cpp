@@ -175,13 +175,12 @@ void trata_erros(int tipo, char parametro) {
 
 void cd_remoto(int socket, string args) {
     // Cria mensagem
-    cout << "blah" <<args << endl;
     mensagem_t *msg = monta_mensagem(6, 0, args);
 
     // Envia ao servidor
     envia_mensagem(socket, &msg, 1);
     //libera_mensagem(msg);
-    
+
     mensagem_t *msg_ok = NULL;
     aloca_mensagem(&msg_ok);
     msg_ok->tipo = NACK;

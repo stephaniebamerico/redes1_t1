@@ -25,6 +25,8 @@ int main(int argc, char const *argv[]) {
 /*==================================================================================================*/
             if (msg_recebida->tipo == CD) {
                 errno = 0;
+                cout << "mensagem recebida" << endl;
+                imprime_mensagem(*msg_recebida);
                 chdir (msg_recebida->dados);
                 system("pwd");
                 mensagem_t *msg_resposta;
