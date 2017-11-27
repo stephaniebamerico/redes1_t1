@@ -87,7 +87,7 @@ int recebe_conteudo(int socket, mensagem_t **msg) {
                 || mensagem_recebida->tipo == FIM)) {
             seq = mensagem_recebida->sequencia;
             if(seq >= inicio%TAM_SEQUENCIA && seq <= (inicio+2)%TAM_SEQUENCIA) { 
-                printf("recebeu mensagem na sequencia esperada\n");
+                printf("recebeu mensagem na sequencia esperada: %d\n", seq);
                 // recebeu mensagem dentro da janela esperada
                 for (i = 0; i <= 2 && seq != (inicio+i)%TAM_SEQUENCIA; ++i);
                 recebida[i] = 1;
@@ -109,7 +109,7 @@ int recebe_conteudo(int socket, mensagem_t **msg) {
                 ultimo_envio = time(NULL);
             }
             else {
-                printf("recebeu mensagem na sequencia nao esperada\n");
+                printf("recebeu mensagem na sequencia nao esperada: %d\n", seq);
                 // timeout para ACK: reseta janela
                 inicio = seq;
                 recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
