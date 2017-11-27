@@ -270,35 +270,37 @@ void msg_to_arq (mensagem_t **mensagens, string name, int tam)
     aloca_str(&saida, tam*31);
     for (int i = 0; i < tam; ++i)
     {
-        printf("%s\n",mensagens[i]->dados );
         size+=mensagens[i]->tamanho;
         copiaString(saida+i*31, mensagens[i]->dados, mensagens[i]->tamanho);
-
-    }
-    for (int i = 0; i < size; ++i)
-    {
-        printf("%c", saida[i]);
     }
     /*if (resto > 0)
     {
         copiaString(saida+posicoes*31,mensagens[posicoes]->dados,resto-1);
 
     }*/
-    FILE *fp;
-    char* fileName;
-    aloca_str(&fileName, name.size());
-    strcpy(fileName, name.c_str());
-    fp = fopen(fileName, "w");
-    if (!fp)
+    if (name == "stdout")
     {
-        printf("erro!\n");
-        return;
+        printf("%s\n", saida);
     }
+    else
+    {
+        FILE *fp;
+        char* fileName;
+        aloca_str(&fileName, name.size());
+        strcpy(fileName, name.c_str());
+        fp = fopen(fileName, "w");
+        if (!fp)
+        {
+            printf("erro!\n");
+            return;
+        }
 
-    fwrite(saida, 1, size,fp);
-    fclose(fp);
+        fwrite(saida, 1, size,fp);
+        fclose(fp);
 
-    cout << endl << endl;
+    }
+    
+
 }
 
 
