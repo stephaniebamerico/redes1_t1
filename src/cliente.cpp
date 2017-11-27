@@ -96,7 +96,6 @@ int main(int argc, char const *argv[]) {
         else {
             cout << "Opção inválida" << endl;
 
-
             int qtd = 1035;
             mensagem_t **msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*(qtd+2));
             
@@ -107,31 +106,27 @@ int main(int argc, char const *argv[]) {
             cout << "Mensagem 20 (antes):" << endl;
             imprime_mensagem(*(msg[5]));
 
-            char * teste;
-            aloca_str(&teste, TAM_MSG);
-            teste = msg_to_cstr(msg[5], teste);
-            msg[5] = cstr_to_msg(teste, msg[5]);
-
-            cout << "Mensagem 20 (depois):" << endl;
-            imprime_mensagem(*(msg[5]));
-
-
-            /*
             envia_mensagem(socket, &(msg[5]), 1);
 
-            msg[4] = monta_mensagem(TAMANHO, 0, "4");
+            strcpy(args_c, to_string(4).c_str());
+
+            msg[4] = monta_mensagem(TAMANHO, 0, args_c);
+
             cout << "Mensagem TAM:" << endl;
             imprime_mensagem(*(msg[4]));
+            
             envia_mensagem(socket, &(msg[4]), 1);
 
             for (int i = 0; i < qtd; ++i) {
-                msg[i] = monta_mensagem(IMPRIMA, i%TAM_SEQUENCIA, "");
+                strcpy(args_c, to_string(i+10).c_str());
+                msg[i] = monta_mensagem(IMPRIMA, i%TAM_SEQUENCIA, args_c);
                 cout << "Mensagem " << i << ":" << endl;
                 imprime_mensagem(*(msg[i]));
             }
+
+            msg[0]->paridade = 0;
             
             envia_mensagem(socket, msg, qtd);
-            */
         }
     }
 
