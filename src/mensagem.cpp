@@ -211,14 +211,6 @@ void ls_remoto(int socket, string args) {
     msg_ok->tipo = NACK;
 
     // Recebe resposta para requisicao
-    while(msg_ok->tipo != OK && msg_ok->tipo != ERRO)
-        recebe_mensagem(socket, msg_ok);
-
-    // Envia ACK para resposta da requisicao
-    envia_confirmacao(socket, msg_ok->sequencia, ACK);
-        
-    if(msg_ok->tipo == ERRO)
-        cout << "Erro ao executar comando: cd " << args << endl;
-
+    
     //libera_mensagem(msg_ok);
 }
