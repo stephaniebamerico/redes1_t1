@@ -64,8 +64,9 @@ char* msg_to_cstr(mensagem_t *msg, char* cstr) {
 
     printf("##### msg_to_cstr:\n");
     printf("##### cstr: ");
-    for (int i = 0; i <= msg->tamanho+3; ++i) {
-        printf(" %d ", (int) cstr[i]);
+    for (int i = 0; i <= msg->tamanho+4; ++i) {
+        //printf(" %d ", (int) cstr[i]);
+        printf(" %c ", cstr[i]);
     }
     printf("\n");
     printf("##### msg:\n");
@@ -96,7 +97,8 @@ mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg) {
     printf("##### cstr_to_msg:\n");
     printf("##### cstr: ");
     for (int i = 0; i < msg->tamanho+3; ++i) {
-        printf(" %d ", (int) cstr[i]);
+        //printf(" %d ", (int) cstr[i]);
+        printf(" %c ", cstr[i]);
     }
     printf("\n");
     printf("##### msg:\n");
