@@ -113,13 +113,16 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 else {
                     envia_confirmacao(socket, seq, NACK);
                     ++DEBUG;
-                    if(i == 1)
+                    if(i == 1) {
                         recebida[0] = 0; recebida[1] = recebida[2]; recebida[2] = 0;
-                    else
+                    }
+                    else {
                         recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
+                    }
                     inicio = inicio+i;
-                    if(DEBUG > 2)
+                    if(DEBUG > 2){
                         exit(-1);
+                    }
                 }
 
                 ultimo_envio = time(NULL);
@@ -201,7 +204,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
 
     // Tenta enviar mensagem
     time_t ultimo_envio = time(NULL);
-    int inicio = 0, n = 0;
+    int inicio = 0, n = 0; int DEBUG=0;
     while(inicio < tam) {
         for (int i = 0; i < 3 && i < tam-inicio; ++i) {
             if(!enviada[i]) {
