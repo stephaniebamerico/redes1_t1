@@ -101,7 +101,7 @@ int main(int argc, char const *argv[]) {
             }
             else if (msg_recebida->tipo == PUT) 
             {
-                pede_arquivo(socket, "stdout", PUT);
+                pede_arquivo(socket, msg_recebida->dados, PUT);
             }
         }
     }
