@@ -107,7 +107,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                         recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
                     }
 
-                    printf("Recebido: %d / %d\n", inicio+i, tam);
+                    printf("Recebido: %d / %d\n", inicio+i+1, tam);
                 }
                 else {
                     envia_confirmacao(socket, seq, NACK);
@@ -224,7 +224,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 enviada[i] = 1;
                 ultimo_envio = time(NULL);
 
-                printf("Enviado: %d / %d\n", inicio+i, tam);
+                printf("Enviado: %d / %d\n", inicio+i+1, tam);
             }
         }
 
