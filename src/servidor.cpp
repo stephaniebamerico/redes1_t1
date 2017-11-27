@@ -32,14 +32,14 @@ int main(int argc, char const *argv[]) {
             if (msg_recebida->tipo == CD) {
                 errno = 0;
                 changeDir (msg_recebida->dados);
-                
-                cout << "CD: ";
-                system("pwd");
-                cout << endl;
 
                 mensagem_t *msg_resposta;
-                if (errno == 0)
+                if (errno == 0) {
+                    cout << "CD: ";
+                    system("pwd");
+                    cout << endl;
                     msg_resposta = monta_mensagem(OK, 0, NULL);
+                }
                 else {
                     char erro[1];
                     if (errno == EACCES) {
@@ -98,8 +98,8 @@ int main(int argc, char const *argv[]) {
                 cout << "GET: Ok" << endl;
             }
             else if (msg_recebida->tipo == PUT) {
-                cout << "PUT: Ok" << endl;
                 pede_arquivo(socket, msg_recebida->dados, PUT);
+                cout << "PUT: Ok" << endl;
             }
         }
     }

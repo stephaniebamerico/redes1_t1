@@ -292,6 +292,6 @@ void envia_confirmacao(int socket, int seq, int tipo) {
         cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
         exit(-1);
     }
-    //string op = (tipo == ACK) ? "ACK" : "NACK";
-    //cout << "Enviado " << op << " " << seq << endl;
+    string op = (tipo == ACK) ? "ACK" : "NACK";
+    cout << op << " " << seq << endl;
 }
