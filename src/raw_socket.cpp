@@ -88,19 +88,15 @@ int recebe_conteudo(int socket, mensagem_t **msg) {
             seq = mensagem_recebida->sequencia;
             if(seq == inicio%TAM_SEQUENCIA || 
                 seq == (inicio+1)%TAM_SEQUENCIA || 
-                seq == (inicio+2)%TAM_SEQUENCIA) { 
-                printf("recebeu mensagem na sequencia esperada: %d inicio: %d\n", seq, inicio);
+                seq == (inicio+2)%TAM_SEQUENCIA) {
                 // recebeu mensagem dentro da janela esperada
                 for (i = 0; i <= 2 && seq != (inicio+i)%TAM_SEQUENCIA; ++i);
                 recebida[i] = 1;
                 copia_mensagem(mensagem_recebida, &(msg[inicio+i]));
 
-                printf("recebeu mensagem: %d\n", seq);
-
                 //TODO: conferir paridade e enviar NACK
                 
                 if(recebida[0] && recebida[1] && recebida[2]) {
-                    printf("envia ACK de tudo\n");
                     // recebeu a janela toda
                     envia_confirmacao(socket, (inicio+2)%TAM_SEQUENCIA, ACK);
                     
@@ -111,21 +107,16 @@ int recebe_conteudo(int socket, mensagem_t **msg) {
                 ultimo_envio = time(NULL);
             }
             else {
-                printf("recebeu mensagem na sequencia nao esperada: %d inicio: %d\n", seq, inicio);
                 // timeout para ACK: reseta janela
-                for (i = 0; inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i) {
-                    printf("i: %d inicio: %d (inicio-i)seq: %d\n", i, inicio, (inicio-i)%TAM_SEQUENCIA);
-                }
+                for (i = 0; inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
                 inicio = inicio-i;
                 recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
             }
         }
         else if(2*(time(NULL)-ultimo_envio) > TIMEOUT) {
-            printf("timeout %d %d %d\n", recebida[0], recebida[1], recebida[2]);
             // timeout para receber a janela
             for (i = 0; i <= 2 && recebida[i]; ++i);
             if(i > 0) {
-                printf("tinha recebido algo\n");
                 --i;
                 envia_confirmacao(socket, (inicio+i)%TAM_SEQUENCIA, ACK);
                 if(i == 0) {
