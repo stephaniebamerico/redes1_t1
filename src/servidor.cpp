@@ -34,7 +34,7 @@ int main(int argc, char const *argv[]) {
                 system("pwd");
                 mensagem_t *msg_resposta;
                 if (errno == 0)
-                    msg_resposta = monta_mensagem(OK, 0, "");
+                    msg_resposta = monta_mensagem(OK, 0, NULL);
                 else {
                     if (errno == EACCES)
                     {
