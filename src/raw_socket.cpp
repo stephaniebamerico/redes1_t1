@@ -111,7 +111,9 @@ int recebe_conteudo(int socket, mensagem_t **msg) {
             else {
                 printf("recebeu mensagem na sequencia nao esperada: %d inicio: %d\n", seq, inicio);
                 // timeout para ACK: reseta janela
-                for (i = 0; inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
+                for (i = 0; inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i) {
+                    printf("i: %d inicio: %d (inicio-i)seq: %d\n", i, inicio, (inicio-i)%TAM_SEQUENCIA);
+                }
                 inicio = inicio-i;
                 recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
             }
