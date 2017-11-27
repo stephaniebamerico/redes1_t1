@@ -166,33 +166,14 @@ Copia o arquivo [endereco remoto] do servidor para o cliente.
 //  tam/32
 
 
-void libera_vetor_de_mensagens (mensagem_t **msgs, int tam)
-{
-    int pos = tam/32;
-    int resto = tam%32;
-    for (int i = 0; i < pos; ++i)
-    {
-        
-        free(msgs[i]->dados);
-        free(msgs[i]);
-    }
-    if (resto > 0) 
-    {
-        free(msgs[pos]);
-        free(msgs[pos]->dados);
-        
-    }
-    free (msgs);
-
-}
-
 
 void copiaString (char * dest, char * src,int tam)
 {
-    for (int i = 0; i < tam-1; ++i)
+    for (int i = 0; i < tam; ++i)
         dest[i] = src[i];
 }
 
+//monta uma mensagem passando tam como parametro, e args é um char*
 mensagem_t* monta_mensagem_2(int tam, int tipo, int sequencia, char* args) {
     mensagem_t *msg = NULL;
     aloca_mensagem(&msg);
@@ -210,39 +191,25 @@ mensagem_t* monta_mensagem_2(int tam, int tipo, int sequencia, char* args) {
     return msg;
 }
 
-void printMsgData(int tam, char * str)
+void arq_to_msg(int socket, string name)
 {
-    for (int i = 0; i < tam; ++i)
-    {
-        printf("%c",str[i] );
-    }
-}
-
-
-void monta_msgs_com_arq (int socket, string name)
-{
-    setvbuf(stdout, NULL, _IOLBF,0);
-    mensagem_t **mensagens = NULL;
+    //nome do arquivo a ser aberto
     char* nome;
     aloca_str(&nome, name.size());
+    //passa a string name para um vetor de chars
     strcpy (nome, name.c_str());
 
-    /*int filedesc = open(nome, O_RDONLY);
-    char *buffer;
-    aloca_str(&buffer, 40);
-    if(filedesc < 0)
-    {
-        printf ("Erro ao abrir o arquivo!\n");
-        return;
-    }*/
     struct stat fileStat;    
     stat(nome,&fileStat); 
+    //descobre tam do arquivo em bytes
     int tam = fileStat.st_size;
-    int posicoes = tam/30;
-    int resto = tam%30;
-    string buf;
+
+    //quantas posições o vetor de mensagens precisa
+    int posicoes = tam/31;
+    //se tiver resto, precisa de uma posição a mais
+    int resto = tam%31;
     char * buffer;
-    aloca_str(&buffer, posicoes*30);
+    aloca_str(&buffer, posicoes*31+resto+1);
     char* bufferResto;
     if (resto)
         aloca_str(&bufferResto, resto+2);
@@ -254,74 +221,87 @@ void monta_msgs_com_arq (int socket, string name)
         printf("erro!\n");
         return;
     }
-
-    fread(buffer, 30, posicoes, fp);
+    //lê os dados
+    fread(buffer, 31, posicoes, fp);
     
     fread(bufferResto, resto, 1, fp);
     fclose(fp);
-    
+    copiaString(buffer+31*posicoes,bufferResto, resto+1);
+    char_to_msg(socket, buffer, tam);
+}
 
 
-    mensagens = (mensagem_t **) malloc((posicoes)*sizeof(mensagem_t**));
-     /*for (int i = 0; i < posicoes; ++i)
-    {
-        aloca_mensagem(&mensagens[i]);
-        aloca_str(&((mensagens[i]))->dados, 32);
 
-    }
-    if (resto > 0) 
-    {
+void char_to_msg (int socket, char* buffer, int tam)
+{
+    //quantas posições o vetor de mensagens precisa
+    int posicoes = tam/31;
+    //se tiver resto, precisa de uma posição a mais
+    int resto = tam%31;
+    //vetor de mensagens
+    mensagem_t **mensagens = NULL;
 
-        aloca_mensagem(&mensagens[posicoes]);
-        aloca_str(&((mensagens[posicoes]))->dados, resto);
-    }*/
+    mensagens = (mensagem_t **) malloc((posicoes + (resto > 0 ? 1 : 0))*sizeof(mensagem_t**));
+
     char *aux;
     aloca_str(&aux, 32);
     for (int i = 0; i < posicoes; ++i)
     {
-        copiaString (aux, buffer+i*30,31);
+        copiaString (aux, buffer+i*31,31);
         mensagens[i] = monta_mensagem_2(31,GET, i%64, aux);
     }
     if (resto)
     {
         //copiaString (aux, bufferResto, resto);
-        mensagens[posicoes] = monta_mensagem_2(resto,GET, posicoes%64, bufferResto);
+        mensagens[posicoes] = monta_mensagem_2(resto+1,GET, posicoes%64, buffer+31*posicoes);
 
     }
+    
+    mensagem_t *msg;
+    msg = monta_mensagem(TAMANHO, 0, to_string(tam) );
+    cout << "Mensagem TAM:" << endl;
+    imprime_mensagem(*msg);
+    envia_mensagem(socket, &(msg), 1);
+    
+    envia_mensagem(socket, mensagens, posicoes + (resto > 0 ? 1 : 0));
+
+
+
+}
+
+void msg_to_arq (mensagem_t **mensagens, string name, int tam)
+{
+    int posicoes = tam/31;
+    int resto = tam%31;
     char* saida;
-    aloca_str(&saida, posicoes*30+resto);
+    aloca_str(&saida, posicoes*31+resto);
 
     for (int i = 0; i < posicoes; ++i)
     {
-        copiaString(saida+i*30, mensagens[i]->dados, mensagens[i]->tamanho);
-        //printMsgData(mensagens[i]->tamanho-1,mensagens[i]->dados);
-        //printMsgData(mensagens[i]->tamanho, saida+i*30);
+        copiaString(saida+i*31, mensagens[i]->dados, mensagens[i]->tamanho);
+
     }
     if (resto)
     {
-        copiaString(saida+posicoes*30,mensagens[posicoes]->dados,resto);
+        copiaString(saida+posicoes*31,mensagens[posicoes]->dados,mensagens[posicoes]->tamanho);
 
     }
-    for (int i = 0; i < posicoes*30+ resto; ++i)
-    {
-        printf("%c",saida[i] );
-    }
-
-    fp = fopen("saida2", "w");
+    FILE *fp;
+    char* fileName;
+    aloca_str(&fileName, name.size());
+    strcpy(fileName, name.c_str());
+    fp = fopen(fileName, "w");
     if (!fp)
     {
         printf("erro!\n");
         return;
     }
 
-    fwrite(saida, 1, 30*(posicoes)+ resto,fp);
+    fwrite(saida, 1, 31*(posicoes)+ resto,fp);
     fclose(fp);
 
     cout << endl << endl;
-    //libera_vetor_de_mensagens(mensagens, tam);
-
 }
-
 
 
 /*

@@ -25,7 +25,12 @@ int* testOptions (char * options);
 
 string list(int a, int l);
 
-void monta_msgs_com_arq (int socket, string name);
+void arq_to_msg (int socket, string name);
+
+void char_to_msg (int socket, char* buffer, int tam);
+
+void msg_to_arq (mensagem_t **mensagens, string name, int tam);
+
 
 #endif
 

@@ -20,8 +20,6 @@ int main(int argc, char const *argv[]) {
             //DEBUG
             cout << endl << "Mensagem recebida: " << endl;
             imprime_mensagem(*msg_recebida);
-
-            envia_confirmacao(socket, msg_recebida->sequencia, ACK);
 /*==================================================================================================*/
             if (msg_recebida->tipo == CD) {
                 errno = 0;
@@ -61,27 +59,26 @@ int main(int argc, char const *argv[]) {
                         char * ls;
                         aloca_str (&ls, lsSaida.size());
                         strcpy(ls, lsSaida.c_str());
-                        msg_resposta = monta_mensagem(OK, 0, ls);
+                        char_to_msg(socket, ls,lsSaida.size() );
                     }
                     else if (errno == EACCES)
+                    {
                         msg_resposta = monta_mensagem(ERRO, 0, "2");
+                        envia_mensagem(socket, &msg_resposta, 1);
+                    }
                     else 
+                    {
                         msg_resposta = monta_mensagem(ERRO, 0, "1");
+                        envia_mensagem(socket, &msg_resposta, 1);
+                    }
                     
                 }
                 else
                 {
-                    
+                    msg_resposta = monta_mensagem(ERRO, 0, "1");
+                        envia_mensagem(socket, &msg_resposta, 1);
                 }
-                envia_mensagem(socket, &msg_resposta, 1);
 
-                //DEBUG
-                cout << endl << "Mensagem enviada: " << endl;
-                imprime_mensagem(*msg_resposta);
-                
-                //libera_mensagem(msg_ok);
-                //libera_mensagem(msg_recebida);
-                aloca_mensagem(&msg_recebida);
             }
             else {
                 if(msg_recebida->tipo == 20) {
