@@ -17,9 +17,14 @@ void changeDir (char * dir)
   
 }
 
-int* testOptions (char * options)
+int* testOptions (char * options, int tam)
 {
-    printf("%s\n",options );
+    printf("estou aqui\n");
+    for (int i = 0; i < tam; ++i)
+    {
+        printf("%c", options[i]);
+    }
+    printf("cheguei aqui\n");
     //opt 1: -l, op2: -a
     int* opt = (int*) malloc (sizeof(int)*2);
     opt[0]=0;
