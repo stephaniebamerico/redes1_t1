@@ -68,6 +68,7 @@ int main(int argc, char const *argv[]) {
                         aloca_str (&ls, lsSaida.size());
                         strcpy(ls, lsSaida.c_str());
                         char_to_msg(socket, ls,lsSaida.size() );
+                        printf("char to msg saiu\n");
                     }
                     else if (errno == EACCES)
                     {
@@ -83,7 +84,6 @@ int main(int argc, char const *argv[]) {
                         msg_resposta = monta_mensagem(ERRO, 0, erro);
                         envia_mensagem(socket, &msg_resposta, 1);
                     }
-                    
                 }
                 else
                 {
