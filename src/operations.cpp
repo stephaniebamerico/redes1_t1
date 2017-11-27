@@ -270,10 +270,8 @@ void char_to_msg (int socket, char* buffer, int tam)
     envia_mensagem(socket, &(msg), 1);
     envia_mensagem(socket, mensagens, totalPos);
     mensagem_t *msg_fim;
-    msg_fim = monta_mensagem(FIM,0, NULL );
+    msg_fim = monta_mensagem(FIM,0, NULL);
     envia_mensagem(socket, &msg_fim, 1);
-
-
 }
 
 void msg_to_arq (mensagem_t **mensagens, string name, int tam)
