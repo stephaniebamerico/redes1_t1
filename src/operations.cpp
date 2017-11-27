@@ -338,6 +338,8 @@ void pede_arquivo(int socket, string name, int tipo) {
     mensagem_t **conteudo;
     int tamMsg = recebe_conteudo(socket, &conteudo);
     if (tamMsg > 0) msg_to_arq (conteudo, name, tamMsg);
+    else
+        printf("num deu :c\n");
 
 }
 
