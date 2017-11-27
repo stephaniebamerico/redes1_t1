@@ -59,7 +59,7 @@ int main(int argc, char const *argv[]) {
             else if (msg_recebida->tipo == LS) {
                 errno = 0;
 
-                lsArgs = testOptions(msg_recebida->dados);
+                lsArgs = testOptions(msg_recebida->dados, msg_recebida->tamanho);
                 
                 mensagem_t *msg_resposta;
                 if (errno == 0) {
