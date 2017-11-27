@@ -160,7 +160,7 @@ bool recebe_mensagem(int socket, mensagem_t *msg) {
     if(poll(&ufds, 1, WAIT) > 0) {
         if(recv(socket, m, TAM_MSG, 0) < 0) {
             cerr << "Erro ao receber mensagem do socket." << endl;
-            exit(-1);
+            return false;
         }
         // Confere se chegou uma mensagem ou se é só lixo
         if(m[0] == 0x007E) {
@@ -193,11 +193,9 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
         for (int i = 0; i < 3 && i < tam-inicio; ++i) {
             if(!enviada[i]) {
                 m = msg_to_cstr(msg[inicio+i], m);
-                if(send(socket, m, TAM_MSG, 0) < 0) {
+                while(send(socket, m, TAM_MSG, 0) < 0) {
                     cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
-                    exit(-1);
                 }
-
                 enviada[i] = 1;
                 ultimo_envio = time(NULL);
             }
@@ -269,10 +267,9 @@ void envia_confirmacao(int socket, int seq, int tipo) {
     m = msg_to_cstr(msg, m);
 
     imprime_mensagem(*msg);
-    int t = send(socket, m, TAM_MSG, 0);
-    if(t < 0) {
+
+    while(send(socket, m, TAM_MSG, 0)) {
         cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
-        exit(-1);
     }
     string op = (tipo == ACK) ? "ACK" : "NACK";
     cout << op << " " << seq << endl;
