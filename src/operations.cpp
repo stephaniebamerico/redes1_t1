@@ -253,11 +253,11 @@ void char_to_msg (int socket, char* buffer, int tam)
     {
         //copiaString (aux, bufferResto, resto);
         mensagens[posicoes] = monta_mensagem_2(resto+1,IMPRIMA, posicoes%TAM_SEQUENCIA, buffer+31*posicoes);
-        mensagens[(posicoes + (resto > 0 ? 1 : 0) +1)] = monta_mensagem(FIM, posicoes+1%TAM_SEQUENCIA, NULL);
+        mensagens[posicoes+1] = monta_mensagem(FIM, posicoes+1%TAM_SEQUENCIA, NULL);
     }
     else
     {
-        mensagens[(posicoes + (resto > 0 ? 1 : 0) +1)] = monta_mensagem(FIM, posicoes, NULL );
+        mensagens[posicoes] = monta_mensagem(FIM, posicoes, NULL );
     }
     
     
