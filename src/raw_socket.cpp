@@ -137,7 +137,9 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                     recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
                 }
                 else {
-                    printf("PROBLEMA AO REDIMENCIONAR\n");
+                    for (i = 0; i <= 3 && inicio+i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
+                    printf("Movendo janela: %d %d\n", inicio, inicio+i);
+                    inicio = inicio+i;
                 }
             }
         }
