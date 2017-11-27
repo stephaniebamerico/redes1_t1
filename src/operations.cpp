@@ -19,24 +19,62 @@ void changeDir (char * dir)
 
 int* testOptions (char * options, int tam)
 {
-    printf("estou aqui\n");
-    for (int i = 0; i < tam; ++i)
+    printf("%d\n",tam );
+    int* opt = (int*) malloc (sizeof(int)*2);
+    opt[0]=0;
+    opt[1]=0;
+    if (tam == 0)
     {
-        printf("%c", options[i]);
+        return opt;
     }
-    printf("cheguei aqui\n");
-    //opt 1: -l, op2: -a
+    if (tam > 5)
+    {
+        errno = EINVAL;
+        return NULL;
+    }
+    if (tam ==2)
+    {
+        if (options[0]=='-' && options[1]=='l')
+        {
+            opt[0]=1;
+        }
+        else if (options[0]=='-' && options[1]=='a')
+        {
+            opt[1]=1;
+        }
+    }
+    else if (tam == 5)
+    {
+        if ( (options[0]=='-' && options[1]=='l') && (options[3]=='-' && options[4]=='a') )
+        {
+            opt[0]=1;
+            opt[1]=1;
+        }
+        else if ( (options[0]=='-' && options[1]=='a') && (options[3]=='-' && options[4]=='l') )
+        {
+            opt[0]=1;
+            opt[1]=1;
+        }
+
+    }
+    else 
+    {
+        errno = EINVAL;
+        return NULL;
+    }
+    return opt;
+    /*//opt 1: -l, op2: -a
     int* opt = (int*) malloc (sizeof(int)*2);
     opt[0]=0;
     opt[1]=0;
     char space[2] = " ";
     char *token;
-    /* get the first token */
+    //get the first token
     token = strtok(options, space);
     //código de erro é 0
     errno = 0;
 
-    /* walk through other tokens */
+    //walk through other tokens 
     while( token != NULL ) {
         //se é opção -l, opt[0] é 1
         if (strcmp (token, "-l") == 0)
@@ -54,7 +92,7 @@ int* testOptions (char * options, int tam)
         token = strtok(NULL, space);
     }
     //retorna opt (com 0,0 se não tem argumentos ou 1 na posição do argumento que tiver)
-    return opt;
+    return opt;*/
 }
 
 string list(int a, int l)
