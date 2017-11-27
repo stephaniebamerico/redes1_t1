@@ -258,7 +258,7 @@ void char_to_msg (int socket, char* buffer, int tam)
     }
     
     mensagem_t *msg;
-    msg = monta_mensagem(TAMANHO, 0, to_string(tam) );
+    msg = monta_mensagem(TAMANHO, 0, to_string(posicoes + (resto > 0 ? 1 : 0)) );
     cout << "Mensagem TAM:" << endl;
     imprime_mensagem(*msg);
     envia_mensagem(socket, &(msg), 1);
