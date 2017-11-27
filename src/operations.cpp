@@ -241,12 +241,12 @@ void char_to_msg (int socket, char* buffer, int tam)
     for (int i = 0; i < posicoes; ++i)
     {
         copiaString (aux, buffer+i*31,31);
-        mensagens[i] = monta_mensagem_2(31,IMPRIMA, i%64, aux);
+        mensagens[i] = monta_mensagem_2(31,IMPRIMA, i%TAM_SEQUENCIA, aux);
     }
     if (resto)
     {
         //copiaString (aux, bufferResto, resto);
-        mensagens[posicoes] = monta_mensagem_2(resto+1,IMPRIMA, posicoes%64, buffer+31*posicoes);
+        mensagens[posicoes] = monta_mensagem_2(resto+1,IMPRIMA, posicoes%TAM_SEQUENCIA, buffer+31*posicoes);
 
     }
     
@@ -279,14 +279,14 @@ void msg_to_arq (mensagem_t **mensagens, string name, int tam)
         size+=mensagens[i]->tamanho;
         copiaString(saida+i*31, mensagens[i]->dados, mensagens[i]->tamanho);
     }
-    /*if (resto > 0)
-    {
-        copiaString(saida+posicoes*31,mensagens[posicoes]->dados,resto-1);
+    char* saida2;
+    aloca_str(&saida2, size);
 
-    }*/
+  
     if (name == "stdout")
     {
-        printf("%s\n", saida);
+        for (int i = 0; i < size; ++i)
+            printf("%c",saida[i] );
     }
     else
     {
