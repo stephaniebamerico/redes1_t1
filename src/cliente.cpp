@@ -124,7 +124,7 @@ int main(int argc, char const *argv[]) {
                 imprime_mensagem(*(msg[i]));
             }
 
-            msg[0]->paridade = 0;
+            msg[500]->paridade = 0;
             
             envia_mensagem(socket, msg, qtd);
         }

@@ -114,7 +114,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 else {
                     envia_confirmacao(socket, seq, NACK);
                 }
-                
+
                 ultimo_envio = time(NULL);
             }
             else {
@@ -185,7 +185,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
 
     // Tenta enviar mensagem
     time_t ultimo_envio = time(NULL);
-    int inicio = 0, n = 0;
+    int inicio = 0, n = 0; int DEBUG = 0;
     while(inicio < tam) {
         for (int i = 0; i < 3 && i < tam-inicio; ++i) {
             if(!enviada[i]) {
@@ -249,6 +249,10 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
             }
             resposta->tipo = TRATADO;
             printf("Recebeu NACK %d\n", n);
+
+            ++DEBUG;
+            if(DEBUG > 5)
+                resposta->paridade = calcula_paridade(*resposta);
         }
     }
 
