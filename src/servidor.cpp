@@ -16,9 +16,7 @@ int main(int argc, char const *argv[]) {
     mensagem_t *msg_recebida = NULL;
     aloca_mensagem(&msg_recebida);
     while (1) {
-        memset(msg_recebida, 0, sizeof(mensagem_t));
-        if(msg_recebida->dados)
-            memset(msg_recebida->dados, 0, TAM_MSG);
+        
         if(recebe_mensagem(socket, msg_recebida)) {
             //DEBUG
             cout << endl << "Mensagem recebida: " << endl;
