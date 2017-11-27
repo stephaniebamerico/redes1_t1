@@ -64,7 +64,7 @@ int recebe_conteudo(int socket, mensagem_t **msg) {
         
     if(msg_tam->tipo == ERRO) {
         cout << "[recebe_conteudo] Erro ao receber mensagem com tamanho do conteúdo" << endl;
-        return;
+        return -1;
     }
 
     int tam = atoi(msg_tam->dados);
