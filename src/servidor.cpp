@@ -16,7 +16,10 @@ int main(int argc, char const *argv[]) {
     mensagem_t *msg_recebida = NULL;
     aloca_mensagem(&msg_recebida);
     while (1) {
-        
+        memset(msg_recebida, 0, sizeof(mensagem_t));
+        if(msg_recebida->dados)
+            memset(msg_recebida->dados, 0, TAM_MSG);
+
         if(recebe_mensagem(socket, msg_recebida)) {
             //DEBUG
             cout << endl << "Mensagem recebida: " << endl;
@@ -47,10 +50,6 @@ int main(int argc, char const *argv[]) {
                     }
                 }
                  envia_mensagem(socket, &msg_resposta, 1);
-                
-                //libera_mensagem(msg_ok);
-                //libera_mensagem(msg_recebida);
-                //aloca_mensagem(&msg_recebida);
             }
 /*==================================================================================================*/
             else if (msg_recebida->tipo == LS) {
@@ -110,17 +109,6 @@ int main(int argc, char const *argv[]) {
                     mensagem_t **conteudo;
                     recebe_conteudo(socket, &conteudo);
                 }
-                /*mensagem_t *msg_ok = monta_mensagem(OK, 0, "");
-                
-                envia_mensagem(socket, &msg_ok, 1);
-
-                //DEBUG
-                cout << endl << "Mensagem enviada: " << endl;
-                imprime_mensagem(*msg_ok);
-                
-                //libera_mensagem(msg_ok);
-                //libera_mensagem(msg_recebida);
-                aloca_mensagem(&msg_recebida);*/
             }
         }
     }
