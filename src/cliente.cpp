@@ -96,7 +96,7 @@ int main(int argc, char const *argv[]) {
         else {
             cout << "Opção inválida" << endl;
 
-            int qtd = 1035;
+            int qtd = 10;
             mensagem_t **msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*(qtd+2));
             
             strcpy(args_c, args.c_str());
