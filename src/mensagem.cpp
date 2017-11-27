@@ -80,7 +80,7 @@ mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg) {
             c = cstr[3+i];
             (msg->dados)[i] = c;
         }
-        (msg->dados)[msg->tamanho] = '\0';
+        //(msg->dados)[msg->tamanho] = '\0';
     }
 
     return msg;
