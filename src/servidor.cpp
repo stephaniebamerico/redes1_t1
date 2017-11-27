@@ -27,16 +27,22 @@ int main(int argc, char const *argv[]) {
                 errno = 0;
                 cout << "mensagem recebida" << endl;
                 imprime_mensagem(*msg_recebida);
-                chdir (msg_recebida->dados);
+                changeDir (msg_recebida->dados);
                 system("pwd");
                 mensagem_t *msg_resposta;
                 if (errno == 0)
                     msg_resposta = monta_mensagem(OK, 0, "");
                 else {
                     if (errno == EACCES)
+                    {
+                        cout <<"CD: erro de acesso" << endl;
                         msg_resposta = monta_mensagem(ERRO, 0, "2");
+                    }
                     else 
+                    {
+                        cout << "CD: outro erro" << endl;
                         msg_resposta = monta_mensagem(ERRO, 0, "1");
+                    }
                 }
                  envia_mensagem(socket, &msg_resposta, 1);
 

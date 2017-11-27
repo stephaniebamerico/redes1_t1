@@ -6,14 +6,7 @@ using namespace std;
 
 void changeDir (char * dir)
 {
-    /*if (strlen(dir) == 0) {
-        dir = (char *) malloc (2);
-        dir[0] = ".";
-        dir[1]='\0';
-
-    }*/
-
-    
+       
     struct stat fileStat;
     stat(dir,&fileStat);
     errno = 0;
