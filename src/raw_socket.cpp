@@ -143,7 +143,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
     msg_tam->tipo = NACK;
     while(msg_tam->tipo != FIM)
         recebe_mensagem(socket, msg_tam);
-
+    printf("recebeu fim\n");
     // Envia ACK para resposta da requisicao
     envia_confirmacao(socket, msg_tam->sequencia, ACK);
     
