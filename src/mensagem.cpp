@@ -45,12 +45,12 @@ void aloca_str(char **str, int tam) {
 
 void cstr_tam_seq_tipo_dados(mensagem_t msg, char *cstr, int pos_inicial) {
     cstr[pos_inicial] = msg.tamanho; //000TTTTT
-    printf("cstr[1]: %d msg->tamanho: %d\n", cstr[pos_inicial], msg.tamanho);
+    //printf("cstr[1]: %d msg->tamanho: %d\n", cstr[pos_inicial], msg.tamanho);
     cstr[pos_inicial] = (cstr[pos_inicial] << 3) | ((msg.sequencia >> 3) & 0x0007); //TTTTTSSS
-    printf("cstr[1]: %d msg->sequencia: %d\n", cstr[pos_inicial], msg.sequencia);
-    cstr[pos_inicial+1] = (msg.sequencia << 3); //00SSS000
-    cstr[pos_inicial+1] = (cstr[pos_inicial+1] << 2) | msg.tipo; //SSSTTTTT
-    printf("cstr[2]: %d msg->tipo: %d msg->sequencia: %d\n", cstr[pos_inicial+1], msg.sequencia, msg.sequencia);
+    //printf("cstr[1]: %d msg->sequencia: %d\n", cstr[pos_inicial], msg.sequencia);
+    cstr[pos_inicial+1] = (msg.sequencia & 0x0007); //00000SSS
+    cstr[pos_inicial+1] = (cstr[pos_inicial+1] << 5) | msg.tipo; //SSSTTTTT
+    //printf("cstr[2]: %d msg->tipo: %d msg->sequencia: %d\n", cstr[pos_inicial+1], msg.tipo, msg.sequencia);
     if(msg.tamanho > 0) {
         char c;
         for (int i = 0; i < msg.tamanho; ++i) {
@@ -61,6 +61,7 @@ void cstr_tam_seq_tipo_dados(mensagem_t msg, char *cstr, int pos_inicial) {
 }
 
 char* msg_to_cstr(mensagem_t *msg, char* cstr) {
+    //printf("MSG TO CSTR\n");
     cstr[0] = msg->inicio;
     cstr_tam_seq_tipo_dados(*msg, cstr, 1);
     cstr[3+msg->tamanho] = msg->paridade;
@@ -69,13 +70,17 @@ char* msg_to_cstr(mensagem_t *msg, char* cstr) {
 }
 
 mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg) { 
+    //printf("CSTR TO MSG\n");
     msg->inicio = cstr[0];
-    msg->tamanho = (cstr[1] & 0x001F); //000TTTTT
+    msg->tamanho = ((cstr[1] >> 3) & 0x001F); //000TTTTT
+    //printf("cstr[1] %u tam %u \n", cstr[1], msg->tamanho);
     msg->sequencia = ((cstr[1] << 3) & 0x0038) | ((cstr[2] >> 5) & 0x0007); //00SSSSSS
+    //printf("cstr[1] %u cstr[2] %u seq %u \n", cstr[1], cstr[2], msg->sequencia);
     msg->tipo = (cstr[2] & 0x001F); //000TTTTT
+    //printf("cstr[2] %u tipo %u \n", cstr[2], msg->tipo);
     msg->paridade = cstr[3+(msg->tamanho)];
 
-    printf("cstr[1] %u cstr[2] %u tam %u seq %u tipo %u\n", cstr[1], cstr[2], msg->tamanho, msg->sequencia, msg->tipo);
+    //printf("cstr[1] %u cstr[2] %u tam %u seq %u tipo %u\n", cstr[1], cstr[2], msg->tamanho, msg->sequencia, msg->tipo);
     
     if(msg->tamanho > 0) {
         aloca_str(&(msg->dados), msg->tamanho);

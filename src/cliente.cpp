@@ -99,9 +99,22 @@ int main(int argc, char const *argv[]) {
 
             int qtd = 1035;
             mensagem_t **msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*(qtd+2));
-            msg[5] = monta_mensagem(20, 0, "");
-            cout << "Mensagem 20:" << endl;
+            msg[5] = monta_mensagem(20, 0, args);
+            
+
+            cout << "Mensagem 20 (antes):" << endl;
             imprime_mensagem(*(msg[5]));
+
+            char * teste;
+            aloca_str(&teste, TAM_MSG);
+            teste = msg_to_cstr(msg[5], teste);
+            msg[5] = cstr_to_msg(teste, msg[5]);
+
+            cout << "Mensagem 20 (depois):" << endl;
+            imprime_mensagem(*(msg[5]));
+
+
+            /*
             envia_mensagem(socket, &(msg[5]), 1);
 
             msg[4] = monta_mensagem(TAMANHO, 0, "4");
@@ -116,6 +129,7 @@ int main(int argc, char const *argv[]) {
             }
             
             envia_mensagem(socket, msg, qtd);
+            */
         }
     }
 
