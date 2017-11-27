@@ -139,8 +139,10 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
         }
     }
 
-    if((*msg)[tam-1]->tipo != FIM)
-        return -1;
+    // Recebe mensagem FIM
+    msg_tam->tipo = NACK;
+    while(msg_tam->tipo != FIM)
+        recebe_mensagem(socket, msg_tam);
     
     return tam;
 }
@@ -172,7 +174,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
     char *r = NULL, *m = NULL;
     mensagem_t *resposta = NULL;
     bool enviada[3];
-    
+
     aloca_str(&r, TAM_MSG);
     aloca_str(&m, (*msg)->tamanho+4); 
     aloca_mensagem(&resposta);
