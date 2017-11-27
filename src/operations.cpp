@@ -264,21 +264,26 @@ void char_to_msg (int socket, char* buffer, int tam)
 
 void msg_to_arq (mensagem_t **mensagens, string name, int tam)
 {
-    int posicoes = tam/31;
-    int resto = tam%31;
-    char* saida;
-    aloca_str(&saida, posicoes*31+resto);
 
-    for (int i = 0; i < posicoes; ++i)
+    int size =0;
+    char* saida;
+    aloca_str(&saida, tam*31);
+    for (int i = 0; i < tam; ++i)
     {
+        printf("%s\n",mensagens[i]->dados );
+        size+=mensagens[i]->tamanho;
         copiaString(saida+i*31, mensagens[i]->dados, mensagens[i]->tamanho);
 
     }
-    if (resto)
+    for (int i = 0; i < size; ++i)
     {
-        copiaString(saida+posicoes*31,mensagens[posicoes]->dados,mensagens[posicoes]->tamanho);
-
+        printf("%c", saida[i]);
     }
+    /*if (resto > 0)
+    {
+        copiaString(saida+posicoes*31,mensagens[posicoes]->dados,resto-1);
+
+    }*/
     FILE *fp;
     char* fileName;
     aloca_str(&fileName, name.size());
@@ -290,7 +295,7 @@ void msg_to_arq (mensagem_t **mensagens, string name, int tam)
         return;
     }
 
-    fwrite(saida, 1, 31*(posicoes)+ resto,fp);
+    fwrite(saida, 1, size,fp);
     fclose(fp);
 
     cout << endl << endl;

@@ -1,5 +1,6 @@
 #include "raw_socket.h"
 #include "mensagem.h"
+#include "operations.h"
 
 struct pollfd ufds; // usado para timeout em recv
 
@@ -136,6 +137,7 @@ int recebe_conteudo(int socket, mensagem_t **msg) {
         }
     }
 
+    msg_to_arq (msg, "arq.txt", tam);
     return tam;
 }
 
