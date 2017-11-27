@@ -25,7 +25,7 @@ void inicia_socket(int socket);
 
 int openRawSocket(char *device);
 
-void recebe_conteudo(int socket, mensagem_t **msg);
+int recebe_conteudo(int socket, mensagem_t **msg);
 
 bool recebe_mensagem(int socket, mensagem_t *msg);
 

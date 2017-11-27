@@ -50,7 +50,7 @@ int openRawSocket(char *device) {
   return soquete;
 }
 
-void recebe_conteudo(int socket, mensagem_t **msg) {
+int recebe_conteudo(int socket, mensagem_t **msg) {
     mensagem_t *msg_tam = NULL;
     aloca_mensagem(&msg_tam);
     msg_tam->tipo = NACK;
@@ -135,6 +135,8 @@ void recebe_conteudo(int socket, mensagem_t **msg) {
             }
         }
     }
+
+    return tam;
 }
 
 bool recebe_mensagem(int socket, mensagem_t *msg) {
