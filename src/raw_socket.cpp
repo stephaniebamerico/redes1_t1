@@ -128,7 +128,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
             }
             else {
                 // timeout para ACK: reseta janela
-                for (i = 0; inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
+                for (i = 0; i <= 3; inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
                 printf("Resetando janela: %d %d\n", inicio, inicio-i);
                 inicio = inicio-i;
                 recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
@@ -224,7 +224,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
         if(time(NULL)-ultimo_envio > TIMEOUT) { 
             // se ja deu timeout
             enviada[0] = 0; enviada[1] = 0; enviada[2] = 0;
-            printf("TIMEOUT\n");
+            printf("TIMEOUT: %d\n", inicio);
         }
         else if(resposta->tipo == ACK) {
             n = atoi(resposta->dados);
