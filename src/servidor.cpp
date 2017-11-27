@@ -92,7 +92,6 @@ int main(int argc, char const *argv[]) {
                     msg_resposta = monta_mensagem(ERRO, 0, erro);
                         envia_mensagem(socket, &msg_resposta, 1);
                 }
-                printf("saindo if\n");
             }
 /*==================================================================================================*/
             else if (msg_recebida->tipo == GET) 
