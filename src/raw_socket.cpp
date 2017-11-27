@@ -288,7 +288,7 @@ void envia_confirmacao(int socket, int seq, int tipo) {
         exit(-1);
     }
 
-    printf("ACK %d enviado\n", seq);
+    printf("Confirmação do tipo %d para sequencia %d enviada\n", tipo, seq);
 
     //free(m);
     //free(msg);
