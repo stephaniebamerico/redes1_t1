@@ -147,8 +147,6 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
         recebe_mensagem(socket, msg_fim);
     // Envia ACK para resposta da requisicao
     envia_confirmacao(socket, msg_fim->sequencia, ACK);
-    
-    printf("saindo da envia msg\n");
 
     return tam;
 }
@@ -257,10 +255,6 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
             resposta->tipo = TRATADO;
         }
     }
-
-    //free(m);
-    //free(r);
-    //free(resposta);
 }
 
 void envia_confirmacao(int socket, int seq, int tipo) {
@@ -280,9 +274,7 @@ void envia_confirmacao(int socket, int seq, int tipo) {
         cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
         exit(-1);
     }
-
-    printf("Confirmação do tipo %d para sequencia %d enviada\n", tipo, seq);
-
-    //free(m);
-    //free(msg);
+    string op = (tipo == ACK) ? "ACK" : "NACK";
+    cout << op << " " << seq << endl;
+    //printf("Confirmação do tipo %d para sequencia %d enviada\n", tipo, seq);
 }
