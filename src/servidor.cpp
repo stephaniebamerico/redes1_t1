@@ -32,20 +32,22 @@ int main(int argc, char const *argv[]) {
             if (msg_recebida->tipo == CD) {
                 errno = 0;
                 changeDir (msg_recebida->dados);
+                
+                cout << "CD: ";
                 system("pwd");
+                cout << endl;
+
                 mensagem_t *msg_resposta;
                 if (errno == 0)
                     msg_resposta = monta_mensagem(OK, 0, NULL);
                 else {
                     char erro[1];
-                    if (errno == EACCES)
-                    {
+                    if (errno == EACCES) {
                         cout <<"CD: erro de acesso" << endl;
                         erro[0] = 2;
                         msg_resposta = monta_mensagem(ERRO, 0, erro);
                     }
-                    else 
-                    {
+                    else {
                         cout << "CD: Arquivo Inexistente" << endl;
                         erro[0] = 2;
                         msg_resposta = monta_mensagem(ERRO, 0, erro);
@@ -60,33 +62,30 @@ int main(int argc, char const *argv[]) {
                 lsArgs = testOptions(msg_recebida->dados);
                 
                 mensagem_t *msg_resposta;
-                if (errno == 0)
-                {
+                if (errno == 0) {
                     string lsSaida = list(lsArgs[1],lsArgs[0]);
-                    if (errno == 0)
-                    {
+                    if (errno == 0) {
                         char * ls;
                         aloca_str (&ls, lsSaida.size());
                         strcpy(ls, lsSaida.c_str());
                         char_to_msg(socket, ls,lsSaida.size() );
+
+                        cout << "LS: Ok" << endl;
                     }
-                    else if (errno == EACCES)
-                    {
+                    else if (errno == EACCES) {
                         cout << "LS: Erro de acesso" << endl;
                         char erro[1]; erro[0] = 2;
                         msg_resposta = monta_mensagem(ERRO, 0, erro);
                         envia_mensagem(socket, &msg_resposta, 1);
                     }
-                    else 
-                    {
+                    else {
                         cout << "LS: Outro erro" << endl;
                         char erro[1]; erro[0] = 1;
                         msg_resposta = monta_mensagem(ERRO, 0, erro);
                         envia_mensagem(socket, &msg_resposta, 1);
                     }
                 }
-                else
-                {
+                else {
                     cout << "LS:Erro" << endl;
                     char erro[1]; erro[0] = 1;
                     msg_resposta = monta_mensagem(ERRO, 0, erro);
@@ -94,12 +93,12 @@ int main(int argc, char const *argv[]) {
                 }
             }
 /*==================================================================================================*/
-            else if (msg_recebida->tipo == GET) 
-            {
+            else if (msg_recebida->tipo == GET) {
                 envia_arquivo(socket, msg_recebida->dados, GET);
+                cout << "GET: Ok" << endl;
             }
-            else if (msg_recebida->tipo == PUT) 
-            {
+            else if (msg_recebida->tipo == PUT) {
+                cout << "PUT: Ok" << endl;
                 pede_arquivo(socket, msg_recebida->dados, PUT);
             }
         }

@@ -79,7 +79,8 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
 
     // Começa a receber todo conteúdo
     time_t ultimo_envio = time(NULL);
-    int inicio = 0, seq, i; int DEBUG = 0;
+    int inicio = 0, seq, i; 
+    //int DEBUG = 0;
     while(inicio < tam) {
         if(recebe_mensagem(socket, mensagem_recebida)
             && (mensagem_recebida->tipo == IMPRIMA
@@ -90,10 +91,6 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 seq == (inicio+2)%TAM_SEQUENCIA) {
                 // recebeu mensagem dentro da janela esperada
                 for (i = 0; i <= 2 && seq != (inicio+i)%TAM_SEQUENCIA; ++i);
-
-                // DEBUG
-                printf("Mensagem recebida %d %d: \n", inicio, tam);
-                imprime_mensagem(*mensagem_recebida);
 
                 //conferir paridade e enviar NACK
                 if(calcula_paridade(*mensagem_recebida) == mensagem_recebida->paridade) {                   
@@ -112,7 +109,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 }
                 else {
                     envia_confirmacao(socket, seq, NACK);
-                    ++DEBUG;
+
                     if(i == 1) {
                         recebida[0] = 0; recebida[1] = recebida[2]; recebida[2] = 0;
                     }
@@ -120,9 +117,11 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                         recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
                     }
                     inicio = inicio+i;
+
+                    /*++DEBUG;
                     if(DEBUG > 2){
                         exit(-1);
-                    }
+                    }*/
                 }
 
                 ultimo_envio = time(NULL);
@@ -130,7 +129,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
             else {
                 // timeout para ACK: reseta janela
                 for (i = 0; inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
-                printf("resetando janela: %d %d\n", inicio, inicio-i);
+                printf("Resetando janela: %d %d\n", inicio, inicio-i);
                 inicio = inicio-i;
                 recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
             }
@@ -204,7 +203,8 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
 
     // Tenta enviar mensagem
     time_t ultimo_envio = time(NULL);
-    int inicio = 0, n = 0; int DEBUG=0;
+    int inicio = 0, n = 0;
+    //int DEBUG=0;
     while(inicio < tam) {
         for (int i = 0; i < 3 && i < tam-inicio; ++i) {
             if(!enviada[i]) {
@@ -213,10 +213,6 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                     cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
                     exit(-1);
                 }
-
-                // DEBUG
-                printf("Mensagem enviada %d %d: \n", inicio, tam);
-                imprime_mensagem(*(msg[inicio+i]));
 
                 enviada[i] = 1;
                 ultimo_envio = time(NULL);
@@ -273,9 +269,10 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 printf("Recebeu NACK %d\n", n);
             }
             resposta->tipo = TRATADO;
-            ++DEBUG;
+            
+            /*++DEBUG;
             if(DEBUG > 2)
-                exit(-1);
+                exit(-1);*/
         }
     }
 }
@@ -291,13 +288,10 @@ void envia_confirmacao(int socket, int seq, int tipo) {
     aloca_str(&m, TAM_MSG);//msg->tamanho+4);
     m = msg_to_cstr(msg, m);
 
-    //imprime_mensagem(*msg);
-    printf("socket: %d m: %s \n", socket, m);
     if(send(socket, m, TAM_MSG, 0) < 0) {
         cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
         exit(-1);
     }
-    string op = (tipo == ACK) ? "ACK" : "NACK";
-    cout << "Envia" << op << " " << seq << endl;
-    //printf("Confirmação do tipo %d para sequencia %d enviada\n", tipo, seq);
+    //string op = (tipo == ACK) ? "ACK" : "NACK";
+    //cout << "Enviado " << op << " " << seq << endl;
 }

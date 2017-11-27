@@ -62,7 +62,7 @@ char* msg_to_cstr(mensagem_t *msg, char* cstr) {
     cstr_tam_seq_tipo_dados(*msg, cstr, 1);
     cstr[3+msg->tamanho] = msg->paridade;
 
-    printf("##### msg_to_cstr:\n");
+    /*printf("##### msg_to_cstr:\n");
     printf("##### cstr: ");
     for (int i = 0; i <= msg->tamanho+4; ++i) {
         //printf(" %d ", (int) cstr[i]);
@@ -71,7 +71,7 @@ char* msg_to_cstr(mensagem_t *msg, char* cstr) {
     printf("\n");
     printf("##### msg:\n");
     imprime_mensagem(*msg);
-    printf("##### fim msg_to_cstr\n");
+    printf("##### fim msg_to_cstr\n");*/
 
     return cstr;
 }
@@ -91,10 +91,9 @@ mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg) {
             c = cstr[3+i];
             (msg->dados)[i] = c;
         }
-        //(msg->dados)[msg->tamanho] = '\0';
     }
 
-    printf("##### cstr_to_msg:\n");
+    /*printf("##### cstr_to_msg:\n");
     printf("##### cstr: ");
     for (int i = 0; i < msg->tamanho+3; ++i) {
         //printf(" %d ", (int) cstr[i]);
@@ -103,7 +102,7 @@ mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg) {
     printf("\n");
     printf("##### msg:\n");
     imprime_mensagem(*msg);
-    printf("##### fim cstr_to_msg\n");
+    printf("##### fim cstr_to_msg\n");*/
 
     return msg;
 }
@@ -217,9 +216,9 @@ void cd_remoto(int socket, char *args) {
     envia_confirmacao(socket, msg_ok->sequencia, ACK);
         
     if(msg_ok->tipo == ERRO)
-        cout << "Erro ao executar comando: cd " << args << endl;
-
-    //libera_mensagem(msg_ok);
+        cout << "Erro ao executar comando: cdr " << args << endl;
+    else
+        cout << args << endl;
 }
 
 void ls_remoto(int socket, char *args) {
@@ -228,13 +227,10 @@ void ls_remoto(int socket, char *args) {
 
     // Envia ao servidor
     envia_mensagem(socket, &msg, 1);
-    //libera_mensagem(msg);
     
     mensagem_t *msg_ok = NULL;
     aloca_mensagem(&msg_ok);
     msg_ok->tipo = NACK;
 
     // Recebe resposta para requisicao
-    
-    //libera_mensagem(msg_ok);
 }
