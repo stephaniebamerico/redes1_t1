@@ -31,7 +31,11 @@ int main(int argc, char const *argv[]) {
 /*==================================================================================================*/
             if (msg_recebida->tipo == CD) {
                 errno = 0;
-                changeDir (msg_recebida->dados);
+                char * pasta;
+                aloca_str(&pasta, msg_recebida->tamanho+1);
+                copiaString(pasta, msg_recebida->dados, msg_recebida->tamanho );
+                pasta[msg_recebida->tamanho]='\0';
+                changeDir (pasta);
 
                 mensagem_t *msg_resposta;
                 if (errno == 0) {

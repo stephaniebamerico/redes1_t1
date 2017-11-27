@@ -22,6 +22,8 @@ void changeDir (char * dir);
 
 int* testOptions (char * options, int tam);
 
+void copiaString (char * dest, char * src,int tam);
+
 string list(int a, int l);
 
 void arq_to_msg (int socket, string name);
