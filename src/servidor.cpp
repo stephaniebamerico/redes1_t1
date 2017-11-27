@@ -15,20 +15,12 @@ int main(int argc, char const *argv[]) {
     cout << "Aguardando mensagens." << endl;
     mensagem_t *msg_recebida = NULL;
     aloca_mensagem(&msg_recebida);
-    while (1) {
-        printf("antes memset\n");
-        printf("antes memset\n");
-        printf("antes memset\n");
-        printf("antes memset\n");
-        printf("antes memset\n");
-        printf("antes memset\n");
-        
+    while (1) {        
         if(msg_recebida) {
             if(msg_recebida->dados)
                 memset(msg_recebida->dados, 0, msg_recebida->tamanho);
             memset(msg_recebida, 0, sizeof(mensagem_t));
         }
-        printf("depois memset\n");
         
         if(recebe_mensagem(socket, msg_recebida)) {
             //DEBUG
@@ -77,8 +69,6 @@ int main(int argc, char const *argv[]) {
                         aloca_str (&ls, lsSaida.size());
                         strcpy(ls, lsSaida.c_str());
                         char_to_msg(socket, ls,lsSaida.size() );
-                        printf("char to msg saiu\n");
-                        printf("1\n");
                     }
                     else if (errno == EACCES)
                     {
@@ -94,8 +84,6 @@ int main(int argc, char const *argv[]) {
                         msg_resposta = monta_mensagem(ERRO, 0, erro);
                         envia_mensagem(socket, &msg_resposta, 1);
                     }
-
-                    printf("2\n");
                 }
                 else
                 {
@@ -123,9 +111,7 @@ int main(int argc, char const *argv[]) {
                     recebe_conteudo(socket, &conteudo);
                 }
             }
-            printf("3\n");
         }
-        printf("antes while\n");
     }
 
     return 0;
