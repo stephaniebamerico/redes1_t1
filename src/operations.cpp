@@ -270,7 +270,7 @@ void char_to_msg (int socket, char* buffer, int tam)
     envia_mensagem(socket, &(msg), 1);
     envia_mensagem(socket, mensagens, totalPos);
     mensagem_t *msg_fim;
-    msg_fim = monta_mensagem(FIM,totalPos%TAM_SEQUENCIA, NULL );
+    msg_fim = monta_mensagem(FIM,0, NULL );
     envia_mensagem(socket, &msg_fim, 1);
 
 
