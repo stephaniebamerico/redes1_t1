@@ -131,6 +131,10 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 inicio += i+1;
             }
         }
+
+        memset(mensagem_recebida, 0, sizeof(mensagem_t));
+        if(mensagem_recebida->dados)
+            memset(mensagem_recebida->dados, 0, TAM_MSG);
     }
 
     
@@ -187,6 +191,10 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 ultimo_envio = time(NULL);
             }
         }
+
+        memset(resposta, 0, sizeof(mensagem_t));
+        if(resposta->dados)
+            memset(resposta->dados, 0, TAM_MSG);
 
         recebe_mensagem(socket, resposta);
 
