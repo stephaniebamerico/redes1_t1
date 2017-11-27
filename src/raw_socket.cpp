@@ -92,7 +92,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 for (i = 0; i <= 2 && seq != (inicio+i)%TAM_SEQUENCIA; ++i);
 
                 // DEBUG
-                printf("Mensagem recebida: \n");
+                printf("Mensagem recebida %d %d: \n", inicio, tam);
                 imprime_mensagem(*mensagem_recebida);
 
                 //conferir paridade e enviar NACK
@@ -203,7 +203,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 }
 
                 // DEBUG
-                printf("Mensagem enviada: \n");
+                printf("Mensagem enviada %d %d: \n", inicio, tam);
                 imprime_mensagem(*(msg[inicio+i]));
 
                 enviada[i] = 1;
