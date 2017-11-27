@@ -92,11 +92,12 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 // recebeu mensagem dentro da janela esperada
                 for (i = 0; i <= 2 && seq != (inicio+i)%TAM_SEQUENCIA; ++i);
                 recebida[i] = 1;
-                copia_mensagem(mensagem_recebida, &((*msg)[inicio+i]));
 
                 //DEBUG
                 cout << endl << "[recebe_conteudo] Mensagem recebida: " << endl;
                 imprime_mensagem(*mensagem_recebida);
+
+                copia_mensagem(mensagem_recebida, &((*msg)[inicio+i]));
 
                 //TODO: conferir paridade e enviar NACK
                 
