@@ -267,7 +267,7 @@ void envia_confirmacao(int socket, int seq, int tipo) {
     m = msg_to_cstr(msg, m);
 
     //imprime_mensagem(*msg);
-
+    printf("socket: %d m: %s \n", socket, m);
     while(send(socket, m, TAM_MSG, 0)) {
         cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
     }
