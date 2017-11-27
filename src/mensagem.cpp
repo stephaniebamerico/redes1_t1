@@ -197,3 +197,28 @@ void cd_remoto(int socket, string args) {
 
     //libera_mensagem(msg_ok);
 }
+
+void ls_remoto(int socket, string args) {
+    // Cria mensagem
+    mensagem_t *msg = monta_mensagem(LS, 0, args);
+
+    // Envia ao servidor
+    envia_mensagem(socket, &msg, 1);
+    //libera_mensagem(msg);
+    
+    mensagem_t *msg_ok = NULL;
+    aloca_mensagem(&msg_ok);
+    msg_ok->tipo = NACK;
+
+    // Recebe resposta para requisicao
+    while(msg_ok->tipo != OK && msg_ok->tipo != ERRO)
+        recebe_mensagem(socket, msg_ok);
+
+    // Envia ACK para resposta da requisicao
+    envia_confirmacao(socket, msg_ok->sequencia, ACK);
+        
+    if(msg_ok->tipo == ERRO)
+        cout << "Erro ao executar comando: cd " << args << endl;
+
+    //libera_mensagem(msg_ok);
+}

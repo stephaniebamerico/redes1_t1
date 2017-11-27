@@ -57,4 +57,6 @@ void trata_erros(int tipo, char parametro);
 
 void cd_remoto(int socket, string args);
 
+void ls_remoto(int socket, string args);
+
 #endif

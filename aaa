@@ -1,0 +1,26 @@
+Operacoes disponiveis:
+* cd [endereco local]
+	Altera diretorio corrente do cliente para [endereco local].
+
+* cdr [endereco remoto]
+	Altera diretorio corrente do servidor para [endereco remoto].
+
+* ls [opcao]
+	Lista conteudo do diretorio corrente do cliente.
+	-a: nao ignora arquivos ocultos
+	-l: usa formato de listagem longa
+
+* lsr [opcao]
+	Lista conteudo do diretorio corrente do servidor.
+	-a: nao ignora arquivos ocultos
+	-l: usa formato de listagem longa
+
+* get [endereco remoto]
+	Copia o arquivo [endereco remoto] do servidor para o cliente.
+
+* put [endereco local]
+	Copia o arquivo [endereco local] do cliente para o servidor.
+
+
+Entre com a operacao desejada: Opção inválida
+Mensagem 20:

@@ -79,9 +79,13 @@ int main(int argc, char const *argv[]) {
 /*==================================================================================================*/
         else if(comando == "lsr") {
             cout << "Operacao lsr com argumentos: " << args << endl;
+            ls_remoto(socket, args);
+            mensagem_t *conteudo;
+            recebe_conteudo(socket, &conteudo);
         }
 /*==================================================================================================*/
         else if(comando == "get") {
+            arq_to_msg(socket, args);
             cout << "Operacao get com argumentos: " << args << endl;
         }
 /*==================================================================================================*/
