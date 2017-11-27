@@ -277,6 +277,7 @@ void char_to_msg (int socket, char* buffer, int tam)
 void msg_to_arq (mensagem_t **mensagens, string name, int tam)
 {
 
+    printf("entri aqui\n");
     int size =0;
     char* saida;
     aloca_str(&saida, tam*31);
@@ -289,11 +290,8 @@ void msg_to_arq (mensagem_t **mensagens, string name, int tam)
     aloca_str(&saida2, size);
 
   
-    if (name == "stdout")
-    {
         for (int i = 0; i < size; ++i)
             printf("%c",saida[i] );
-    }
     else
     {
         FILE *fp;
