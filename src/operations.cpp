@@ -268,15 +268,10 @@ void char_to_msg (int socket, char* buffer, int tam)
     cout << "Mensagem TAM:" << endl;
     imprime_mensagem(*msg);
     envia_mensagem(socket, &(msg), 1);
-    printf("1\n");
     envia_mensagem(socket, mensagens, totalPos);
-    printf("2\n");
     mensagem_t *msg_fim;
-    printf("3\n");
     msg_fim = monta_mensagem(FIM,0, NULL );
-    printf("4\n");
     envia_mensagem(socket, &msg_fim, 1);
-    printf("5\n");
 
 
 }
