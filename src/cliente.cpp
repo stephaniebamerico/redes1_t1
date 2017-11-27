@@ -65,7 +65,7 @@ int main(int argc, char const *argv[]) {
             strcpy(args_c, args.c_str());
             int *lsArgs = (int *) malloc (3*sizeof(int));
             
-            lsArgs = testOptions(args_c);
+            lsArgs = testOptions(args_c, args.size());
             if (errno == 0) {
                 cout << list(lsArgs[1], lsArgs[0]);
                 if (errno)

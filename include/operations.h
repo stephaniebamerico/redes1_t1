@@ -20,7 +20,7 @@
 
 void changeDir (char * dir);
 
-int* testOptions (char * options, int tam)
+int* testOptions (char * options, int tam);
 
 string list(int a, int l);
 
