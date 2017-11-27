@@ -212,6 +212,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 enviada[0] = 0; enviada[1] = 0; enviada[2] = 0;
                 inicio += 3;
             }
+            resposta->tipo = TRATADO;
             printf("Recebeu ACK %d\n", n);
         }
         else if(resposta->tipo == NACK) {
@@ -230,6 +231,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 enviada[0] = enviada[2]; enviada[1] = 0; enviada[2] = 0;
                 inicio += 2;
             }
+            resposta->tipo = TRATADO;
             printf("Recebeu NACK %d\n", n);
         }
     }

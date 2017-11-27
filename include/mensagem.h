@@ -3,6 +3,7 @@
 
 #define TAM_MSG 64
 #define TAM_SEQUENCIA 32
+#define TRATADO 4
 
 #define ACK 0
 #define CD_LOCAL 1
