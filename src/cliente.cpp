@@ -108,7 +108,7 @@ int main(int argc, char const *argv[]) {
 
             envia_mensagem(socket, &(msg[5]), 1);
 
-            strcpy(args_c, to_string(4).c_str());
+            strcpy(args_c, to_string(qtd).c_str());
 
             msg[4] = monta_mensagem(TAMANHO, 0, args_c);
 
