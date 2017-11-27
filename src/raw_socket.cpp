@@ -29,7 +29,6 @@ int openRawSocket(char *device) {
     exit(-1);
   }
     
-
   memset(&endereco, 0, sizeof(endereco));   /*IP do dispositivo*/
   endereco.sll_family = AF_PACKET;
   endereco.sll_protocol = htons(ETH_P_ALL);
@@ -140,6 +139,8 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
         }
     }
 
+    if((*msg)[tam-1]->tipo != FIM)
+        return -1;
     
     return tam;
 }
