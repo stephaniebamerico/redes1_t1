@@ -130,7 +130,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
             }
             else {
                 // timeout para ACK: reseta janela
-                for (i = 0; i <= 3 && inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
+                /*for (i = 0; i <= 3 && inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
                 if((inicio-i)%TAM_SEQUENCIA == seq) {
                     printf("Resetando janela: %d %d\n", inicio, inicio-i);
                     inicio = inicio-i;
@@ -140,7 +140,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                     for (i = 0; i <= 3 && inicio+i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
                     printf("Movendo janela: %d %d\n", inicio, inicio+i);
                     inicio = inicio+i;
-                }
+                }*/
             }
         }
         else if(2*(time(NULL)-ultimo_envio) > TIMEOUT) {
