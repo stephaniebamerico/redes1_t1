@@ -55,7 +55,7 @@ int main(int argc, char const *argv[]) {
                 
                 //libera_mensagem(msg_ok);
                 //libera_mensagem(msg_recebida);
-                aloca_mensagem(&msg_recebida);
+                //aloca_mensagem(&msg_recebida);
             }
 /*==================================================================================================*/
             else if (msg_recebida->tipo == LS) {
