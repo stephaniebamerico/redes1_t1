@@ -91,6 +91,10 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 // recebeu mensagem dentro da janela esperada
                 for (i = 0; i <= 2 && seq != (inicio+i)%TAM_SEQUENCIA; ++i);
 
+                // DEBUG
+                printf("Mensagem recebida: \n");
+                imprime_mensagem(*mensagem_recebida);
+
                 //conferir paridade e enviar NACK
                 if(calcula_paridade(*mensagem_recebida) == mensagem_recebida->paridade) {                   
                     recebida[i] = 1;
@@ -197,6 +201,11 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                     cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
                     exit(-1);
                 }
+
+                // DEBUG
+                printf("Mensagem enviada: \n");
+                imprime_mensagem(*(msg[inicio+i]));
+
                 enviada[i] = 1;
                 ultimo_envio = time(NULL);
             }
@@ -274,6 +283,6 @@ void envia_confirmacao(int socket, int seq, int tipo) {
         exit(-1);
     }
     string op = (tipo == ACK) ? "ACK" : "NACK";
-    cout << op << " " << seq << endl;
+    cout << "Envia" << op << " " << seq << endl;
     //printf("Confirmação do tipo %d para sequencia %d enviada\n", tipo, seq);
 }
