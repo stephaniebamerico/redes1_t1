@@ -94,7 +94,7 @@ int main(int argc, char const *argv[]) {
         }
 /*==================================================================================================*/
         else {
-            cout << "Opção inválida" << endl;
+            cout << "Opção inválida, enviando mensagens de tesde para DEBUG" << endl;
 
             int qtd = 10;
             mensagem_t **msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*(qtd+2));
@@ -124,7 +124,8 @@ int main(int argc, char const *argv[]) {
                 imprime_mensagem(*(msg[i]));
             }
 
-            msg[qtd-5]->paridade = msg[qtd-5]->paridade+10;
+            // Para testar a paridade dando NACK:
+            //msg[qtd-5]->paridade = msg[qtd-5]->paridade+10;
             
             envia_mensagem(socket, msg, qtd);
         }

@@ -96,10 +96,6 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 if(calcula_paridade(*mensagem_recebida) == mensagem_recebida->paridade) {                   
                     recebida[i] = 1;
 
-                    //DEBUG
-                    cout << endl << "[recebe_conteudo] Mensagem recebida: " << endl;
-                    imprime_mensagem(*mensagem_recebida);
-
                     copia_mensagem(mensagem_recebida, &((*msg)[inicio+i]));
                     
                     if(recebida[0] && recebida[1] && recebida[2]) {
@@ -185,7 +181,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
 
     // Tenta enviar mensagem
     time_t ultimo_envio = time(NULL);
-    int inicio = 0, n = 0; int DEBUG = 0;
+    int inicio = 0, n = 0;
     while(inicio < tam) {
         for (int i = 0; i < 3 && i < tam-inicio; ++i) {
             if(!enviada[i]) {
@@ -194,10 +190,6 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                     cerr << "[envia_mensagem] Erro ao enviar mensagem para o socket." << endl;
                     exit(-1);
                 }
-
-                //DEBUG
-                cout << endl << "[envia_conteudo] Mensagem enviada: " << endl;
-                imprime_mensagem(*msg[inicio+i]);
 
                 enviada[i] = 1;
                 ultimo_envio = time(NULL);
@@ -254,11 +246,6 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 printf("Recebeu NACK %d\n", n);
             }
             resposta->tipo = TRATADO;
-
-            ++DEBUG;
-            if(DEBUG > 5) {
-                msg[tam-5]->paridade = calcula_paridade(*msg[tam-5]);
-            }
         }
     }
 
@@ -278,11 +265,8 @@ void envia_confirmacao(int socket, int seq, int tipo) {
     aloca_str(&m, msg->tamanho+4);
     m = msg_to_cstr(msg, m);
 
-    if(m)
-        printf("m: %s\n", m);
     imprime_mensagem(*msg);
     int t = send(socket, m, TAM_MSG, 0);
-    printf("t: %d s:%d errno:%d\n", t, socket, errno);
     if(t < 0) {
         cerr << "[enviaConfirmacao] Erro ao enviar mensagem para o socket." << endl;
         exit(-1);
