@@ -112,6 +112,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 }
                 else {
                     envia_confirmacao(socket, seq, NACK);
+                    exit(-1);
                 }
 
                 ultimo_envio = time(NULL);
@@ -262,6 +263,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 printf("Recebeu NACK %d\n", n);
             }
             resposta->tipo = TRATADO;
+            exit(-1);
         }
     }
 }
