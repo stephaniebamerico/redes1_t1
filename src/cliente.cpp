@@ -95,40 +95,7 @@ int main(int argc, char const *argv[]) {
         }
 /*==================================================================================================*/
         else {
-            cout << "Opção inválida, enviando mensagens de tesde para DEBUG" << endl;
-
-            int qtd = 10;
-            mensagem_t **msg = (mensagem_t **) malloc(sizeof(mensagem_t *)*(qtd+2));
-            
-            strcpy(args_c, args.c_str());
-            msg[5] = monta_mensagem(20, 0, args_c);
-            
-
-            cout << "Mensagem 20 (antes):" << endl;
-            imprime_mensagem(*(msg[5]));
-
-            envia_mensagem(socket, &(msg[5]), 1);
-
-            strcpy(args_c, to_string(qtd).c_str());
-
-            msg[4] = monta_mensagem(TAMANHO, 0, args_c);
-
-            cout << "Mensagem TAM:" << endl;
-            imprime_mensagem(*(msg[4]));
-            
-            envia_mensagem(socket, &(msg[4]), 1);
-
-            for (int i = 0; i < qtd; ++i) {
-                strcpy(args_c, to_string(i).c_str());
-                msg[i] = monta_mensagem(IMPRIMA, i%TAM_SEQUENCIA, args_c);
-                cout << "Mensagem " << i << ":" << endl;
-                imprime_mensagem(*(msg[i]));
-            }
-
-            // Para testar a paridade dando NACK:
-            //msg[qtd-5]->paridade = msg[qtd-5]->paridade+10;
-            
-            envia_mensagem(socket, msg, qtd);
+            cout << "Opção inválida" << endl;
         }
     }
 
