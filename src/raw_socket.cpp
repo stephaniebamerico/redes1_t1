@@ -257,7 +257,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
 
             ++DEBUG;
             if(DEBUG > 5) {
-                resposta->paridade = calcula_paridade(*resposta);
+                msg[tam-5]->paridade = calcula_paridade(*msg[tam-5]);
             }
         }
     }
