@@ -237,10 +237,11 @@ void char_to_msg (int socket, char* buffer, int tam)
     int posicoes = tam/31;
     //se tiver resto, precisa de uma posição a mais
     int resto = tam%31;
+    int totalPos = posicoes + (resto > 0 ? 1 : 0);
     //vetor de mensagens
     mensagem_t **mensagens = NULL;
 
-    mensagens = (mensagem_t **) malloc((posicoes + (resto > 0 ? 1 : 0)+1)*sizeof(mensagem_t**));
+    mensagens = (mensagem_t **) malloc((totalPos+1)*sizeof(mensagem_t**));
 
     char *aux;
     aloca_str(&aux, 32);
@@ -259,11 +260,11 @@ void char_to_msg (int socket, char* buffer, int tam)
     mensagem_t *msg;
 
     char *cstr = NULL;
-    string sstr = to_string(posicoes + (resto > 0 ? 1 : 0));
+    string sstr = to_string(totalPos);
     aloca_str(&cstr, sstr.size());
     strcpy(cstr, sstr.c_str());
-    int totalPos = posicoes + (resto > 0 ? 1 : 0);
-    msg = monta_mensagem(TAMANHO, 0, cstr);
+    
+    msg = monta_mensagem(TAMANHO, 0, cstr+1);
     cout << "Mensagem TAM:" << endl;
     imprime_mensagem(*msg);
     envia_mensagem(socket, &(msg), 1);
