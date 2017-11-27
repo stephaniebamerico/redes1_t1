@@ -77,6 +77,7 @@ int main(int argc, char const *argv[]) {
 /*==================================================================================================*/
         else if(comando == "lsr") {
             strcpy(args_c, args.c_str());
+            args_c[args.size()]='\0';
             ls_remoto(socket, args_c);
             mensagem_t **conteudo;
             int tamLs = recebe_conteudo(socket, &conteudo);

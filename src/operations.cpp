@@ -19,36 +19,55 @@ void changeDir (char * dir)
 
 int* testOptions (char * options)
 {
+    errno = 0;
     //opt 1: -l, op2: -a
     int* opt = (int*) malloc (sizeof(int)*2);
     opt[0]=0;
     opt[1]=0;
-    char space[2] = " ";
-    char *token;
     /* get the first token */
-    token = strtok(options, space);
-    //código de erro é 0
-    errno = 0;
-
-    /* walk through other tokens */
-    while( token != NULL ) {
-        //se é opção -l, opt[0] é 1
-        if (strcmp (token, "-l") == 0)
+    if (strlen(options)==0)
+        return opt;
+    if (strlen(options)==2)
+    {
+        if (options[1]=='l')
             opt[0]=1;
-        //se é opção -a, opt[0] é 1
-        else if (strcmp (token, "-a") == 0)
+        else if (options[1]=='a')
             opt[1]=1;
-        else { 
-            //argumento inválido, altera variável errno e renorta com ponteiro nulo
+        else
+        {
+            errno = EINVAL;
+            return NULL;
+        }
+    }
+    else if (strlen(options)==5)
+    {
+        if (options[1]=='l' && options[4] == 'a')
+        {
+            opt[0]=1; 
+            opt[1]=1;
+        }
+        else if  (options[1]=='a' && options[4] == 'l')
+        {
+            opt[0]=1; 
+            opt[1]=1;
+        }
+        else
+        {
             errno = EINVAL;
             return NULL;
         }
 
-        //corta próxima parte da string 
-        token = strtok(NULL, space);
+
     }
-    //retorna opt (com 0,0 se não tem argumentos ou 1 na posição do argumento que tiver)
+    else
+    {
+        errno = EINVAL;
+        return NULL;
+    }  
     return opt;
+   
+    //retorna opt (com 0,0 se não tem argumentos ou 1 na posição do argumento que tiver)
+    
 }
 
 string list(int a, int l)
