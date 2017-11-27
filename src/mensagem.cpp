@@ -123,6 +123,9 @@ char calcula_paridade(mensagem_t msg) {
     cstr_tam_seq_tipo_dados(msg, m, 0);
 
     char paridade = 0;
+    paridade = paridade xor msg.tamanho;
+    paridade = paridade xor msg.sequencia;
+    paridade = paridade xor msg.tipo;
     for (int i = 0; i < msg.tamanho; ++i) {
         paridade = paridade xor m[i];
     }

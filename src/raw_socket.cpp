@@ -91,24 +91,30 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 seq == (inicio+2)%TAM_SEQUENCIA) {
                 // recebeu mensagem dentro da janela esperada
                 for (i = 0; i <= 2 && seq != (inicio+i)%TAM_SEQUENCIA; ++i);
-                recebida[i] = 1;
 
-                //DEBUG
-                cout << endl << "[recebe_conteudo] Mensagem recebida: " << endl;
-                imprime_mensagem(*mensagem_recebida);
+                //conferir paridade e enviar NACK
+                if(calcula_paridade(*mensagem_recebida) == mensagem_recebida->paridade) {                   
+                    recebida[i] = 1;
 
-                copia_mensagem(mensagem_recebida, &((*msg)[inicio+i]));
+                    //DEBUG
+                    cout << endl << "[recebe_conteudo] Mensagem recebida: " << endl;
+                    imprime_mensagem(*mensagem_recebida);
 
-                //TODO: conferir paridade e enviar NACK
-                
-                if(recebida[0] && recebida[1] && recebida[2]) {
-                    // recebeu a janela toda
-                    envia_confirmacao(socket, (inicio+2)%TAM_SEQUENCIA, ACK);
+                    copia_mensagem(mensagem_recebida, &((*msg)[inicio+i]));
                     
-                    // janela desliza 3
-                    inicio += 3;
-                    recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
+                    if(recebida[0] && recebida[1] && recebida[2]) {
+                        // recebeu a janela toda
+                        envia_confirmacao(socket, (inicio+2)%TAM_SEQUENCIA, ACK);
+                        
+                        // janela desliza 3
+                        inicio += 3;
+                        recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
+                    }
                 }
+                else {
+                    envia_confirmacao(socket, seq, NACK);
+                }
+                
                 ultimo_envio = time(NULL);
             }
             else {
