@@ -185,7 +185,6 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 }
                 enviada[i] = 1;
                 ultimo_envio = time(NULL);
-                printf("inicio: %d i: %d seq: %d\n", inicio, i, msg[(inicio+i)%TAM_SEQUENCIA]->sequencia);
             }
         }
 
@@ -213,7 +212,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 enviada[0] = 0; enviada[1] = 0; enviada[2] = 0;
                 inicio += 3;
             }
-            printf("ACK %d\n", n);
+            printf("Recebeu ACK %d\n", n);
         }
         else if(resposta->tipo == NACK) {
             n = atoi(resposta->dados);
@@ -231,7 +230,7 @@ void envia_mensagem(int socket, mensagem_t **msg, int tam) {
                 enviada[0] = enviada[2]; enviada[1] = 0; enviada[2] = 0;
                 inicio += 2;
             }
-            printf("NACK %d\n", n);
+            printf("Recebeu NACK %d\n", n);
         }
     }
 
