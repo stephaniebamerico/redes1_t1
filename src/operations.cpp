@@ -260,11 +260,11 @@ void char_to_msg (int socket, char* buffer, int tam)
     mensagem_t *msg;
 
     char *cstr = NULL;
-    string sstr = to_string(totalPos);
+    string sstr = to_string(totalPos+1);
     aloca_str(&cstr, sstr.size());
     strcpy(cstr, sstr.c_str());
     
-    msg = monta_mensagem(TAMANHO, 0, cstr+1);
+    msg = monta_mensagem(TAMANHO, 0, cstr);
     cout << "Mensagem TAM:" << endl;
     imprime_mensagem(*msg);
     envia_mensagem(socket, &(msg), 1);
