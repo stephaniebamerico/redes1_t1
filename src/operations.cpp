@@ -268,7 +268,7 @@ void char_to_msg (int socket, char* buffer, int tam)
     cout << "Mensagem TAM:" << endl;
     imprime_mensagem(*msg);
     envia_mensagem(socket, &(msg), 1);
-    monta_mensagem(FIM,totalPos%TAM_SEQUENCIA, NULL );
+    mensagens[totalPos]= monta_mensagem(FIM,totalPos%TAM_SEQUENCIA, NULL );
     envia_mensagem(socket, mensagens, totalPos+1);
 
 
