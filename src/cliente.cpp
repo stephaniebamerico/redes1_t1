@@ -85,11 +85,12 @@ int main(int argc, char const *argv[]) {
         }
 /*==================================================================================================*/
         else if(comando == "get") {
-            arq_to_msg(socket, args);
+            pede_arquivo(socket, args, GET);
             cout << "Operacao get com argumentos: " << args << endl;
         }
 /*==================================================================================================*/
         else if(comando == "put") {
+            envia_arquivo(socket, args, PUT);
             cout << "Operacao put com argumentos: " << args << endl;
         }
 /*==================================================================================================*/

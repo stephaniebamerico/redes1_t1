@@ -31,6 +31,10 @@ void char_to_msg (int socket, char* buffer, int tam);
 
 void msg_to_arq (mensagem_t **mensagens, string name, int tam);
 
+void pede_arquivo(int socket, string name, int tipo);
+
+void envia_arquivo(int socket, string name, int tipo);
+
 
 #endif
 

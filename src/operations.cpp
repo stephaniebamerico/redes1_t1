@@ -211,6 +211,12 @@ void arq_to_msg(int socket, string name)
     fp = fopen (nome, "r");
     if (!fp)
     {
+        char msgErro[2];
+        msgErro[0]='1';
+        msgErro[1]='\0';
+        mensagem_t *msg_resposta;
+        msg_resposta = monta_mensagem(ERRO, 0, msgErro);
+        envia_mensagem(socket, &msg_resposta, 1);
         printf("erro!\n");
         return;
     }
@@ -309,6 +315,47 @@ void msg_to_arq (mensagem_t **mensagens, string name, int tam)
 
 }
 
+
+
+void pede_arquivo(int socket, string name, int tipo) {
+    //nome do arquivo a ser aberto
+    char* nome;
+    aloca_str(&nome, name.size());
+    //passa a string name para um vetor de chars
+    strcpy (nome, name.c_str());
+
+    // Cria mensagem
+    if (tipo == GET)
+    {
+        mensagem_t *msg = monta_mensagem(tipo, 0, nome);
+
+        // Envia ao servidor
+        envia_mensagem(socket, &msg, 1);
+    }
+    mensagem_t **conteudo;
+    int tamMsg = recebe_conteudo(socket, &conteudo);
+    if (tamMsg > 0) msg_to_arq (conteudo, name, tamMsg);
+
+}
+
+void envia_arquivo(int socket, string name, int tipo)
+{
+    char* nome;
+    aloca_str(&nome, name.size());
+    //passa a string name para um vetor de chars
+    strcpy (nome, name.c_str());
+
+    // Cria mensagem
+    if (tipo == PUT)
+    {
+        mensagem_t *msg = monta_mensagem(tipo, 0, nome);
+
+        // Envia ao servidor
+        envia_mensagem(socket, &msg, 1);
+    }
+    arq_to_msg (socket, name);
+
+}
 
 /*
 

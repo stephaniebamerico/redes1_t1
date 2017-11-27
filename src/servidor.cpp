@@ -96,6 +96,17 @@ int main(int argc, char const *argv[]) {
                 }
 
             }
+/*==================================================================================================*/
+            else if (msg_recebida->tipo == GET) 
+            {
+                envia_arquivo(socket, msg_recebida->dados, GET);
+            }
+            else if (msg_recebida->tipo == PUT) 
+            {
+                pede_arquivo(socket, msg_recebida->dados, PUT);
+            }
+
+
             else {
                 if(msg_recebida->tipo == 20) {
                     mensagem_t **conteudo;
