@@ -62,10 +62,16 @@ char* msg_to_cstr(mensagem_t *msg, char* cstr) {
     cstr_tam_seq_tipo_dados(*msg, cstr, 1);
     cstr[3+msg->tamanho] = msg->paridade;
 
+    printf("##### msg_to_cstr:\n");
+    printf("##### cstr: %s\n", cstr);
+    printf("##### msg:\n");
+    imprime_mensagem(*msg);
+    printf("##### fim msg_to_cstr\n");
+
     return cstr;
 }
 
-mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg) { 
+mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg) {
     msg->inicio = cstr[0];
     msg->tamanho = ((cstr[1] >> 3) & 0x001F); //000TTTTT
     msg->sequencia = ((cstr[1] << 3) & 0x0038) | ((cstr[2] >> 5) & 0x0007); //00SSSSSS
@@ -82,6 +88,12 @@ mensagem_t* cstr_to_msg(char *cstr, mensagem_t *msg) {
         }
         //(msg->dados)[msg->tamanho] = '\0';
     }
+
+    printf("##### cstr_to_msg:\n");
+    printf("##### cstr: %s\n", cstr);
+    printf("##### msg:\n");
+    imprime_mensagem(*msg);
+    printf("##### fim cstr_to_msg\n");
 
     return msg;
 }
