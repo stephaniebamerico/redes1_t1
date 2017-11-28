@@ -129,7 +129,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 ultimo_envio = time(NULL);
             }
             else {
-                printf("sequencia fora do esperado\n");
+                printf("sequencia fora do esperado: %d %d\n", inicio, seq);
                 // timeout para ACK: reseta janela
                 /*for (i = 0; i <= 3 && inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
                 if((inicio-i)%TAM_SEQUENCIA == seq) {
