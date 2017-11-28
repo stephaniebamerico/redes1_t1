@@ -62,8 +62,12 @@ int main(int argc, char const *argv[]) {
 /*==================================================================================================*/
             else if (msg_recebida->tipo == LS) {
                 errno = 0;
+                char * lss;
+                aloca_str(&lss, msg_recebida->tamanho+1);
+                copiaString(lss, msg_recebida->dados, msg_recebida->tamanho );
+                lss[msg_recebida->tamanho]='\0';
 
-                lsArgs = testOptions(msg_recebida->dados, msg_recebida->tamanho);
+                lsArgs = testOptions(lss, msg_recebida->tamanho);
                 
                 mensagem_t *msg_resposta;
                 if (errno == 0) {

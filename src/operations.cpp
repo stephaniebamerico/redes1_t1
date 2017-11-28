@@ -19,6 +19,7 @@ void changeDir (char * dir)
 
 int* testOptions (char * options, int tam)
 {
+    errno = 0;
     printf("%d\n",tam );
     int* opt = (int*) malloc (sizeof(int)*2);
     opt[0]=0;
