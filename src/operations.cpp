@@ -20,7 +20,6 @@ void changeDir (char * dir)
 int* testOptions (char * options, int tam)
 {
     errno = 0;
-    printf("%d\n",tam );
     int* opt = (int*) malloc (sizeof(int)*2);
     opt[0]=0;
     opt[1]=0;
@@ -43,6 +42,11 @@ int* testOptions (char * options, int tam)
         {
             opt[1]=1;
         }
+        else 
+        {
+            errno = EINVAL;
+            return NULL;
+        }
     }
     else if (tam == 5)
     {
@@ -56,6 +60,12 @@ int* testOptions (char * options, int tam)
             opt[0]=1;
             opt[1]=1;
         }
+        else 
+        {
+            errno = EINVAL;
+            return NULL;
+        }
+
 
     }
     else 
