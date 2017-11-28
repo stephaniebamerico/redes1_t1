@@ -83,8 +83,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
     //int DEBUG = 0;
     while(inicio < tam) {
         if(recebe_mensagem(socket, mensagem_recebida)
-            && (mensagem_recebida->tipo == IMPRIMA
-                || mensagem_recebida->tipo == FIM)) {
+            && (mensagem_recebida->tipo == IMPRIMA)) {
             seq = mensagem_recebida->sequencia;
             if(seq == inicio%TAM_SEQUENCIA || 
                 seq == (inicio+1)%TAM_SEQUENCIA || 
@@ -118,6 +117,10 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 }
 
                 ultimo_envio = time(NULL);
+            }
+            else if(mensagem_recebida->tipo == FIM) {
+                envia_confirmacao(socket, msg_fim->sequencia, ACK);
+                return tam;
             }
             else {
                 printf("sequencia fora do esperado: %d %d\n", inicio%TAM_SEQUENCIA, seq);
