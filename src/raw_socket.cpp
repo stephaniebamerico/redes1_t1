@@ -119,7 +119,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 ultimo_envio = time(NULL);
             }
             else if(mensagem_recebida->tipo == FIM) {
-                envia_confirmacao(socket, msg_fim->sequencia, ACK);
+                envia_confirmacao(socket, mensagem_recebida->sequencia, ACK);
                 return tam;
             }
             else {
