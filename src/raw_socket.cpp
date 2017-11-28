@@ -142,6 +142,7 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                     inicio += 2;
                 else if((inicio+3)%TAM_SEQUENCIA == seq)
                     inicio += 3;
+                recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
                 // timeout para ACK: reseta janela
                 /*for (i = 0; i <= 3 && inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
                 if((inicio-i)%TAM_SEQUENCIA == seq) {
