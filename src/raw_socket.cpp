@@ -97,15 +97,6 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                     recebida[i] = 1;
 
                     copia_mensagem(mensagem_recebida, &((*msg)[inicio+i]));
-                    
-                    if(recebida[0] && recebida[1] && recebida[2]) {
-                        // recebeu a janela toda
-                        envia_confirmacao(socket, (inicio+2)%TAM_SEQUENCIA, ACK);
-                        
-                        // janela desliza 3
-                        inicio += 3;
-                        recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
-                    }
 
                     printf("Recebido: %d / %d\n", inicio+i+1, tam);
                 }
@@ -129,20 +120,23 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                 ultimo_envio = time(NULL);
             }
             else {
-                printf("sequencia fora do esperado: %d %d\n", inicio, seq);
-                if((inicio-1)%TAM_SEQUENCIA == seq)
+                printf("sequencia fora do esperado: %d %d\n", inicio%TAM_SEQUENCIA, seq);
+                if((inicio-1)%TAM_SEQUENCIA == seq) {
                     inicio -= 1;
-                else if((inicio-2)%TAM_SEQUENCIA == seq)
+                    recebida[2] = recebida[1]; recebida[1] = recebida[0]; recebida[0] = 1;
+                }
+                else if((inicio-2)%TAM_SEQUENCIA == seq) {
                     inicio -= 2;
-                else if((inicio-3)%TAM_SEQUENCIA == seq)
+                    recebida[2] = recebida[0]; recebida[1] = 1; recebida[0] = 1;
+                }
+                else if((inicio-3)%TAM_SEQUENCIA == seq) {
                     inicio -= 3;
-                else if((inicio+1)%TAM_SEQUENCIA == seq)
-                    inicio += 1;
-                else if((inicio+2)%TAM_SEQUENCIA == seq)
-                    inicio += 2;
-                else if((inicio+3)%TAM_SEQUENCIA == seq)
+                    recebida[2] = 1; recebida[1] = 1; recebida[0] = 1;
+                }
+                else if((inicio+3)%TAM_SEQUENCIA == seq) {
                     inicio += 3;
-                recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
+                    recebida[2] = 0; recebida[1] = 0; recebida[0] = 0;
+                }
                 // timeout para ACK: reseta janela
                 /*for (i = 0; i <= 3 && inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
                 if((inicio-i)%TAM_SEQUENCIA == seq) {
@@ -155,6 +149,15 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
                     printf("Movendo janela: %d %d\n", inicio, inicio+i);
                     inicio = inicio+i;
                 }*/
+            }
+
+            if(recebida[0] && recebida[1] && recebida[2]) {
+                // recebeu a janela toda
+                envia_confirmacao(socket, (inicio+2)%TAM_SEQUENCIA, ACK);
+                        
+                // janela desliza 3
+                inicio += 3;
+                recebida[0] = 0; recebida[1] = 0; recebida[2] = 0;
             }
         }
         else if(2*(time(NULL)-ultimo_envio) > TIMEOUT) {
