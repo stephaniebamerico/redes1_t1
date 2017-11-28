@@ -130,6 +130,18 @@ int recebe_conteudo(int socket, mensagem_t ***msg) {
             }
             else {
                 printf("sequencia fora do esperado: %d %d\n", inicio, seq);
+                if((inicio-1)%TAM_SEQUENCIA == seq)
+                    inicio -= 1;
+                else if((inicio-2)%TAM_SEQUENCIA == seq)
+                    inicio -= 2;
+                else if((inicio-3)%TAM_SEQUENCIA == seq)
+                    inicio -= 3;
+                else if((inicio+1)%TAM_SEQUENCIA == seq)
+                    inicio += 1;
+                else if((inicio+2)%TAM_SEQUENCIA == seq)
+                    inicio += 2;
+                else if((inicio+3)%TAM_SEQUENCIA == seq)
+                    inicio += 3;
                 // timeout para ACK: reseta janela
                 /*for (i = 0; i <= 3 && inicio-i > 0 && (inicio-i)%TAM_SEQUENCIA != seq; ++i);
                 if((inicio-i)%TAM_SEQUENCIA == seq) {
