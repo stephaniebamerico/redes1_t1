@@ -106,7 +106,13 @@ int main(int argc, char const *argv[]) {
                 cout << "GET: Ok" << endl;
             }
             else if (msg_recebida->tipo == PUT) {
-                pede_arquivo(socket, msg_recebida->dados, PUT);
+
+                char * arquivo;
+                aloca_str(&arquivo, msg_recebida->tamanho+1);
+                copiaString(arquivo, msg_recebida->dados, msg_recebida->tamanho );
+                arquivo[msg_recebida->tamanho]='\0';
+
+                pede_arquivo(socket, arquivo, PUT);
                 cout << "PUT: Ok" << endl;
             }
         }
