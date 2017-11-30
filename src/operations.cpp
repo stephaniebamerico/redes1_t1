@@ -167,8 +167,10 @@ string list(int a, int l)
             }
             closedir(dir);  
         }
-        else
+        else{
             errno = EACCES;
+            perror ("Erro! Nao consegui abrir o diretorio");
+        }
     }
     else
     {
@@ -190,7 +192,7 @@ string list(int a, int l)
         } else {
         /* could not open directory */
             errno = EACCES;
-            perror ("");
+            perror ("Erro! Nao consegui abrir o diretorio");
         }
     }
     return list;
@@ -272,7 +274,7 @@ void arq_to_msg(int socket, string name)
         mensagem_t *msg_resposta;
         msg_resposta = monta_mensagem(ERRO, 0, msgErro);
         envia_mensagem(socket, &msg_resposta, 1);
-        printf("erro!\n");
+        printf("Erro ao arir arquivo %s\n", name);
         return;
     }
     //lê os dados
