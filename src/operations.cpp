@@ -274,7 +274,8 @@ void arq_to_msg(int socket, string name)
         mensagem_t *msg_resposta;
         msg_resposta = monta_mensagem(ERRO, 0, msgErro);
         envia_mensagem(socket, &msg_resposta, 1);
-        printf("Erro ao arir arquivo %s\n", name);
+        printf("Erro ao arir arquivo ");
+        cout << name << endl;
         return;
     }
     //lê os dados
