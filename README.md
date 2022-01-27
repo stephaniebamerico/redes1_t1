@@ -1,4 +1,4 @@
-# Redes 1 - Trabalho 1
+# Redes 1 - Trabalho 1: Comunicação entre dois computadores usando RAWSocket
 
 Trabalho desenvolvido para a disciplina Redes de Computadores 1 na Universidade Federal do Paraná.
 
